@@ -6,7 +6,7 @@ Answer in two sentences, then stop talking. Every answer ends on a fact, not a d
 The signature binds the record; the truth comes from replay: anyone re-runs one command on the repo and gets the same verdicts, and the head hash on the whiteboard anchors when this chain existed. Self-signed is the floor, a consortium key is a config change, and replayability is the point.
 
 2. Is this not just MLflow, model cards, or your own D2.1 again?
-D2.1 lineage says where an artifact came from, D4.1 alerts say a rule fired live with no persisted verdict, and model cards describe; none of them bind claim, threshold, measured value, and evidence digest into a signed verdict that survives after the fact. We checked all five public deliverables, and receipt-0007 already holds your CLAIM-2.
+D2.1 lineage says where an artifact came from, D4.1 alerts say a policy rule fired live with no claim verdict, and model cards describe; none of them bind claim, threshold, measured value, and evidence digest into a signed verdict that survives after the fact. We checked nine public deliverables, and receipt-0007 already holds your CLAIM-2.
 
 3. Your corpus is synthetic. Why do the recall numbers mean anything?
 Declared in the limitations, and the claims are about this system's own artifacts, so the contract is corpus-agnostic: swap the evidence file and the receipts recompute. Receipt-0007 evidences a real published claim with no corpus at all.

@@ -93,17 +93,41 @@ silently; strike them so the history of what shipped when survives.
   evidence column is titled "Evidence from Case Log", which is the
   MLflow answer in one line (the log is attached to the run, nothing
   attaches the claim to the run); the claims list is reproduced in D5.1
-  from D6.1's socio-technical scenarios, cite it that way. Primary-source
-  status as of 27 Aug: D5.1, D2.1, D1.2, D7.1, D7.2, the challenge PDF,
-  and the Laurea Z-Inspection® article read directly; the negative claim
-  (no receipts, attestation, or verdict artifacts in any deliverable)
-  greps clean in D5.1, D2.1, and D1.2. Still secondhand: D4.1, D6.1,
-  and D1.3, so the AIWorkloadID section 3.7 citation and the D1.3
-  author-consent reproduction term stay flagged until those PDFs are
-  attached. AIWorkloadID and IPD naming do not exist in D1.2; they
-  arrived with D1.3. Also caught
-  there: the acronym is IPD YAML (Infrastructure and Policy Definition),
-  not IDP; the pptx was regenerated 27 Aug with the corrected spelling. Copy that drifts toward "no evidence exists"
+  from D6.1's socio-technical scenarios (its Table 16), cite it that way.
+  Primary-source status as of 27 Aug (second pass): all nine public
+  deliverables read directly (D1.2, D1.3, D2.1, D4.1, D5.1, D6.1, D7.1,
+  D7.2, D8.3), plus the challenge PDF and the Laurea Z-Inspection®
+  article; nothing remains secondhand. The negative claim (no receipts,
+  attestation, or claim-verdict artifacts) greps clean in all nine.
+  Confirmed firsthand from D1.3: AIWorkloadID in section 3.7, the
+  controlled-actions roadmap, and the author-consent reproduction term
+  ("Reproduction is authorised provided the author gives consent and the
+  source is acknowledged", D1.3 only; the other deliverables use the
+  source-acknowledgement form, except D4.1 whose title page did not
+  extract, so cite no reproduction terms for D4.1). Acronym nuance: D1.3
+  spells out "Infrastructure & Policy Definition YAML" and never
+  abbreviates; the IPD abbreviation is D5.1's (body, figures, section
+  3.1.2), and D5.1's own terms table misprints it as IDP, so attribute
+  IPD to D5.1 section 3.1.2, never to the terms table. D6.1 structure
+  facts: only UC3 (Bit&Brain) has the claim-ID-plus-evidence table
+  (Table 16, tally 8/6/1 confirmed digit for digit); UC2's Table 13 has
+  an "Evidence from Case Log" column but is evidence-first with no claim
+  IDs (10 evidenced, 2 "No direct evidence provided in case log", 3
+  partial); UC1.1's Table 3 has claims but no evidence column; UC1.2 has
+  no technical table. So say "the co-design process ran for every use
+  case; the wearable table is the only published one pairing claim IDs
+  with evidence status", never "a claims table exists for each use
+  case". Use-case naming per D6.1: UC1.1/1.2 robotics in healthcare and
+  industry (PAL), UC2 mobile computer vision (ARX.NET; telecom providers
+  are the customer segment, not the domain), UC3 wearable EEG
+  (Bit&Brain). D4.1 wording rule: its Policy Manager "enforces" policies
+  by monitoring and alerting, "without executing remediation or recovery
+  actions", and the word claim never appears in D4.1; never write "D4.1
+  does not enforce". D8.3 (DMP): provenance is README-file documentation
+  per Dublin Core and W3C PROV-DM, integrity is storage-layer (Zenodo
+  MD5), QC is peer review with no persisted artifact; its dataset row
+  for the UC3 sleep data names OpenNeuro ds005555 (that is BOAS, though
+  D8.3 never uses the name). Copy that drifts toward "no evidence exists"
   gets corrected, not defended. QA question 9 carries the answer for the
   MLflow challenge. Keep the framing at four use cases with Table 7 as
   the one published in full, not a single-use-case story.

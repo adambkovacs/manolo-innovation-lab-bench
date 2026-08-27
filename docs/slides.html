@@ -100,7 +100,7 @@
   <div class="rise big">14 / 15</div>
   <h1 class="rise" style="font-size:clamp(22px,3.4vw,36px)">claims in the published assessment table are marked without direct cited evidence, by the assessment itself</h1>
   <p class="rise">CLAIM-4: sub-100 ms latency, no direct evidence cited. CLAIM-7: compression maintains accuracy, quantitative benchmarks needed. These are the deliverable's own words, and they name our build.</p>
-  <p class="rise note">The run logs exist: MLflow, Thanos, provenance in D2.1. What nothing does is bind a claim to its run and keep the verdict. The same process produces a table like this for every use case; this is the one published in full. The instrument is use-case-agnostic.</p>
+  <p class="rise note">The run logs exist: MLflow, Thanos, provenance in D2.1. What nothing does is bind a claim to its run and keep the verdict. The same co-design process ran for every use case; this is the only published table that pairs claims with evidence status. The instrument is use-case-agnostic.</p>
 </div></section>
 
 <section class="slide"><div>
@@ -147,11 +147,11 @@
 </div></section>
 
 <section class="slide"><div>
-  <div class="rise eyebrow">Non-duplication, checked against all five public deliverables</div>
+  <div class="rise eyebrow">Non-duplication, checked against nine public deliverables</div>
   <h1 class="rise">The missing joint between lineage, alerts, and audits</h1>
   <div class="rise cards">
     <div class="card"><h3>D2.1 lineage</h3><p>says where an artifact came from. No verdicts.</p></div>
-    <div class="card"><h3>D4.1 policy alerts</h3><p>say a rule fired, live. No persisted verdict artifact.</p></div>
+    <div class="card"><h3>D4.1 policy alerts</h3><p>say a policy rule fired, logged. No claim-verdict artifact.</p></div>
     <div class="card"><h3>D6.1 CAE</h3><p>qualitative, socio-technical evidence base. We are its machine-executable counterpart.</p></div>
   </div>
   <p class="rise">No deliverable mentions signed receipts, attestation, or claim-verdict artifacts. The receipt fills that joint, using the framework's vocabulary: IPD YAML, AIWorkloadID.</p>

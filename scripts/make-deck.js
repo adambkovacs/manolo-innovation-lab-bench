@@ -171,7 +171,7 @@ s = p.addSlide(); s.background = { color: BG };
 title(s, 'The missing joint between D2.1, D4.1, and D6.1');
 const cols = [
   ['D2.1 Data Operations Manager', 'Lineage: where artifacts came from. No verdicts.'],
-  ['D4.1 Policy Manager', 'Live alerts on metric streams. No persisted verdict artifact.'],
+  ['D4.1 Policy Manager', 'Alerts on policy violations, logged. No claim-verdict artifact.'],
   ['D6.1 CAE in Z-Inspection®', 'Claims, arguments, evidence: qualitative and socio-technical.'],
 ];
 cols.forEach(([h, b], i) => {
@@ -188,7 +188,7 @@ card(s, 0.6, 4.0, 12.13, 1.35, LAV2);
 s.addText('The TRACE receipt binds claim + threshold + measured value + evidence digest, signed, chained, replayable by anyone from the repo.',
   { x: 0.95, y: 4.25, w: 11.4, h: 0.9, fontFace: SANS, fontSize: 16, bold: true,
     color: INK, isTextBox: true, margin: 0, valign: 'middle' });
-s.addText('MANOLO-shaped and adapter-ready, never claimed compatible · speaks IPD YAML and AIWorkloadID · no receipts, attestation, or signing anywhere in the five public deliverables (checked)',
+s.addText('MANOLO-shaped and adapter-ready, never claimed compatible · speaks IPD YAML and AIWorkloadID · no receipts, attestation, or signing anywhere in the nine public deliverables (checked)',
   { x: 0.6, y: 5.75, w: 12.13, h: 0.7, fontFace: SANS, fontSize: 11.5, color: MUT,
     isTextBox: true, margin: 0 });
 s.addNotes('If asked "is this not just MLflow or model cards": lineage says where from, alerts say a rule fired, cards describe. None bind a verdict that survives after the fact.');

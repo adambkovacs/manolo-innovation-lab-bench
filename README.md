@@ -23,11 +23,11 @@ The verify badge is this repository's CI, nothing more: on every push, GitHub Ac
 
 ## The problem
 
-The subject is the MANOLO framework's assessment loop. Deliverable D5.1 assesses trustworthiness by listing the claims each use case makes and the evidence behind them. In the one claims table published in full (section 7.2.5, Table 7, pages 47 to 49, reproduced there from D6.1), the evidence column is titled "Evidence from Case Log". For eight of fifteen claims it reads "No direct evidence cited". For six more, "Requires validation study". One claim cites evidence.
+The subject is the MANOLO framework's assessment loop. Deliverable D5.1 assesses trustworthiness by listing the claims each use case makes and the evidence behind them. In the one claims table published in full (section 7.2.5, Table 7, pages 47 to 49, reproduced there from D6.1 Table 16), the evidence column is titled "Evidence from Case Log". For eight of fifteen claims it reads "No direct evidence cited". For six more, "Requires validation study". One claim cites evidence.
 
 The data is not missing. MANOLO stores run metrics in MLflow, Thanos, and Grafana, records provenance in the D2.1 Data Operations Manager, and benchmarks workloads with KOBE. What is missing is the connection: the log is attached to the run, but nothing attaches the claim to the run, and nothing keeps the verdict. The table's annotations are what that gap looks like from the outside.
 
-Two of those rows describe things a benchmark can measure directly: CLAIM-4 (sub-100 ms real-time latency) and CLAIM-7 (compression keeps accuracy while cutting compute). That table is the worked example throughout this repo, and only the example: the contract knows nothing about any use case, the same assessment process produces a claims table for each of the four, and nine of the eleven committed receipts gate claims (energy zones, cost, this repo's own benchmark) that have nothing to do with wearables.
+Two of those rows describe things a benchmark can measure directly: CLAIM-4 (sub-100 ms real-time latency) and CLAIM-7 (compression keeps accuracy while cutting compute). That table is the worked example throughout this repo, and only the example: the contract knows nothing about any use case, the co-design process behind the table ran for every use case (D6.1 sections 3.1.7 to 3.3.7; the wearable table is the only published one that pairs claim IDs with evidence status), and nine of the eleven committed receipts gate claims (energy zones, cost, this repo's own benchmark) that have nothing to do with wearables.
 
 ## What this builds
 
@@ -51,14 +51,15 @@ flowchart LR
 
 ## Why this does not duplicate MANOLO
 
-Checked against the five public deliverables:
+Checked against nine public deliverables (D1.2, D1.3, D2.1, D4.1, D5.1, D6.1, D7.1, D7.2, D8.3):
 
 - D2.1's Data Operations Manager records where every artifact came from (provenance and lineage). It does not record verdicts.
-- D4.1's Policy Manager watches live metrics and raises alerts. Its own text says it does not enforce anything or keep a verdict.
+- D4.1's Policy Manager evaluates policies over live metric streams and raises and logs alerts, in its own words "without executing remediation or recovery actions". It never handles a claim; the word does not appear in the deliverable.
 - D6.1's Claims, Arguments, Evidence process inside Z-Inspection® is a human process for weighing claims. TRACE receipts are its machine-readable counterpart, not a replacement.
+- D8.3's data provenance is documentation: README files following Dublin Core and W3C PROV-DM, with file integrity delegated to the storage layer (Zenodo's MD5 checksums). No claim binding, no verdict record.
 - No deliverable mentions signed receipts, attestation, or claim-verdict artifacts. Checked.
 
-The missing piece between D5.1's claim table and D2.1's lineage graph is a portable, signed, replayable verdict receipt. That is the contribution, under Apache-2.0, using MANOLO's own vocabulary (IPD YAML from the D5.1 terms table, AIWorkloadID from D1.3 section 3.7). Everything here is MANOLO-shaped and adapter-ready. Nothing claims MANOLO compatibility, because no public schema exists to bind against.
+The missing piece between D5.1's claim table and D2.1's lineage graph is a portable, signed, replayable verdict receipt. That is the contribution, under Apache-2.0, using MANOLO's own vocabulary (IPD YAML from D5.1 section 3.1.2, AIWorkloadID from D1.3 section 3.7). Everything here is MANOLO-shaped and adapter-ready. Nothing claims MANOLO compatibility, because no public schema exists to bind against.
 
 ## Quickstart (zero dependencies, Node 18+)
 
