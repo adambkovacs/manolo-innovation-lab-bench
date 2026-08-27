@@ -18,7 +18,7 @@
     "claims:block": "node src/claims.js evaluate fixtures/claims-block.json",
     "receipts:verify": "node src/claims.js verify",
     "baseline": "node src/baseline.js",
-    "gate:test": "node --test",
+    "gate:test": "npm test",
     "deck": "node scripts/make-deck.js"
   },
   "optionalDependencies": {
