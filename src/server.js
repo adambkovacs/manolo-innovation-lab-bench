@@ -36,9 +36,11 @@ const server = http.createServer((req, res) => {
   }
 
   if (req.method === 'POST' && url.pathname === '/benchmark') {
-    // Live run, sized to finish in seconds during a demo.
+    // Live run, sized to finish in seconds during a demo. Clamp the corpus
+    // size so a stray query cannot pin the machine mid-presentation.
+    const n = Math.min(20000, Math.max(100, parseInt(url.searchParams.get('n'), 10) || 2000));
     const r = spawnSync('node', [path.join(__dirname, 'bench.js')], {
-      env: { ...process.env, N: url.searchParams.get('n') || '2000', Q: '30' },
+      env: { ...process.env, N: String(n), Q: '30' },
       timeout: 60000,
     });
     if (r.status !== 0) {
