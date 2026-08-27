@@ -127,7 +127,16 @@ silently; strike them so the history of what shipped when survives.
   per Dublin Core and W3C PROV-DM, integrity is storage-layer (Zenodo
   MD5), QC is peer review with no persisted artifact; its dataset row
   for the UC3 sleep data names OpenNeuro ds005555 (that is BOAS, though
-  D8.3 never uses the name). Copy that drifts toward "no evidence exists"
+  D8.3 never uses the name). D1.1 (Deep Dive, 186 pages) is partially
+  read: pages 2 to 80 plus the full contents and figure lists, via the
+  Drive connector (direct download blocked). The repo cites D1.1
+  nowhere, the portion read greps clean on receipt, attestation, and
+  verdict, its reproduction terms are the source-acknowledgement form,
+  and its Z-Inspection® flow chart (Figure 6) notes "a log is kept in
+  which the process and events of the assessment are tracked", a
+  process log, not a claim-verdict artifact. Because coverage is
+  partial, D1.1 stays out of the "checked" count in public copy; the
+  enumerated list stays at nine. Copy that drifts toward "no evidence exists"
   gets corrected, not defended. QA question 9 carries the answer for the
   MLflow challenge. Keep the framing at four use cases with Table 7 as
   the one published in full, not a single-use-case story.
