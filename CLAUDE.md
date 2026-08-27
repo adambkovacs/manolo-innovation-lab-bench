@@ -86,16 +86,20 @@ silently; strike them so the history of what shipped when survives.
   not.
 - **Never say MANOLO lacks evidence; say the binding is missing.** MANOLO
   stores run metrics (MLflow, Thanos, Grafana per D1.3/D5.1), provenance
-  (D2.1 Data Operations Manager), and alerts (D4.1). The accurate claim,
-  validated 27 Aug 2026 against the decision package and a second
-  independent source audit: the D5.1 Table 7 annotations ("No direct
-  evidence cited", "Requires validation study") are the deliverable's own
-  words, and no component binds a declared claim to the specific run
-  evidence that would support it with a persisted verdict. Copy that
-  drifts toward "no evidence exists" gets corrected, not defended. QA
-  question 9 carries the answer for the MLflow challenge. Related: keep
-  the framing at four use cases with Table 7 as the one published in
-  full, not a single-use-case story.
+  (D2.1 Data Operations Manager), and alerts (D4.1). Validated 27 Aug
+  2026 against the full D5.1 PDF directly: the Table 7 tally is 8 "No
+  direct evidence cited", 6 "Requires validation study", 1 with cited
+  evidence (CLAIM-2, BOAS, Esparza-Iaizzo 2024, 87.08/86.64); the
+  evidence column is titled "Evidence from Case Log", which is the
+  MLflow answer in one line (the log is attached to the run, nothing
+  attaches the claim to the run); the claims list is reproduced in D5.1
+  from D6.1's socio-technical scenarios, cite it that way. Also caught
+  there: the acronym is IPD YAML (Infrastructure and Policy Definition),
+  not IDP; the committed pptx still carries the old spelling until the
+  in-session deck regen. Copy that drifts toward "no evidence exists"
+  gets corrected, not defended. QA question 9 carries the answer for the
+  MLflow challenge. Keep the framing at four use cases with Table 7 as
+  the one published in full, not a single-use-case story.
 - **Never claim MANOLO compatibility.** No public MANOLO schema exists to
   bind against (its GitHub org is empty, no public OpenAPI). The repo says
   "MANOLO-shaped, adapter-ready" everywhere, never "MANOLO-compatible."

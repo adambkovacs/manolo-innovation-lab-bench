@@ -12,6 +12,7 @@
     "test": "node --test",
     "bench": "node src/bench.js",
     "sweep": "node scripts/sweep.js",
+    "sbom": "npm sbom --sbom-format spdx > results/sbom.spdx.json",
     "assess": "node src/assess.js",
     "serve": "node src/server.js",
     "verify": "node src/ledger.js verify",
