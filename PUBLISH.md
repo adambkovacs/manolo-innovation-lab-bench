@@ -15,21 +15,15 @@ who clones can verify the whole chain without it.
 The project name inside the code stays manolo-bench (package.json,
 prose, deck). Only the GitHub repo is named manolo-innovation-lab-bench.
 
-## Still to do by hand, two minutes
+## Settings done by hand, 27 Aug 2026
 
 The session that pushed this had no permission to call the GitHub
-settings APIs, so these are yours, all in repo Settings:
+settings APIs, so Adam clicked these in repo Settings: repo made
+public, Pages source set to GitHub Actions. The workflow at
+.github/workflows/pages.yml now publishes docs/ on every push to main.
 
-1. Make the repo public if it is not yet (Settings, General, Danger
-   Zone, Change visibility). Pages on a free plan needs a public repo,
-   and the judges need to clone it anyway.
-2. Settings, Pages, set Source to GitHub Actions. The workflow at
-   .github/workflows/pages.yml then publishes docs/ on every push to
-   main; its first run failed only because this setting was missing.
-3. Repo About, add topics: trustworthy-ai, benchmarking, ed25519,
-   horizon-europe.
-
-With the gh CLI instead:
+Still open: repo About, add topics trustworthy-ai, benchmarking,
+ed25519, horizon-europe. With the gh CLI instead:
 
 ```
 gh repo edit adambkovacs/manolo-innovation-lab-bench --add-topic trustworthy-ai \
