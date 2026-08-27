@@ -41,15 +41,13 @@ paths:
     get:
       summary: Trustworthiness status assessment (recorded)
       description: >
-        Computes the artifact-derived status assessment and records it
-        to the provenance ledger. Intentionally non-idempotent record
-        keeping, stated out loud because a GET with a side effect
-        deserves disclosure.
-      description: >
         Returns a per-principle scorecard derived from verifiable
         artifacts (benchmark results, ledger integrity, published
         contract, documented limitations). Each entry carries evidence
         and an explicit gap. Method is disclosed in the response.
+        Computes the assessment and records it to the provenance
+        ledger. Intentionally non-idempotent record keeping, stated
+        out loud because a GET with a side effect deserves disclosure.
       responses:
         '200':
           description: Scorecard

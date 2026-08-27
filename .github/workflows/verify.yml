@@ -1,0 +1,39 @@
+name: verify
+
+# Replay, don't trust: an independent runner re-executes the adversarial
+# suite and re-verifies every signed receipt and the ledger chain from
+# the committed repository state alone. No install step, no network.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Adversarial gate suite
+        run: node --test
+      - name: Verify all receipts (signatures, digests, chain)
+        run: |
+          node -e '
+            const r = require("./src/claims.js").verifyAll();
+            console.log(JSON.stringify({receipts: r.receipts, all_valid: r.all_valid}));
+            if (!r.all_valid) {
+              console.error(JSON.stringify(r.results.filter(x => !x.valid), null, 2));
+              process.exit(1);
+            }'
+      - name: Verify ledger chain
+        run: |
+          node -e '
+            const r = require("./src/ledger.js").verify();
+            console.log(JSON.stringify(r));
+            if (!r.valid) process.exit(1);'

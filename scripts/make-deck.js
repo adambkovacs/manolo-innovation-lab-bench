@@ -223,7 +223,7 @@ s.addText('Thirty minutes with WP5: point the contract at the Table 7 claims, th
     isTextBox: true, margin: 0 });
 s.addText('Hand-over ready. Dublin, October 20.', { x: 0.9, y: 3.95, w: 11.0, h: 0.5,
   fontFace: SANS, fontSize: 16, bold: true, color: WHITE, isTextBox: true, margin: 0 });
-s.addText('github.com/adambkovacs · Apache-2.0 · every verdict replays from the repo',
+s.addText('github.com/adambkovacs/manolo-innovation-lab-bench · Apache-2.0 · every verdict replays from the repo',
   { x: 0.9, y: 4.75, w: 11.0, h: 0.45, fontFace: MONO, fontSize: 13, color: LAV,
     isTextBox: true, margin: 0 });
 chip(s, 0.9, 5.65, 'PASS', OKBG, OK); chip(s, 2.3, 5.65, 'CONTINUE', OKBG, OK, 1.5);

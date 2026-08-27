@@ -2,8 +2,8 @@
 
 ## Before the session (today)
 - Email the organizers one precise question: "May teams bring pre-existing scaffolding or code to the Innovation Lab if it is disclosed, or must all code be written within the sessions?" Adjust below per the answer; the ledger discloses either way. Ask a second question: "Does MANOLO currently emit a machine-readable record connecting each declared claim to its exact run evidence and resulting decision?" A no validates the novelty; a yes changes slide 6, not the build.
-- Push the repo public on GitHub (submission requires a shareable repository; a zip is not one). If pre-work is disallowed, push only after the session and present the ledger delineation.
-- Open demo/dashboard.html once on your phone and confirm all four panels render.
+- ~~Push the repo public on GitHub.~~ Done: github.com/adambkovacs/manolo-innovation-lab-bench, with the Pages site live and a CI badge replaying verification on every push. If pre-work is disallowed, the ledger delineation still answers it.
+- Open demo/dashboard.html once on your phone and confirm all four panels render. Also load the Pages site once on the venue wifi.
 - Write the current receipt head hash somewhere you can photograph.
 
 ## Hour 1: make it yours
@@ -14,6 +14,7 @@
   - (b) efSearch sweep: RuVector at efSearch 32/64/100/200, receipt per point, latency-recall frontier.
   - (c) agentdb ledger swap. Most visible payoff, highest risk, abandon at 0:40.
   - (d) Third zone live: write evidence/energy-pl.json (Poland, Ember 2024: 608.18 gCO2e/kWh; Eurostat 2025-S2: 0.1915 EUR/kWh) and evaluate the placement claims against it. Two minutes, visible, on-message.
+  - (e) If the organizers distribute a MANOLO framework API specification, this option outranks the others: write the adapter mapping receipt fields to their spec's names and evaluate one claim through it. The rubric's novelty section names creative use of that specification, and "adapter-ready" becomes "adapter demonstrated" in front of the people who wrote the spec. Still no compatibility claim; the mapping file says whose names are whose.
 - 0:45-0:55  Rerun everything; verify all receipts; commit.
 - 0:55-1:00  Checkpoint: clean clone runs.
 

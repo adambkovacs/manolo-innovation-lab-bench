@@ -9,4 +9,4 @@ We built that binding. A small JSON claims contract (modeled on CLAIM-4 and CLAI
 
 The ask: thirty minutes with WP5 to review whether this contract, with use-case owners declaring the thresholds, is worth adopting or adapting against the Table 7 claims before Trust in the Loop in Dublin on October 20. We will hand over the specification and rename every field to your internal vocabulary.
 
-Repository: github.com/adambkovacs (link on submission). Contact: Adam Kovacs.
+Repository: github.com/adambkovacs/manolo-innovation-lab-bench (Apache-2.0). Plain-language site: adambkovacs.github.io/manolo-innovation-lab-bench. Contact: Adam Kovacs.

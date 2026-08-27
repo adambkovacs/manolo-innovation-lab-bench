@@ -1,6 +1,8 @@
 # MANOLO-Bench + TRACE receipts
 
-Measured evidence and cryptographically signed claim receipts for the MANOLO assessment loop. New to the repo? EXPLAINER.md is the three-minute version: what this is, why it exists, how it works.
+[![verify](https://github.com/adambkovacs/manolo-innovation-lab-bench/actions/workflows/verify.yml/badge.svg)](https://github.com/adambkovacs/manolo-innovation-lab-bench/actions/workflows/verify.yml)
+
+Measured evidence and cryptographically signed claim receipts for the MANOLO assessment loop. New to the repo? EXPLAINER.md is the three-minute version: what this is, why it exists, how it works. Plain-language site with the guided demo: https://adambkovacs.github.io/manolo-innovation-lab-bench/. The badge above is an independent runner replaying the test suite and re-verifying every receipt and the ledger on each push, from the committed state alone.
 
 The subject is the MANOLO framework's assessment loop. Deliverable D5.1 (Trustworthy Efficiency-Performance Assessment v1.0) builds claim-evidence tables for the project's industry use cases; in the table published in full (section 7.2.5, Table 7, pages 47 to 49, one wearable use case), eight of fifteen claims are marked "No direct evidence cited" and six "Requires validation study". Only one carries actual evidence. That is a property of the loop, not the partner: the framework writes honest tables, runs a benchmarking engine (KOBE) for performance and energy, and has no instrument that binds a claim to its evidence and persists the verdict. Two of the table's rows, CLAIM-4 (the system maintains sub-100 ms real-time latency) and CLAIM-7 (model compression maintains accuracy while reducing computational requirements), are exactly the shape of thing this repo measures, so that table serves as the worked example throughout.
 
@@ -60,7 +62,7 @@ node src/claims.js evaluate fixtures/claims-upstream.json
 
 Receipts age honestly. When claim or evidence files legitimately evolve, older receipts for that set become SUPERSEDED: their signatures and chain linkage still verify, and only the latest receipt per claims set must match current disk. Tampering stays INVALID; history stays history.
 
-Tried to break it (test/gate.test.js, predeclared acceptance gates, no post-hoc tuning): verdict fixtures 6/6, canonicalization variants 3/3 to one digest, tamper mutations 3/3 signature failures, duplicate claim ids rejected before any write, sign p95 0.0974 ms and verify p95 0.2458 ms over 500 iterations, receipt 2930 bytes, zero network calls. Run `npm run gate:test`.
+Tried to break it (test/gate.test.js, predeclared acceptance gates, no post-hoc tuning): verdict fixtures 6/6, canonicalization variants 3/3 to one digest, tamper mutations 3/3 signature failures, duplicate claim ids rejected before any write, sign p95 under 0.1 ms and verify p95 under 0.25 ms over 500 iterations against a 10 ms gate, receipt 2930 bytes, zero network calls. Exact figures for the current machine land in results/gate-metrics.json on every run. Run `npm test`.
 
 ## Energy, carbon, and cost as claims
 
@@ -89,6 +91,22 @@ node src/claims.js evaluate fixtures/claims-cost.json
 7. Edit one digit in results/results.json, verify: INVALID, mismatch named. Undo, green. The CLAIM-13 data-protection concern made mechanical.
 8. Close on receipt-0007: the one evidenced claim in their table, CLAIM-2, carries a receipt. The other fourteen are an afternoon with the use-case owners.
 
+## Where each trustworthiness principle lives
+
+The Innovation Lab brief names the principles; this table names the mechanism and the artifact that answers for each one here. GET /assess computes the same mapping live from repo artifacts, with an explicit gap per entry.
+
+| Principle | Mechanism | Artifact |
+|---|---|---|
+| Accountability and auditability | Signed, chained, replayable verdict receipts over a tamper-evident ledger | results/receipts/, results/ledger.jsonl, `node src/claims.js verify` |
+| Transparency and explainability | Public API contract, disclosed method fields, written limitations, every verdict carries its reason | openapi.yaml, this README, receipt `reason` fields |
+| Human agency and oversight | REVIEW maps to PAUSE for a human; overrides need actor, reason, scope, and are themselves signed receipts | src/claims.js `override`, receipt-0003 |
+| Reliability and robustness | Adversarial suite with predeclared gates; quality loss under compression measured, not assumed | test/gate.test.js, results/results.json |
+| Efficiency and sustainability | Latency, memory, and recall measured; energy and carbon enter as declared-origin claims, never estimates dressed as measurements | src/bench.js, evidence/energy-*.json, the placement pair |
+| Security and misuse resistance | Ed25519 signatures, digest binding, canonical serialization; integrity failures are never overridable | src/claims.js, tamper tests |
+| Safety | Hard claims BLOCK and STOP with no override path; the fail-open baseline exists to show the failure mode being prevented | fixtures/claims-block.json, src/baseline.js |
+
+Fairness and privacy are identified as out of scope rather than skipped: no personal data enters the system, and the receipts prove claim-to-evidence binding, not model fairness; the scorecard says so per entry.
+
 ## Limitations
 
 - The 15 W device power in the cost model is assumed and labeled assumed; the carbon and price figures are dated transcriptions (2026-08-27) of Ember 2024 and Eurostat 2025-S2 data, which age.
@@ -105,7 +123,7 @@ node src/claims.js evaluate fixtures/claims-cost.json
 
 ## The human version
 
-Non-engineers start at docs/index.html, the plain-language site (hosted on GitHub Pages once published: explainer, guided demo, real-life examples, FAQ). FAQ.md is the same FAQ as text. EXPLAINER.md is the three-minute technical version. docs/demo.html is the dashboard on embedded sample receipts; demo/dashboard.html is the same page in live mode against the local server.
+Non-engineers start at https://adambkovacs.github.io/manolo-innovation-lab-bench/ (docs/index.html on GitHub Pages: explainer, guided demo, real-life examples, FAQ). FAQ.md is the same FAQ as text. EXPLAINER.md is the three-minute technical version. docs/demo.html is the dashboard on embedded sample receipts; demo/dashboard.html is the same page in live mode against the local server.
 
 ## Licensing
 

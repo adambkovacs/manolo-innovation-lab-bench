@@ -15,11 +15,16 @@ MANOLO EU Innovation Lab hackathon, Horizon Europe GA 101135782, CeADAR/UCD.
 Summer school 26 to 28 August 2026, Thessaloniki. Format: two 60-minute
 session slots. Mentors and judges: Ricardo Simon Carbajo
 (ricardo.simoncarbajo@ucd.ie), Cristian Bosch
-(cristian.boschserrano@ucd.ie). Submissions to
-manolosummerschool@28digital.eu. Rubric: Technical 30, Trustworthy +
-Efficient 30, Novelty 20, Impact 20. Prize: invitation to the EC event
-"Trust in the Loop", Dublin, 20 October 2026. Apache-2.0 required. Goal:
-win and get invited to Dublin.
+(cristian.boschserrano@ucd.ie). Submissions to all three:
+manolosummerschool@28digital.eu, cristian.boschserrano@ucd.ie,
+ricardo.simoncarbajo@ucd.ie (per the challenge PDF). Rubric: Technical
+30, Trustworthy + Efficient 30, Novelty 20, Impact 20; the novelty
+section names "creativity in the use of the Manolo framework API
+specification", so expect a spec handout at the event (RUNBOOK extension
+option e). Prize: 28Digital entrepreneurship course plus invitation to
+the EC event "Trust in the Loop", Dublin, 20 October 2026. Apache-2.0
+required. The brief prefers a small project with clear evidence over a
+large incomplete one. Goal: win and get invited to Dublin.
 
 **Not yet done, exists only as a plan:** two pre-work questions for the
 organizers, never sent. (1) May we bring pre-built code, or must everything

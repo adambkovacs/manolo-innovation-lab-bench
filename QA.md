@@ -18,7 +18,7 @@ Our own ledger answers that: the timestamps delineate what predates the session 
 The code refuses: only REVIEW verdicts are overridable, the receipt's signature must verify first, actor, reason, and scope are mandatory, and the override is itself a signed receipt in the chain. Integrity failures are never overridable, by design.
 
 6. Isn't this just an if statement?
-The if statement is our baseline, and we demo it failing open on an upstream quote; the contribution is what surrounds it: origin classification, digest binding, canonical invariance, signed chained receipts, supersession, and replay. The break-it suite says it survives contact: 6/6 verdicts, 3/3 tamper mutations, 3/3 canonical variants, verify p95 0.2458 ms.
+The if statement is our baseline, and we demo it failing open on an upstream quote; the contribution is what surrounds it: origin classification, digest binding, canonical invariance, signed chained receipts, supersession, and replay. The break-it suite says it survives contact: 6/6 verdicts, 3/3 tamper mutations, 3/3 canonical variants, verify p95 under a quarter of a millisecond (current figure in results/gate-metrics.json).
 
 7. Where do your carbon and price numbers come from?
 Transcribed, dated, and source-linked: Ember 2024 lifecycle intensity via Our World in Data and Eurostat 2025-S2 non-household prices with band and tax basis stated, and the transcription digest is bound into the receipt. Swap the file for a signed Ember or ENTSO-E feed, both CC BY 4.0, and the receipts recompute; the origin field is already there.
