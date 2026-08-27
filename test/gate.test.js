@@ -5,8 +5,11 @@
 //   canonicalization ....... 3/3 semantically equal variants, one digest
 //   tamper mutations ....... 3/3 signature failures on mutated receipts
 //   duplicate claim ids .... rejected deterministically
+//   override integrity ..... tampered evidence refused, never overridable
 //   sign p95 / verify p95 .. under 10 ms over 500 local iterations
-//   outbound network ....... zero by construction (Node crypto and fs only)
+//   outbound network ....... zero attempts, measured: net, http, https,
+//                            tls, and fetch are tripwired for the whole
+//                            suite and the counter must read zero
 // Tests never write receipts or ledger records: verdict logic is exercised
 // through exported internals, tampering through in-memory mutation of a
 // committed receipt, so the provenance chain stays clean.
@@ -16,7 +19,30 @@ const assert = require('node:assert');
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
-const { evaluate, _internals } = require('../src/claims.js');
+const net = require('net');
+const http = require('http');
+const https = require('https');
+const tls = require('tls');
+
+// Tripwire every outbound network surface before any project code loads.
+// An attempt increments the counter and fails loudly; the final test
+// asserts the counter still reads zero and records it as a measured
+// metric, so "zero network calls" is an observation, not an assertion.
+let networkAttempts = 0;
+const trip = (name) => function tripped() {
+  networkAttempts += 1;
+  throw new Error('outbound network attempt via ' + name);
+};
+net.Socket.prototype.connect = trip('net.Socket.connect');
+net.connect = trip('net.connect');
+http.request = trip('http.request');
+http.get = trip('http.get');
+https.request = trip('https.request');
+https.get = trip('https.get');
+tls.connect = trip('tls.connect');
+if (typeof globalThis.fetch === 'function') globalThis.fetch = trip('fetch');
+
+const { evaluate, verifyReceipt, override, _internals } = require('../src/claims.js');
 const { canon, sha256, evaluateClaim, DISPOSITION } = _internals;
 
 const ROOT = path.join(__dirname, '..');
@@ -100,11 +126,38 @@ test('sign and verify micro-benchmark: p95 under 10 ms', () => {
   const metrics = {
     generated: new Date().toISOString(), iterations: 500,
     receipt_bytes: fs.statSync(path.join(ROOT, 'results', 'receipts', 'receipt-0001.json')).size,
-    sign_p50_ms: +p(signMs, 0.50).toFixed(4), sign_p95_ms: +p(signMs, 0.95).toFixed(4),
-    verify_p50_ms: +p(verMs, 0.50).toFixed(4), verify_p95_ms: +p(verMs, 0.95).toFixed(4),
-    network_calls: 0,
-  };
-  fs.writeFileSync(path.join(ROOT, 'results', 'gate-metrics.json'),
+    sign_p50_ms: +p(signMs, 0.50).toFixed(4), sign_p95_ms: +p(signMs, 0.95).toFixed(4),    verify_p50_ms: +p(verMs, 0.50).toFixed(4), verify_p95_ms: +p(verMs, 0.95).toFixed(4),
+  };  fs.writeFileSync(path.join(ROOT, 'results', 'gate-metrics.json'),
     JSON.stringify(metrics, null, 2));
   assert.ok(metrics.sign_p95_ms < 10 && metrics.verify_p95_ms < 10, JSON.stringify(metrics));
+});
+
+test('override refuses tampered evidence: integrity is never overridable', () => {
+  const evPath = path.join(ROOT, 'results', 'results.json');
+  const original = fs.readFileSync(evPath);
+  try {
+    fs.writeFileSync(evPath, original.toString().replace('3.66', '3.67'));
+    assert.strictEqual(verifyReceipt('receipt-0006.json').evidence_intact, false,
+      'tamper must be visible before the override attempt');
+    assert.throws(
+      () => override('receipt-0006.json',
+        { actor: 't', decision: 'proceed', reason: 'r', scope: 's' }),
+      /not overridable/, 'override must refuse tampered evidence');
+  } finally {
+    fs.writeFileSync(evPath, original);
+  }
+  assert.strictEqual(verifyReceipt('receipt-0006.json').valid, true,
+    'evidence restored after the test');
+});
+
+test('outbound network: zero attempts, measured across the whole suite', () => {
+  // One more full cycle under the tripwires, then read the counter.
+  evaluateClaim(claim({}), { m: 3 }, 'measured');
+  sha256(canon({ a: 1 }));
+  assert.strictEqual(verifyReceipt('receipt-0001.json').signature_valid, true);
+  assert.strictEqual(networkAttempts, 0, 'no outbound network attempt may occur');
+  const mPath = path.join(ROOT, 'results', 'gate-metrics.json');
+  const metrics = JSON.parse(fs.readFileSync(mPath, 'utf8'));
+  metrics.network_calls = networkAttempts;
+  fs.writeFileSync(mPath, JSON.stringify(metrics, null, 2));
 });

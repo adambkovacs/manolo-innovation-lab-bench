@@ -216,7 +216,7 @@ s.addNotes('Read these plainly. Scoring ourselves REVIEW where we are REVIEW is 
 
 // Slide 8, dark close
 s = p.addSlide(); s.background = { color: DARK };
-s.addText('Adopt the contract before Trust in the Loop', { x: 0.9, y: 1.9, w: 11.5,
+s.addText('Worth adopting? Thirty minutes with WP5 decides', { x: 0.9, y: 1.9, w: 11.5,
   h: 0.9, fontFace: SANS, fontSize: 34, bold: true, color: WHITE, isTextBox: true, margin: 0 });
 s.addText('Thirty minutes with WP5: point the contract at the Table 7 claims, the use-case owners declare the thresholds, the receipts recompute.',
   { x: 0.9, y: 3.0, w: 11.0, h: 0.8, fontFace: SANS, fontSize: 16, color: LAV,

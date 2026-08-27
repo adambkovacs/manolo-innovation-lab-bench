@@ -2,7 +2,7 @@
 
 ## What we built
 
-MANOLO-Bench with TRACE receipts is an evidence engine plus a claim gate. The bench produces measured evidence about an AI workload. The gate evaluates declared claims against that evidence and turns every evaluation into a cryptographically signed, replayable receipt. The result is a portable answer to one question: is the evidence strong enough to act?
+MANOLO-Bench with TRACE receipts is an evidence engine plus a claim gate. The bench produces measured evidence about an AI workload. The gate evaluates declared claims against that evidence and turns every evaluation into a cryptographically signed, replayable receipt. The result is a portable answer to a deliberately narrow question: does evidence of a declared, accepted origin clear the declared bar, and if not, who paused it and why?
 
 When you buy groceries you get a receipt that says what you bought, for how much, and when. This gives AI promises the same treatment. The promise, the bar it must clear, the number we saw, the verdict, and a signature that breaks if anyone edits the story afterwards. FAQ.md covers the same ground in plain language.
 
@@ -36,7 +36,7 @@ Not a provenance store: D2.1 owns lineage. Not a policy engine: D4.1 owns live a
 
 ## Who it is for and where it goes
 
-For the people who own claims: assessment work like WP5 and use-case owners who can declare thresholds. Point the contract at the Table 7 claims with owner-declared thresholds and the receipts recompute; the remaining fourteen rows are an afternoon, not a program, and each of the other use cases' tables is the same afternoon. When live inputs are wanted, Ember and ENTSO-E publish under CC BY 4.0 and slot into the origin field. The hand-over path is in ADOPTION.md.
+For the people who own claims: assessment work like WP5 and use-case owners who can declare thresholds. Point the contract at the Table 7 claims with owner-declared thresholds and the receipts recompute; an afternoon turns the remaining fourteen rows into contracts, with the six that require validation studies reading REVIEW on the record until the studies run; the other use cases' tables work the same way. When live inputs are wanted, Ember and ENTSO-E publish under CC BY 4.0 and slot into the origin field. The hand-over path is in ADOPTION.md.
 
 ## Run it in sixty seconds
 

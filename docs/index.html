@@ -120,7 +120,7 @@
 <header class="hero"><div class="in">
   <h1>A claim is not evidence</h1>
   <p class="sub">until it carries a receipt.</p>
-  <p>AI teams make promises: fast, private, accurate, battery-friendly, clean. This project turns
+  <p>AI teams make promises: fast, cheap, accurate, battery-friendly, clean. This project turns
   each promise into a checkable receipt that anyone can verify, and that breaks visibly if anyone
   edits the story afterwards.</p>
   <div class="chips">
@@ -167,19 +167,18 @@ signs their name, their reason, and its scope. That override becomes a receipt t
   <a href="https://manolo-project.eu">manolo-project.eu</a></p>
 </div>
 <p>Two rows of that table are things a benchmark can simply measure: "the system answers in under
-100 milliseconds" and "compressing the model keeps it accurate". We measured them on a comparable workload, wrote the verdicts as signed receipts, and gave the one promise that already had cited evidence its receipt as well. That instrument now exists here, open
+100 milliseconds" and "compressing the model keeps it accurate". We measured claims of the same shape, a hard latency bound and a compression accuracy trade-off, on our own benchmark workload, wrote the verdicts as signed receipts, and gave the one promise that already had cited evidence its receipt as well. The workload is ours, not theirs; the contract is what transfers. That instrument now exists here, open
   source, under Apache-2.0.</p>
 
 <h2 id="how">How it works</h2>
 <div class="grid">
   <div class="card step"><b>1. Measure.</b> A benchmark runs the same task three ways and records
-  speed, memory, and accuracy. One command, same result on any machine, because the test data is
-  generated from a fixed seed.</div>
+  speed, memory, and accuracy. One command; the data and accuracy figures repeat on any machine because the corpus comes from a fixed seed, and the speed figures are your machine's own.</div>
   <div class="card step"><b>2. Judge.</b> Each promise is compared against the evidence. But first
   comes a question most systems skip: where did this number come from? We measured it, a named
   source published it, a vendor quoted it, or someone assumed it.</div>
   <div class="card step"><b>3. Receipt.</b> The verdict is signed, chained to every verdict before
-  it, and saved. Anyone can re-check the whole chain in under a second, forever.</div>
+  it, and saved. Anyone can re-check the whole chain in under a second, for as long as the signature scheme stands.</div>
 </div>
 <div class="card">
   <h3 style="margin-top:0">When a good-looking number still fails</h3>
@@ -204,16 +203,13 @@ The chain breaks instantly and names the exact file. Undo the edit and
   verification passes again.
 <span class="k kf">INVALID</span></p></div>
 <div class="beat"><span class="num">5</span><p style="margin:0">The one promise in the MANOLO
-table that had published evidence gets its receipt: number 0007. The other fourteen are an
-afternoon of work with the people who own them. <span class="k kp">PASS</span></p></div>
+table that had published evidence gets its receipt: number 0007. Formalizing the other fourteen is an afternoon with the people who own them; the six that need validation studies stay paused, on the record, until the studies run. <span class="k kp">PASS</span></p></div>
 <p><a class="cta" href="demo.html">Open the demo</a></p>
 
 <h2 id="reallife">What this means in real life</h2>
 <div class="grid">
   <div class="card"><h3 style="margin-top:0">A hospital buying a sleep wearable</h3>
-  <p class="muted" style="margin:0">The brochure says "real-time and private". Instead of trusting
-  the brochure, procurement asks for receipts. A vendor quote alone shows as paused, never as
-  passed. The evidence trail stays checkable
+  <p class="muted" style="margin:0">The brochure says "real-time". Instead of trusting the adjective, procurement asks for the receipt on the number behind it. A vendor quote alone shows as paused, never as passed: a receipt does not make a vendor honest, it makes the vendor's declared basis explicit, signed, and permanent. The evidence trail stays checkable
   after the meeting.</p></div>
   <div class="card"><h3 style="margin-top:0">A funder or project officer</h3>
   <p class="muted" style="margin:0">Research projects publish claim tables. Receipts make those
@@ -256,8 +252,7 @@ connect it to a new system, someone technical writes a small file listing the pr
 bars. That is the whole integration.</p></details>
 <details><summary>Can someone fake or quietly edit a receipt?</summary>
 <p>Edits are detectable, which is the honest promise. Every receipt is chained to the one before
-it and signed. Change any digit of the evidence or the receipt and verification fails, naming the
-exact spot. We demonstrate this live by breaking it on purpose.</p></details>
+it and signed. Change any digit of the evidence or the receipt and verification fails, naming the exact spot. We demonstrate this live by breaking it on purpose. One honest caveat: whoever holds the signing key can re-sign a fresh chain, so the chain head hash gets published somewhere we cannot edit, and anyone holding that hash catches even us.</p></details>
 <details><summary>Why do some of your own checks fail?</summary>
 <p>On purpose. We did not meter energy in joules, so our own energy claim pauses itself instead
 of pretending. A checking tool has to hold itself

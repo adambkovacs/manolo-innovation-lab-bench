@@ -28,9 +28,7 @@ listing the promises and their bars. That is the whole integration.
 
 **Can someone fake or quietly edit a receipt?**
 Edits are detectable, which is the honest promise. Every receipt is chained to
-the one before it and signed. Change any digit of the evidence or the receipt
-and verification fails, naming the exact spot. The demo breaks it on purpose
-to show this.
+the one before it and signed. Change any digit of the evidence or the receipt and verification fails, naming the exact spot. The demo breaks it on purpose to show this. One honest caveat: whoever holds the signing key can re-sign a fresh chain, so the chain head hash gets published somewhere we cannot edit, and anyone holding that hash catches even us.
 
 **Why do some of your own checks fail?**
 On purpose. We did not meter energy in joules, so our own energy claim pauses

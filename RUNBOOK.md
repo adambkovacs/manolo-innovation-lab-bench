@@ -27,6 +27,7 @@
 
 ## Fallbacks
 - Fast venue machine: if the hard tail-latency set evaluates PASS instead of BLOCK (p95 under the 5 ms budget), tighten the threshold in fixtures/claims-block.json in-session and re-evaluate; supersession keeps the old receipt as history. Verified on a fast container: p95 4.48 ms slipped under the budget.
+- HNSW recall drift: the RuVector build is multithreaded, so a rerun can lift MB-ROB-01 past the 0.95 floor and turn the scripted REVIEW into a PASS (0.956 seen on a rerun against 0.944 committed). If it happens, show committed receipt-0006 as the exhibit and say the drift out loud: run-to-run variance is the argument for receipts over reruns.
 - npm broken: zero-dep core only; committed results prove the RuVector series ran.
 - Port taken: PORT=8899 node src/server.js; dashboard has a port field.
 - Browser blocks fetch: dashboard falls back to embedded sample data; say so, it is an honesty feature.

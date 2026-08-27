@@ -206,10 +206,13 @@ function verifyAll() {
 function override(file, opts) {
   for (const k of ['actor', 'decision', 'reason', 'scope']) {
     if (!opts[k]) throw new Error('override requires --' + k);
-  }
-  const check = verifyReceipt(file);
+  }  const check = verifyReceipt(file);
   if (!check.signature_valid) {
     throw new Error('refused: receipt signature invalid; integrity failures are not overridable');
+  }
+  if (!check.evidence_intact) {
+    throw new Error('refused: evidence digests do not match disk (' +
+      check.mismatches.join(', ') + '); integrity failures are not overridable');
   }
   const p = path.isAbsolute(file) ? file : path.join(RECEIPTS, file);
   const r = JSON.parse(fs.readFileSync(p, 'utf8'));

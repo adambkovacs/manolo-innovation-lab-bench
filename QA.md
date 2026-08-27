@@ -3,7 +3,7 @@
 Answer in two sentences, then stop talking. Every answer ends on a fact, not a defense.
 
 1. You signed your own receipt. Why should we trust it?
-The signature binds the record; the truth comes from replay: anyone re-runs one command on the repo and gets the same verdicts, and the head hash on the whiteboard anchors when this chain existed. Self-signed is the floor, a consortium key is a config change, and replayability is the point.
+The signature binds the record; replay reduces what you must trust: anyone re-runs one command and re-derives every verdict from the evidence files, and the head hash on the whiteboard anchors when this chain existed. What replay cannot prove is the origins of the evidence, which is why they are labeled declared, not proven, and why a consortium key and signed origin provenance are the stated next step.
 
 2. Is this not just MLflow, model cards, or your own D2.1 again?
 D2.1 lineage says where an artifact came from, D4.1 alerts say a policy rule fired live with no claim verdict, and model cards describe; none of them bind claim, threshold, measured value, and evidence digest into a signed verdict that survives after the fact. We checked nine public deliverables, and receipt-0007 already holds your CLAIM-2.
@@ -12,10 +12,10 @@ D2.1 lineage says where an artifact came from, D4.1 alerts say a policy rule fir
 Declared in the limitations, and the claims are about this system's own artifacts, so the contract is corpus-agnostic: swap the evidence file and the receipts recompute. Receipt-0007 evidences a real published claim with no corpus at all.
 
 4. Was this actually built in your two hours?
-Our own ledger answers that: the timestamps delineate what predates the session and what was built inside it, and we opened with that disclosure. A provenance tool that hid its own provenance would be dead on arrival.
+The push history answers that: commit and push times sit on a server we do not control, and the ledger's session entries line up with them. Our own timestamps alone would prove nothing, which is exactly the no-external-anchor limitation we declare, so we opened with the disclosure instead of leaning on it.
 
 5. What stops someone overriding a BLOCK?
-The code refuses: only REVIEW verdicts are overridable, the receipt's signature must verify first, actor, reason, and scope are mandatory, and the override is itself a signed receipt in the chain. Integrity failures are never overridable, by design.
+The code refuses: only REVIEW verdicts are overridable, the receipt must verify first, signature and evidence digests both, actor, reason, and scope are mandatory, and the override is itself a signed receipt in the chain. Integrity failures are never overridable, by design.
 
 6. Isn't this just an if statement?
 The if statement is our baseline, and we demo it failing open on an upstream quote; the contribution is what surrounds it: origin classification, digest binding, canonical invariance, signed chained receipts, supersession, and replay. The break-it suite says it survives contact: 6/6 verdicts, 3/3 tamper mutations, 3/3 canonical variants, verify p95 under a quarter of a millisecond (current figure in results/gate-metrics.json).
