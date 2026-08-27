@@ -1,5 +1,5 @@
 // Artifact-derived trustworthiness status assessment, mapped to the EU
-// Trustworthy AI requirements MANOLO applies via Z-Inspection.
+// Trustworthy AI requirements MANOLO applies via Z-Inspection®.
 // v0.2: statuses are implemented / partial / absent. No invented 0-100
 // precision; a numeric mapping (100/50/0) exists only so charts can render.
 // Every entry carries evidence and an explicit gap.
@@ -64,7 +64,7 @@ function run() {
 
   const out = {
     generated: new Date().toISOString(),
-    method: 'artifact-derived status assessment v0.2 (implemented / partial / absent); numeric mapping for charts only; Z-Inspection-aligned',
+    method: 'artifact-derived status assessment v0.2 (implemented / partial / absent); numeric mapping for charts only; Z-Inspection®-aligned',
     scorecard,
   };
 

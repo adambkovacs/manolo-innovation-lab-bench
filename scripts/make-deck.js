@@ -172,7 +172,7 @@ title(s, 'The missing joint between D2.1, D4.1, and D6.1');
 const cols = [
   ['D2.1 Data Operations Manager', 'Lineage: where artifacts came from. No verdicts.'],
   ['D4.1 Policy Manager', 'Live alerts on metric streams. No persisted verdict artifact.'],
-  ['D6.1 CAE in Z-Inspection', 'Claims, arguments, evidence: qualitative and socio-technical.'],
+  ['D6.1 CAE in Z-Inspection®', 'Claims, arguments, evidence: qualitative and socio-technical.'],
 ];
 cols.forEach(([h, b], i) => {
   const x = 0.6 + i * 4.18;

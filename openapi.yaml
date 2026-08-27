@@ -7,7 +7,7 @@ info:
     (Horizon Europe GA 101135782) documents but does not yet expose as a
     public interface: (1) a benchmark system to monitor, evaluate and
     compare AI algorithms and deployments, and (2) provenance tracking of
-    assets with Z-Inspection-aligned trustworthiness assessment.
+    assets with Z-Inspection®-aligned trustworthiness assessment.
     Any backend (vector store, model server, edge runtime) that implements
     this contract becomes comparable and auditable through one interface.
     This is an independent community proposal, not an official MANOLO

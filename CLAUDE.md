@@ -93,7 +93,15 @@ silently; strike them so the history of what shipped when survives.
   evidence column is titled "Evidence from Case Log", which is the
   MLflow answer in one line (the log is attached to the run, nothing
   attaches the claim to the run); the claims list is reproduced in D5.1
-  from D6.1's socio-technical scenarios, cite it that way. Also caught
+  from D6.1's socio-technical scenarios, cite it that way. Primary-source
+  status as of 27 Aug: D5.1, D2.1, D1.2, D7.1, D7.2, the challenge PDF,
+  and the Laurea Z-Inspection® article read directly; the negative claim
+  (no receipts, attestation, or verdict artifacts in any deliverable)
+  greps clean in D5.1, D2.1, and D1.2. Still secondhand: D4.1, D6.1,
+  and D1.3, so the AIWorkloadID section 3.7 citation and the D1.3
+  author-consent reproduction term stay flagged until those PDFs are
+  attached. AIWorkloadID and IPD naming do not exist in D1.2; they
+  arrived with D1.3. Also caught
   there: the acronym is IPD YAML (Infrastructure and Policy Definition),
   not IDP; the pptx was regenerated 27 Aug with the corrected spelling. Copy that drifts toward "no evidence exists"
   gets corrected, not defended. QA question 9 carries the answer for the

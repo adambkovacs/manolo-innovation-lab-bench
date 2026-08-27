@@ -55,7 +55,7 @@ Checked against the five public deliverables:
 
 - D2.1's Data Operations Manager records where every artifact came from (provenance and lineage). It does not record verdicts.
 - D4.1's Policy Manager watches live metrics and raises alerts. Its own text says it does not enforce anything or keep a verdict.
-- D6.1's Claims, Arguments, Evidence process inside Z-Inspection is a human process for weighing claims. TRACE receipts are its machine-readable counterpart, not a replacement.
+- D6.1's Claims, Arguments, Evidence process inside Z-Inspection® is a human process for weighing claims. TRACE receipts are its machine-readable counterpart, not a replacement.
 - No deliverable mentions signed receipts, attestation, or claim-verdict artifacts. Checked.
 
 The missing piece between D5.1's claim table and D2.1's lineage graph is a portable, signed, replayable verdict receipt. That is the contribution, under Apache-2.0, using MANOLO's own vocabulary (IPD YAML from the D5.1 terms table, AIWorkloadID from D1.3 section 3.7). Everything here is MANOLO-shaped and adapter-ready. Nothing claims MANOLO compatibility, because no public schema exists to bind against.
@@ -156,7 +156,7 @@ Fairness and privacy are out of scope, stated rather than skipped: no personal d
 - Receipts prove claim-to-evidence binding and integrity, not model safety or clinical efficacy.
 - Energy is not metered in joules; MB-ENE-01 exists to show the contract failing honestly on us.
 - Synthetic seeded corpus; recall on real embedding distributions will differ. Latency crosses runtimes, as stated above.
-- The trust scorecard (GET /assess) reports implemented, partial, or absent per principle, derived only from repo artifacts. The numbers exist so charts can render, nothing more. It is a scaffold for Z-Inspection review, not a substitute, and its own method field says so.
+- The trust scorecard (GET /assess) reports implemented, partial, or absent per principle, derived only from repo artifacts. The numbers exist so charts can render, nothing more. It is a scaffold for Z-Inspection® review, not a substitute, and its own method field says so.
 - Findings from exercising RuVector 0.3.0, reported upstream: silent default persistence to ./ruvector.db that ignores new dimensionality (always set storagePath); a default maxElements that pre-allocates roughly 4.4 GB (size it to the corpus); a 955 MB optional install. The RVF lineage surface is not production-ready in this release: rvfFreeze and rvfBranch call methods the backend does not implement, backend init fails with a napi u32 error unless another native entry point is touched first, and a metadata-filtered query reproduces the same napi error. derive() itself works and records parentId and lineageDepth. The production-grade HNSW VectorDb is what the bench and sweep use; the broken surfaces are reported, not built on.
 - agentdb (3.0.0-alpha.20, MIT OR Apache-2.0) is declared optional for a future ledger backend swap. The shipped ledger is our own 70 lines, so the core stays dependency-free.
 
