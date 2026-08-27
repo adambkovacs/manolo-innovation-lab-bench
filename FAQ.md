@@ -5,8 +5,8 @@ teammates, jury members, and anyone who opens the repo without an engineering
 background. The same content is hosted on the project site (docs/index.html).
 
 **What is this in one sentence?**
-A tool that turns AI promises into signed, checkable receipts, so trust stops
-depending on whoever speaks most confidently.
+A tool that turns AI promises into signed, checkable receipts, so decisions rest on records,
+not on whoever sounds most confident.
 
 **What exactly is a "claim"?**
 Any promise about an AI system stated with a number: "answers in under 100
@@ -33,8 +33,8 @@ to show this.
 
 **Why do some of your own checks fail?**
 On purpose. We did not meter energy in joules, so our own energy claim pauses
-itself instead of pretending. A trust tool that gives itself perfect marks
-would be the least trustworthy thing in the room.
+itself instead of pretending. A checking tool has to hold
+itself to the same bar it applies to everyone else.
 
 **What does the energy part mean for a normal company?**
 Where you run AI changes its carbon footprint and its electricity bill. The
@@ -45,7 +45,7 @@ Greece 321.65 gCO2e/kWh, Ember 2024; 0.0970 vs 0.1738 EUR/kWh, Eurostat
 
 **Is this an official MANOLO tool?**
 No. It is an independent, open-source build for the MANOLO Innovation Lab,
-based on the project's public documents. It speaks their vocabulary and is
+based on the project's public documents. It uses their vocabulary and is
 designed to plug in, and it never claims compatibility with systems that have
 no public interface yet.
 
@@ -62,4 +62,4 @@ verdict are bound together and unedited.
 **What happens after the hackathon?**
 The ask is thirty minutes with the people who own the claims: they declare the
 bars, the receipts recompute, and the fourteen unevidenced promises start
-getting paid down. The code is Apache-2.0 and hand-over ready.
+getting evidence. The code is Apache-2.0 and ready to hand over.

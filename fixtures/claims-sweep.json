@@ -1,0 +1,28 @@
+{
+  "workload_id": "wf-manolo-bench-001",
+  "evidence": "evidence/ruvector-sweep.json",
+  "evidence_origin": "measured",
+  "claims": [
+    {
+      "id": "SW-REC-LAT",
+      "statement": "The recommended efSearch operating point answers in under 5 ms at p50",
+      "metric": "recommendation.p50_ms",
+      "comparator": "<",
+      "threshold": 5,
+      "unit": "ms",
+      "accepted_origins": ["measured"],
+      "modeled_on": "D5.1 CLAIM-4 latency pattern applied to a tuner output: the sweep recommends, the gate decides"
+    },
+    {
+      "id": "SW-REC-REC",
+      "statement": "The recommended efSearch operating point keeps recall@10 at or above 0.95",
+      "metric": "recommendation.recall_at_10",
+      "comparator": ">=",
+      "threshold": 0.95,
+      "unit": "recall",
+      "review_margin": 0.02,
+      "accepted_origins": ["measured"],
+      "modeled_on": "D5.1 CLAIM-7 accuracy pattern applied to a tuner output"
+    }
+  ]
+}

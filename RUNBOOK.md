@@ -11,7 +11,7 @@
 - 0:10-0:20  Session evidence: rerun bench and evaluate so results, receipts, and ledger carry in-session timestamps. This is the pre-work delineation, on the record.
 - 0:20-0:45  One extension, exactly one:
   - (a) Team-declared claim: add one new claim to fixtures/claims.json that a teammate declares and the run evidences. Cheapest, most on-message.
-  - (b) efSearch sweep: RuVector at efSearch 32/64/100/200, receipt per point, latency-recall frontier.
+  - (b) efSearch sweep, scripted: `npm run sweep` measures the frontier and writes the recommendation evidence, then `node src/claims.js evaluate fixtures/claims-sweep.json` receipts it. Two commands; needs ruvector installed.
   - (c) agentdb ledger swap. Most visible payoff, highest risk, abandon at 0:40.
   - (d) Third zone live: write evidence/energy-pl.json (Poland, Ember 2024: 608.18 gCO2e/kWh; Eurostat 2025-S2: 0.1915 EUR/kWh) and evaluate the placement claims against it. Two minutes, visible, on-message.
   - (e) If the organizers distribute a MANOLO framework API specification, this option outranks the others: write the adapter mapping receipt fields to their spec's names and evaluate one claim through it. The rubric's novelty section names creative use of that specification, and "adapter-ready" becomes "adapter demonstrated" in front of the people who wrote the spec. Still no compatibility claim; the mapping file says whose names are whose.

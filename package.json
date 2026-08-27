@@ -11,6 +11,7 @@
   "scripts": {
     "test": "node --test",
     "bench": "node src/bench.js",
+    "sweep": "node scripts/sweep.js",
     "assess": "node src/assess.js",
     "serve": "node src/server.js",
     "verify": "node src/ledger.js verify",

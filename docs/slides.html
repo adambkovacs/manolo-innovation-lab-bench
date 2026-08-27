@@ -16,7 +16,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <style>
   :root{--bg:#241E38;--bg2:#2C2547;--ink:#F4F1FB;--soft:#B9B0D6;--faint:#8F85B8;
-    --purple:#8B78E8;--lav:#CDC5EE;
+    --purple:#8B78E8;--lav:#CDC5EE;--faint2:#9C93C5;
     --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
     --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
   *{box-sizing:border-box;margin:0}
@@ -40,7 +40,7 @@
   ul{padding-left:1.15em;display:grid;gap:9px;margin:8px 0}
   b{color:var(--ink);font-weight:600}
   .k{font-family:var(--mono);font-weight:700;font-size:12px;padding:3px 12px;border-radius:11px;display:inline-block}
-  .kp{background:#DFF0E8;color:#1E7F5C}.kr{background:#F5EBD3;color:#8A6A15}
+  .kp{background:#DFF0E8;color:#14624A}.kr{background:#F5EBD3;color:#6E540E}
   .kf{background:#F6E2E2;color:#B03030}.ks{background:#E4DFF6;color:#5B4BC4}
   .chips{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0 0}
   .big{font-family:var(--serif);font-size:clamp(72px,14vw,150px);font-weight:600;
@@ -56,7 +56,7 @@
   .flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:18px 0;font:600 13px var(--mono)}
   .fbox{background:var(--bg2);border:1px solid #3A3160;border-radius:10px;padding:9px 13px;color:var(--ink)}
   .farr{color:var(--purple)}
-  .note{color:var(--faint);font-size:13px;margin-top:18px;max-width:66ch}
+  .note{color:var(--faint2,#9C93C5);font-size:13px;margin-top:18px;max-width:66ch}
   .beats{counter-reset:beat;display:grid;gap:11px;margin:14px 0}
   .beat{display:flex;gap:12px;align-items:flex-start}
   .beat::before{counter-increment:beat;content:counter(beat);flex:none;width:26px;height:26px;
@@ -85,14 +85,14 @@
 </style>
 </head>
 <body>
-<a class="back" href="index.html">&larr; back to the explainer</a>
-<div class="deck" id="deck">
+<nav aria-label="back"><a class="back" href="index.html">&larr; back to the explainer</a></nav>
+<main class="deck" id="deck">
 
 <section class="slide"><div>
   <div class="rise eyebrow">MANOLO Innovation Lab · Thessaloniki · August 2026</div>
   <h1 class="rise" style="max-width:16ch">A claim is not evidence</h1>
   <p class="rise sub">until it carries a receipt.</p>
-  <p class="rise">MANOLO-Bench + TRACE receipts. We read the framework's own assessment deliverable and built the missing piece.</p>
+  <p class="rise">MANOLO-Bench + TRACE receipts. We read the framework's own assessment deliverable and built what its loop lacks.</p>
   <div class="rise chips"><span class="k kp">PASS</span><span class="k kr">REVIEW</span>
     <span class="k kf">BLOCK</span><span class="k ks">SIGNED</span></div>
 </div></section>
@@ -103,7 +103,7 @@
   <div class="rise big">14 / 15</div>
   <h1 class="rise" style="font-size:clamp(22px,3.4vw,36px)">claims in the framework's published assessment table carry no direct evidence, in the assessment itself</h1>
   <p class="rise">CLAIM-4: sub-100 ms latency, no direct evidence cited. CLAIM-7: compression maintains accuracy, quantitative benchmarks needed. These are the deliverable's own words, and they name our build.</p>
-  <p class="rise note">This is not a gap we found. It is a gap the deliverable documented, which is what honest assessment looks like. We built the instrument that pays the debt down.</p>
+  <p class="rise note">The deliverable documented this gap itself. We built the instrument for it.</p>
 </div></section>
 
 <section class="slide"><div>
@@ -161,7 +161,7 @@
     <div class="card"><h3>D4.1 policy alerts</h3><p>say a rule fired, live. No persisted verdict artifact.</p></div>
     <div class="card"><h3>D6.1 CAE</h3><p>qualitative, socio-technical evidence base. We are its machine-executable counterpart.</p></div>
   </div>
-  <p class="rise">No deliverable mentions signed receipts, attestation, or claim-verdict artifacts. The receipt is the missing joint, and it speaks the framework's vocabulary: IDP YAML, AIWorkloadID.</p>
+  <p class="rise">No deliverable mentions signed receipts, attestation, or claim-verdict artifacts. The receipt fills that joint, using the framework's vocabulary: IDP YAML, AIWorkloadID.</p>
   <p class="rise note">MANOLO-shaped and adapter-ready, never claimed compatible: no public schema exists to bind against, and the receipts say so.</p>
 </div></section>
 
@@ -175,7 +175,7 @@
     <li>Energy is not metered in joules. Our own energy claim pauses itself instead of pretending.</li>
     <li>Synthetic seeded corpus; recall on real embedding distributions will differ. Latency crosses runtimes, as stated.</li>
   </ul>
-  <p class="rise note">Scoring ourselves honestly is the credibility of everything else on these slides.</p>
+  <p class="rise note">The rest of these slides is only as credible as these self-scores.</p>
 </div></section>
 
 <section class="slide"><div>
@@ -184,18 +184,18 @@
   <h1 class="rise">Adopt the contract before Trust in the Loop</h1>
   <p class="rise sub">Thirty minutes with WP5.</p>
   <p class="rise">Point the contract at the Table 7 claims, the use-case owners declare the thresholds, the receipts recompute. We hand over the specification and rename every field to your internal vocabulary. The remaining fourteen rows are an afternoon, not a program.</p>
-  <p class="rise"><b>Hand-over ready. Dublin, October 20.</b></p>
+  <p class="rise"><b>Ready to hand over. Dublin, October 20.</b></p>
   <p class="rise note" style="font-family:var(--mono)">github.com/adambkovacs/manolo-innovation-lab-bench · Apache-2.0 · every verdict replays from the repo</p>
   <div class="rise chips"><span class="k kp">PASS</span><span class="k kp">CONTINUE</span><span class="k ks">SIGNED</span></div>
 </div></section>
 
-</div>
-<div class="hud">
+</main>
+<nav class="hud" aria-label="slide controls">
   <button class="navb" id="prev" aria-label="previous slide">&larr;</button>
-  <div class="dots" id="dots" role="tablist" aria-label="slides"></div>
+  <div class="dots" id="dots" role="group" aria-label="go to slide"></div>
   <button class="navb" id="next" aria-label="next slide">&rarr;</button>
-  <span class="count" id="count">1 / 8</span>
-</div>
+  <span class="count" id="count" aria-live="polite">1 / 8</span>
+</nav>
 <script>
 'use strict';
 const deck = document.getElementById('deck');
@@ -203,6 +203,9 @@ const slides = [...deck.children];
 const dots = document.getElementById('dots');
 let cur = 0;
 slides.forEach((s, i) => {
+  s.setAttribute('role', 'group');
+  s.setAttribute('aria-roledescription', 'slide');
+  s.setAttribute('aria-label', (i + 1) + ' of ' + slides.length);
   const d = document.createElement('button');
   d.className = 'dot'; d.setAttribute('aria-label', 'slide ' + (i + 1));
   d.onclick = () => go(i);
@@ -210,9 +213,12 @@ slides.forEach((s, i) => {
 });
 function go(i) {
   cur = Math.max(0, Math.min(slides.length - 1, i));
-  deck.style.transform = 'translateX(-' + cur * 100 + '%)';
-  [...dots.children].forEach((d, j) => d.classList.toggle('on', j === cur));
-  slides.forEach((s, j) => s.classList.toggle('in', j === cur));
+  deck.style.transform = 'translateX(-' + cur * 100 + '%)';  [...dots.children].forEach((d, j) => d.classList.toggle('on', j === cur));
+  slides.forEach((s, j) => {
+    s.classList.toggle('in', j === cur);
+    s.toggleAttribute('inert', j !== cur);
+    s.setAttribute('aria-hidden', String(j !== cur));
+  });
   document.getElementById('count').textContent = (cur + 1) + ' / ' + slides.length;
   history.replaceState(null, '', '#' + (cur + 1));
 }

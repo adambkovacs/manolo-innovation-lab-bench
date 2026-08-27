@@ -33,7 +33,7 @@
 </script>
 <style>
   :root{--bg:#F7F5FB;--ink:#2A2440;--soft:#6A6480;--purple:#5B4BC4;--lav:#E4DFF6;
-    --ok:#1E7F5C;--okbg:#DFF0E8;--warn:#8A6A15;--warnbg:#F5EBD3;--bad:#B03030;--badbg:#F6E2E2;
+    --ok:#14624A;--okbg:#DFF0E8;--warn:#6E540E;--warnbg:#F5EBD3;--bad:#B03030;--badbg:#F6E2E2;
     --card:#FFFFFF;--line:#E3DEF2}
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
@@ -49,6 +49,9 @@
     align-items:center;font-size:13.5px}
   nav a{text-decoration:none;color:var(--soft)}
   nav a:hover{color:var(--purple)}
+  .skip{position:absolute;left:-999px;top:8px;background:var(--purple);color:#fff;
+    padding:10px 16px;border-radius:10px;z-index:20;font-weight:700;text-decoration:none}
+  .skip:focus{left:8px}
   nav .brand{font-weight:700;color:var(--ink);font-family:ui-monospace,Menlo,monospace;font-size:13px}
   .hero{background:#241E38;color:#fff;padding:clamp(56px,9vh,84px) 20px 52px}
   .js .h-in{opacity:0;transform:translateY(16px);
@@ -96,6 +99,8 @@
   .cta:hover{filter:brightness(1.12)}
   .cta.ghost{background:transparent;color:var(--purple);border:2px solid var(--purple)}
   .cta.ghost:hover{filter:none;background:var(--lav)}
+  .hero .cta.ghost{color:#CDC5EE;border-color:#8B78E8}
+  .hero .cta.ghost:hover{background:rgba(139,120,232,.22)}
   footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);
     color:var(--soft);font-size:13px}
   table{border-collapse:collapse;width:100%;font-size:14px}
@@ -104,14 +109,15 @@
 </style>
 </head>
 <body>
-<nav><div class="row">
+<a class="skip" href="#story">Skip to content</a>
+<nav aria-label="site"><div class="row">
   <span class="brand">MANOLO-Bench + TRACE</span>
   <a href="#story">The idea</a><a href="#why">Why</a><a href="#how">How</a>
   <a href="#reallife">Real life</a><a href="#faq">FAQ</a><a href="demo.html">Live demo</a>
   <a href="slides.html">Slides</a>
 </div></nav>
 
-<div class="hero"><div class="in">
+<header class="hero"><div class="in">
   <h1>A claim is not evidence</h1>
   <p class="sub">until it carries a receipt.</p>
   <p>AI teams make promises: fast, private, accurate, battery-friendly, clean. This project turns
@@ -125,9 +131,9 @@
     <a class="cta" href="demo.html">Open the demo</a>
     <a class="cta ghost" href="https://github.com/adambkovacs/manolo-innovation-lab-bench">See the code</a>
   </p>
-</div></div>
+</div></header>
 
-<div class="wrap">
+<main class="wrap">
 
 <h2 id="story">The idea, in plain words</h2>
 <p>When you buy groceries, you get a receipt: what you bought, the price, the time, the shop.
@@ -149,8 +155,8 @@ signs their name, their reason, and its scope. That override becomes a receipt t
   data came from and raise alerts while systems run, plus an honest assessment method that writes
   down every promise a system makes and marks which ones have evidence. In its fully published
   promise table, written for one industry use case, fourteen of fifteen promises have no direct
-  evidence yet. The missing piece is not honesty or effort. It is an instrument: nothing binds a
-  promise to its evidence and keeps the verdict. We built that instrument for the framework; the
+  evidence yet. What is missing is an instrument: nothing binds a
+  promise to its evidence and keeps the verdict. We built that instrument; the
   published table is the worked example.</p>
   <p class="muted" style="margin:0">Source: MANOLO deliverable D5.1, section 7.2.5, Table 7.
   MANOLO is an EU Horizon Europe project on trustworthy, efficient AI:
@@ -159,8 +165,8 @@ signs their name, their reason, and its scope. That override becomes a receipt t
 <p>Two rows of that table are things a benchmark can simply measure: "the system answers in under
 100 milliseconds" and "compressing the model keeps it accurate". So we measured them on a
 comparable workload, wrote the verdicts as signed receipts, and gave the one promise that already
-had published evidence its receipt as well. The missing instrument now exists, open source,
-ready to hand over.</p>
+had published evidence its receipt as well. That instrument now exists here, open
+  source, under Apache-2.0.</p>
 
 <h2 id="how">How it works, no jargon</h2>
 <div class="grid">
@@ -174,12 +180,12 @@ ready to hand over.</p>
   it, and saved. Anyone can re-check the whole chain in under a second, forever.</div>
 </div>
 <div class="card">
-  <h3 style="margin-top:0">The part that surprises people</h3>
+  <h3 style="margin-top:0">When a good-looking number still fails</h3>
   <p style="margin:0">A number can look perfect and still not pass. In our demo, a cost estimate
   beats its target easily, but it is built on a guessed power draw. The system pauses it anyway:
   arithmetic on top of a guess is still a guess. And a vendor's quoted "82 milliseconds" pauses
-  too, while a naive checker happily passes it. That refusal to launder guesses into green lights
-  is the whole point.</p>
+  too, while a naive checker happily passes it. The gate refuses to turn
+  guesses into green lights.</p>
 </div>
 
 <h2>Five moments to watch in the demo</h2>
@@ -192,7 +198,8 @@ itself declared. <span class="k kf">STOP</span></p></div>
 <div class="beat"><span class="num">3</span><p style="margin:0">A cost estimate meets its target
 and still pauses, because one ingredient was assumed. <span class="k kr">PAUSE</span></p></div>
 <div class="beat"><span class="num">4</span><p style="margin:0">We edit one digit of the evidence.
-The chain breaks instantly and names the exact file. Undo, and it heals.
+The chain breaks instantly and names the exact file. Undo the edit and
+  verification passes again.
 <span class="k kf">INVALID</span></p></div>
 <div class="beat"><span class="num">5</span><p style="margin:0">The one promise in the MANOLO
 table that had published evidence gets its receipt: number 0007. The other fourteen are an
@@ -204,7 +211,8 @@ afternoon of work with the people who own them. <span class="k kp">PASS</span></
   <div class="card"><h3 style="margin-top:0">A hospital buying a sleep wearable</h3>
   <p class="muted" style="margin:0">The brochure says "real-time and private". Instead of trusting
   the brochure, procurement asks for receipts. A vendor quote alone shows as paused, never as
-  passed. The evidence trail survives the sales meeting.</p></div>
+  passed. The evidence trail stays checkable
+  after the meeting.</p></div>
   <div class="card"><h3 style="margin-top:0">A funder or project officer</h3>
   <p class="muted" style="margin:0">Research projects publish claim tables. Receipts make those
   tables checkable years later: who claimed what, against which evidence, and what the verdict
@@ -212,12 +220,12 @@ afternoon of work with the people who own them. <span class="k kp">PASS</span></
   <div class="card"><h3 style="margin-top:0">A team choosing where to run AI</h3>
   <p class="muted" style="margin:0">The same workload, two countries, real public data. The
   cleaner and cheaper option gets the green light, and the decision itself becomes a signed
-  record instead of a hallway opinion.</p></div>
+  record instead of an undocumented opinion.</p></div>
 </div>
 <div class="card">
   <h3 style="margin-top:0">The energy numbers are real</h3>
   <table>
-    <tr><th></th><th>Grid carbon (gCO2e/kWh, 2024)</th><th>Electricity price (EUR/kWh, 2025)</th><th>Verdict under a 100 g budget</th></tr>
+    <tr><th scope="col">Zone</th><th scope="col">Grid carbon (gCO2e/kWh, 2024)</th><th scope="col">Electricity price (EUR/kWh, 2025)</th><th scope="col">Verdict under a 100 g budget</th></tr>
     <tr><td><b>Sweden</b></td><td class="mono">34.91</td><td class="mono">0.0970</td><td><span class="k kp">CONTINUE</span></td></tr>
     <tr><td><b>Greece</b></td><td class="mono">321.65</td><td class="mono">0.1738</td><td><span class="k kf">STOP</span></td></tr>
   </table>
@@ -229,8 +237,8 @@ afternoon of work with the people who own them. <span class="k kp">PASS</span></
 
 <h2 id="faq">Frequently asked questions</h2>
 <details><summary>What is this in one sentence?</summary>
-<p>A tool that turns AI promises into signed, checkable receipts, so trust stops depending on
-whoever speaks most confidently.</p></details>
+<p>A tool that turns AI promises into signed, checkable receipts, so decisions rest on records,
+not on whoever sounds most confident.</p></details>
 <details><summary>What exactly is a "claim"?</summary>
 <p>Any promise about an AI system stated with a number: "answers in under 100 milliseconds",
 "keeps 95 percent accuracy after compression", "runs on a grid cleaner than 100 grams of CO2 per
@@ -249,15 +257,15 @@ it and signed. Change any digit of the evidence or the receipt and verification 
 exact spot. We demonstrate this live by breaking it on purpose.</p></details>
 <details><summary>Why do some of your own checks fail?</summary>
 <p>On purpose. We did not meter energy in joules, so our own energy claim pauses itself instead
-of pretending. A trust tool that gives itself perfect marks would be the least trustworthy thing
-in the room.</p></details>
+of pretending. A checking tool has to hold itself
+to the same bar it applies to everyone else.</p></details>
 <details><summary>What does the energy part mean for a normal company?</summary>
 <p>Where you run AI changes its carbon footprint and its electricity bill. The same workload can
 be nine times cleaner and almost half the price in one country versus another, using public data
 anyone can check. Receipts turn that choice into an accountable record.</p></details>
 <details><summary>Is this an official MANOLO tool?</summary>
 <p>No. It is an independent, open-source build for the MANOLO Innovation Lab, based on the
-project's public documents. It speaks their vocabulary and is designed to plug in, and it never
+project's public documents. It uses their vocabulary and is designed to plug in, and it never
 claims compatibility with systems that have no public interface yet.</p></details>
 <details><summary>Does it send my data anywhere?</summary>
 <p>No. Zero network calls, verified by the test suite. Everything runs and verifies locally, and
@@ -268,11 +276,11 @@ monitoring, and does not prove a model is safe or clinically effective. It prove
 that a claim, its evidence, and its verdict are bound together and unedited.</p></details>
 <details><summary>What happens after the hackathon?</summary>
 <p>The ask is thirty minutes with the people who own the claims: they declare the bars, the
-receipts recompute, and the fourteen unevidenced promises start getting paid down. The code is
-Apache-2.0 and hand-over ready.</p></details>
+receipts recompute, and the fourteen unevidenced promises start getting evidence. The code is
+Apache-2.0 and ready to hand over.</p></details>
 
 <h2>What it is not</h2>
-<p class="muted">No estimated joules dressed as measurements. No live third-party feeds in the
+<p class="muted">No estimated joules presented as measurements. No live third-party feeds in the
 demo. No claim of MANOLO compatibility. No perfect self-score. The limitations section in the
 repository grades this project as strictly as it grades anyone.</p>
 
@@ -283,7 +291,7 @@ repository grades this project as strictly as it grades anyone.</p>
   · <a href="slides.html">the slides</a>
   · every verdict on this site replays from the repository
 </footer>
-</div>
+</main>
 <script>
 'use strict';
 document.documentElement.classList.add('js');

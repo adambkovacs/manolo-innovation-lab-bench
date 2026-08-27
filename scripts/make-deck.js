@@ -67,10 +67,10 @@ rows2.forEach(([id, txt, tag, tbg, tfg], i) => {
     color: MUT, isTextBox: true, margin: 0 });
   chip(s, 10.75, y + 0.4, tag, tbg, tfg, 1.75);
 });
-s.addText('The deliverable documented this gap itself. We built the instrument that pays the debt down.',
+s.addText('The deliverable documented this gap itself. We built the instrument for it.',
   { x: 0.6, y: 6.15, w: 12.13, h: 0.5, fontFace: SANS, fontSize: 15, bold: true,
     color: INK, isTextBox: true, margin: 0 });
-s.addNotes('Say early: the subject is the framework assessment loop. The published table is the worked example, and the use case behind it is one of several, never the target. This is a gap the deliverable documented itself, which is what honest assessment looks like.');
+s.addNotes('Say early: the subject is the framework assessment loop. The published table is the worked example, and the use case behind it is one of several, never the target. The deliverable documented this gap itself.');
 
 // Slide 3, how it works
 s = p.addSlide(); s.background = { color: BG };
@@ -221,7 +221,7 @@ s.addText('Adopt the contract before Trust in the Loop', { x: 0.9, y: 1.9, w: 11
 s.addText('Thirty minutes with WP5: point the contract at the Table 7 claims, the use-case owners declare the thresholds, the receipts recompute.',
   { x: 0.9, y: 3.0, w: 11.0, h: 0.8, fontFace: SANS, fontSize: 16, color: LAV,
     isTextBox: true, margin: 0 });
-s.addText('Hand-over ready. Dublin, October 20.', { x: 0.9, y: 3.95, w: 11.0, h: 0.5,
+s.addText('Ready to hand over. Dublin, October 20.', { x: 0.9, y: 3.95, w: 11.0, h: 0.5,
   fontFace: SANS, fontSize: 16, bold: true, color: WHITE, isTextBox: true, margin: 0 });
 s.addText('github.com/adambkovacs/manolo-innovation-lab-bench · Apache-2.0 · every verdict replays from the repo',
   { x: 0.9, y: 4.75, w: 11.0, h: 0.45, fontFace: MONO, fontSize: 13, color: LAV,

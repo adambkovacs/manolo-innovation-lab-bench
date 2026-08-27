@@ -21,7 +21,7 @@ declared origins, replayable verdicts, tamper-evident history.
 
 The verify badge is an independent runner replaying the test suite and re-verifying every receipt and the ledger on each push, from the committed state alone.
 
-The subject is the MANOLO framework's assessment loop. Deliverable D5.1 (Trustworthy Efficiency-Performance Assessment v1.0) builds claim-evidence tables for the project's industry use cases; in the table published in full (section 7.2.5, Table 7, pages 47 to 49, one wearable use case), eight of fifteen claims are marked "No direct evidence cited" and six "Requires validation study". Only one carries actual evidence. That is a property of the loop, not the partner: the framework writes honest tables, runs a benchmarking engine (KOBE) for performance and energy, and has no instrument that binds a claim to its evidence and persists the verdict. Two of the table's rows, CLAIM-4 (the system maintains sub-100 ms real-time latency) and CLAIM-7 (model compression maintains accuracy while reducing computational requirements), are exactly the shape of thing this repo measures, so that table serves as the worked example throughout.
+The subject is the MANOLO framework's assessment loop. Deliverable D5.1 (Trustworthy Efficiency-Performance Assessment v1.0) builds claim-evidence tables for the project's industry use cases; in the table published in full (section 7.2.5, Table 7, pages 47 to 49, one wearable use case), eight of fifteen claims are marked "No direct evidence cited" and six "Requires validation study". Only one carries actual evidence. That is a property of the loop, not the partner: the framework documents its evidence gaps, runs a benchmarking engine (KOBE) for performance and energy, and has no instrument that binds a claim to its evidence and persists the verdict. Two of the table's rows, CLAIM-4 (the system maintains sub-100 ms real-time latency) and CLAIM-7 (model compression maintains accuracy while reducing computational requirements), are exactly the shape of thing this repo measures, so that table serves as the worked example throughout.
 
 This repo closes that loop for its own system and proposes the contract for theirs:
 
@@ -64,6 +64,8 @@ open demo/dashboard.html          # visual console (works offline)
 
 Optional Ruvnet layer: `npm install` pulls ruvector ^0.3.0 (roughly 955 MB of node_modules; skip on bad wifi, the core needs nothing). The committed results already contain a verified RuVector run.
 
+With ruvector installed, `npm run sweep` measures the efSearch latency-recall frontier (32, 64, 100, 200) on the same seeded corpus and writes a run recommendation into evidence/ruvector-sweep.json: the lowest-p50 point whose recall clears a declared floor. The recommendation is tuner output, so it gets no special treatment: `node src/claims.js evaluate fixtures/claims-sweep.json` gates it like any other claim, and only a PASS verdict makes it a CONTINUE. Self-tuning that bypassed the gate would be the exact failure this repo exists to catch.
+
 ## Verified results
 
 Measured 2026-08-27, Node v22.22.2, seed 42, N=5000, D=256, Q=50. Reproduce with one command.
@@ -74,9 +76,9 @@ Measured 2026-08-27, Node v22.22.2, seed 42, N=5000, D=256, Q=50. Reproduce with
 | int8 scalar quantization | 3.38 ms | 5.35 ms | 260 | 0.988 |
 | RuVector 0.3.0 HNSW (native, SIMD) | 1.076 ms | 1.387 ms | not measured | 0.944 |
 
-Read: quantization buys 3.94x memory reduction for a 1.2 point recall cost. RuVector's approximate index buys 3.4x lower median latency for a 5.6 point recall cost. One fairness caveat, stated because it matters: the latency comparison crosses runtimes (SIMD native Rust vs a JS typed-array loop), so read it as packaged-system latency for a deployment decision, not an isolated algorithmic result.
+Read: quantization buys 3.94x memory reduction for a 1.2 point recall cost. RuVector's approximate index buys 3.4x lower median latency for a 5.6 point recall cost. One fairness caveat: the latency comparison crosses runtimes (SIMD native Rust vs a JS typed-array loop), so read it as packaged-system latency for a deployment decision, not an isolated algorithmic result.
 
-Receipt lifecycle, verified end to end in this repo's committed state: primary claim set evaluates to 3 PASS and 2 REVIEW (recall 0.944 inside a declared 0.02 margin; energy honestly unmetered, mirroring D5.1's "No direct evidence cited" onto ourselves). The hard tail-latency set produces BLOCK (p95 10.04 ms against a 5 ms hard budget). A governed override of the REVIEW items is receipt-0003. Editing one digit of the evidence file makes receipt verification fail with the mismatched artifact named; restoring makes it pass.
+Receipt lifecycle, verified end to end in this repo's committed state: primary claim set evaluates to 3 PASS and 2 REVIEW (recall 0.944 inside a declared 0.02 margin; energy unmetered and declared so, the same "No direct evidence cited" state the D5.1 table records). The hard tail-latency set produces BLOCK (p95 10.04 ms against a 5 ms hard budget). A governed override of the REVIEW items is receipt-0003. Editing one digit of the evidence file makes receipt verification fail with the mismatched artifact named; restoring makes it pass.
 The contract has also processed the real table: receipt-0007 formalizes D5.1 CLAIM-2 itself, the only Table 7 row with cited evidence (87.08 percent PSG and 86.64 percent wearable match, BOAS on OpenNeuro, Esparza-Iaizzo et al. 2024), as a published-evidence receipt. The receipt binds a source-linked transcription and its digest, not the underlying study, and says so in the evidence file. The remaining fourteen rows need only thresholds declared by the use-case owners.
 
 ## The gate versus the naive baseline
@@ -88,13 +90,13 @@ node src/baseline.js fixtures/claims-upstream.json
 node src/claims.js evaluate fixtures/claims-upstream.json
 ```
 
-Receipts age honestly. When claim or evidence files legitimately evolve, older receipts for that set become SUPERSEDED: their signatures and chain linkage still verify, and only the latest receipt per claims set must match current disk. Tampering stays INVALID; history stays history.
+When claim or evidence files legitimately evolve, older receipts for that set become SUPERSEDED: their signatures and chain linkage still verify, and only the latest receipt per claims set must match current disk. Tampering stays INVALID; history stays history.
 
 Tried to break it (test/gate.test.js, predeclared acceptance gates, no post-hoc tuning): verdict fixtures 6/6, canonicalization variants 3/3 to one digest, tamper mutations 3/3 signature failures, duplicate claim ids rejected before any write, sign p95 under 0.1 ms and verify p95 under 0.25 ms over 500 iterations against a 10 ms gate, receipt 2930 bytes, zero network calls. Exact figures for the current machine land in results/gate-metrics.json on every run. Run `npm test`.
 
 ## Energy, carbon, and cost as claims
 
-Energy joins the contract the only honest way available on a laptop: as claims over declared-origin evidence, never as estimated joules dressed as measurements. Two zone evidence files transcribe published figures, source-linked, dated, and digest-bound: grid carbon intensity (Ember 2024, lifecycle, CC BY 4.0; Greece 321.65 gCO2e/kWh, Sweden 34.91, EU average 211.2) and non-household electricity prices (Eurostat nrg_pc_205, 2025-S2, band IC excluding VAT; Greece 0.1738 EUR/kWh, Sweden 0.0970).
+Energy joins the contract the only way a laptop allows: as claims over declared-origin evidence, never as estimated joules presented as measurements. Two zone evidence files transcribe published figures, source-linked, dated, and digest-bound: grid carbon intensity (Ember 2024, lifecycle, CC BY 4.0; Greece 321.65 gCO2e/kWh, Sweden 34.91, EU average 211.2) and non-household electricity prices (Eurostat nrg_pc_205, 2025-S2, band IC excluding VAT; Greece 0.1738 EUR/kWh, Sweden 0.0970).
 
 The placement pair: identical workload-declared claims evaluated per zone. Under a hard 100 g budget, Sweden is CONTINUE and Greece is STOP for this budget, sources and digests in the receipts; the budget belongs to the workload, not the grid, and relaxing it recomputes the receipts. Placement in the cloud-edge continuum becomes receipted.
 
@@ -129,7 +131,7 @@ The Innovation Lab brief names the principles; this table names the mechanism an
 | Transparency and explainability | Public API contract, disclosed method fields, written limitations, every verdict carries its reason | openapi.yaml, this README, receipt `reason` fields |
 | Human agency and oversight | REVIEW maps to PAUSE for a human; overrides need actor, reason, scope, and are themselves signed receipts | src/claims.js `override`, receipt-0003 |
 | Reliability and robustness | Adversarial suite with predeclared gates; quality loss under compression measured, not assumed | test/gate.test.js, results/results.json |
-| Efficiency and sustainability | Latency, memory, and recall measured; energy and carbon enter as declared-origin claims, never estimates dressed as measurements | src/bench.js, evidence/energy-*.json, the placement pair |
+| Efficiency and sustainability | Latency, memory, and recall measured; energy and carbon enter as declared-origin claims, never estimates presented as measurements | src/bench.js, evidence/energy-*.json, the placement pair |
 | Security and misuse resistance | Ed25519 signatures, digest binding, canonical serialization; integrity failures are never overridable | src/claims.js, tamper tests |
 | Safety | Hard claims BLOCK and STOP with no override path; the fail-open baseline exists to show the failure mode being prevented | fixtures/claims-block.json, src/baseline.js |
 
