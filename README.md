@@ -19,7 +19,7 @@ declared origins, replayable verdicts, tamper-evident history.
 
 </div>
 
-When the verify badge is green, GitHub has just cloned this repo, run the tests, and re-checked every receipt and the ledger. If anything had been tampered with, it would be red.
+The verify badge is this repository's CI, nothing more: on every push, GitHub Actions checks out the repo, runs the tests, and re-verifies every receipt and the ledger. Edit evidence or a receipt without re-signing the chain and the next push turns the badge red.
 
 ## The problem
 
@@ -157,7 +157,7 @@ Fairness and privacy are out of scope, stated rather than skipped: no personal d
 - Energy is not metered in joules; MB-ENE-01 exists to show the contract failing honestly on us.
 - Synthetic seeded corpus; recall on real embedding distributions will differ. Latency crosses runtimes, as stated above.
 - The trust scorecard (GET /assess) reports implemented, partial, or absent per principle, derived only from repo artifacts. The numbers exist so charts can render, nothing more. It is a scaffold for Z-Inspection review, not a substitute, and its own method field says so.
-- Findings reported upstream to RuVector: silent default persistence to ./ruvector.db that ignores new dimensionality (always set storagePath), a default maxElements that pre-allocates roughly 4.4 GB (size it to the corpus), and a 955 MB optional install.
+- Findings from exercising RuVector 0.3.0, reported upstream: silent default persistence to ./ruvector.db that ignores new dimensionality (always set storagePath); a default maxElements that pre-allocates roughly 4.4 GB (size it to the corpus); a 955 MB optional install. The RVF lineage surface is not production-ready in this release: rvfFreeze and rvfBranch call methods the backend does not implement, backend init fails with a napi u32 error unless another native entry point is touched first, and a metadata-filtered query reproduces the same napi error. derive() itself works and records parentId and lineageDepth. The production-grade HNSW VectorDb is what the bench and sweep use; the broken surfaces are reported, not built on.
 - agentdb (3.0.0-alpha.20, MIT OR Apache-2.0) is declared optional for a future ledger backend swap. The shipped ledger is our own 70 lines, so the core stays dependency-free.
 
 ## The plain-language site

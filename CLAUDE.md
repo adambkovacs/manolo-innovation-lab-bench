@@ -127,6 +127,16 @@ silently; strike them so the history of what shipped when survives.
   can self-match the wrapper shell** if the search string appears in its
   own command line. Scan `/proc` directly and exclude the searching
   process's own interpreter if this comes up again.
+- **RuVector 0.3.0 RVF surface is alpha; do not build on it in-session.**
+  Exercised directly 27 Aug: rvfFreeze and rvfBranch throw (wrapper calls
+  store.freeze/store.branch, backend implements neither), createRvfStore
+  fails with a napi u32 init error unless r.getBackendInfo() runs first
+  in the process, and filtered RVF queries hit the same napi error.
+  store.derive() does work (parentId, lineageDepth). The MetaHarness and
+  Darwin exports are lazy bridges to @metaharness/* packages that are
+  not installed; activating them means installing a separate research
+  stack, rejected for the same reason as Reflex. VectorDb HNSW is the
+  production-grade path and the only one the repo builds on.
 - **Editing a fixture invalidates the evidence digest of any receipt that
   referenced its old content.** This is by design (tamper detection), not
   a bug: use the SUPERSEDED lifecycle already implemented in
