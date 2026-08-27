@@ -103,6 +103,11 @@
   .howto .k{font-family:ui-monospace,Menlo,monospace;font-weight:700;font-size:11.5px;padding:1px 8px;border-radius:9px}
   .howto .kp{background:#DFF0E8;color:#1E7F5C}.howto .kr{background:#F5EBD3;color:#8A6A15}
   .howto .kf{background:#F6E2E2;color:#B03030}.howto .kb{background:#F6E2E2;color:#B03030}
+  .js .chip,.js .panel,.js .sub,.js h1{opacity:0;transform:translateY(12px);
+    transition:opacity .5s ease,transform .5s cubic-bezier(.2,.6,.2,1)}
+  .js .chip.in,.js .panel.in,.js .sub.in,.js h1.in{opacity:1;transform:none}
+  @media(prefers-reduced-motion:reduce){
+    .js .chip,.js .panel,.js .sub,.js h1{opacity:1;transform:none;transition:none}}
   .pagesnote{background:#241E38;color:#CDC5EE;font-size:13px;border-radius:12px;
     padding:10px 16px;margin:0 0 14px;line-height:1.5}
   .pagesnote a{color:#fff}
@@ -355,6 +360,10 @@ $("bAssess").onclick=async()=>{try{const a=await j("/assess");
   for(const[k,v]of Object.entries(a.scorecard))
     if(S.data.scorecard[k])S.data.scorecard[k]={score:v.score,status:v.status,gap:v.gap};
   S.data.method=a.method;await pullLive();}catch(_){setMode(false)}render();};
+document.documentElement.classList.add('js');
+const revEls=[...document.querySelectorAll('h1,.sub,.chip,.panel')];
+const revIO=new IntersectionObserver(es=>{for(const e of es)if(e.isIntersecting){e.target.classList.add('in');revIO.unobserve(e.target)}},{rootMargin:'0px 0px -6% 0px'});
+revEls.forEach(el=>revIO.observe(el));
 $("port").onchange=boot;
 boot();
 </script>

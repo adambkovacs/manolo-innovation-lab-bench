@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MANOLO-Bench + TRACE receipts: the slides</title>
+<meta name="description" content="The eight-slide presentation for MANOLO-Bench + TRACE receipts, as a webpage: arrow keys, swipe, or the dots.">
+<link rel="canonical" href="https://adambkovacs.github.io/manolo-innovation-lab-bench/slides.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<meta name="theme-color" content="#241E38">
+<meta property="og:type" content="website">
+<meta property="og:title" content="MANOLO-Bench + TRACE receipts: the slides">
+<meta property="og:description" content="A claim is not evidence until it carries a receipt. Eight slides, in the browser.">
+<meta property="og:url" content="https://adambkovacs.github.io/manolo-innovation-lab-bench/slides.html">
+<meta property="og:image" content="https://adambkovacs.github.io/manolo-innovation-lab-bench/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  :root{--bg:#241E38;--bg2:#2C2547;--ink:#F4F1FB;--soft:#B9B0D6;--faint:#8F85B8;
+    --purple:#8B78E8;--lav:#CDC5EE;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+  *{box-sizing:border-box;margin:0}
+  html,body{height:100%;overflow:hidden}
+  body{background:var(--bg);color:var(--ink);
+    font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  .deck{height:100%;display:flex;transition:transform .45s cubic-bezier(.4,0,.2,1)}
+  @media(prefers-reduced-motion:reduce){.deck{transition:none}}
+  .slide{flex:0 0 100%;height:100%;overflow-y:auto;padding:clamp(24px,6vh,64px) clamp(20px,7vw,110px) 96px;
+    display:flex;flex-direction:column;justify-content:center}
+  .slide>div{max-width:920px;margin:0 auto;width:100%}
+  .eyebrow{font:600 12px var(--mono);letter-spacing:.12em;text-transform:uppercase;
+    color:var(--purple);margin-bottom:14px}
+  .tag{float:right;font:600 11px var(--mono);color:var(--faint);border:1px solid #3A3160;
+    border-radius:999px;padding:3px 10px}
+  h1{font-family:var(--serif);font-weight:600;letter-spacing:-0.01em;
+    font-size:clamp(30px,5.2vw,58px);line-height:1.12;margin-bottom:18px;max-width:20ch}
+  .sub{font-family:var(--serif);font-style:italic;color:var(--lav);
+    font-size:clamp(18px,2.6vw,26px);margin-bottom:26px}
+  p,li{color:var(--soft);max-width:62ch;font-size:clamp(14.5px,1.6vw,17.5px)}
+  ul{padding-left:1.15em;display:grid;gap:9px;margin:8px 0}
+  b{color:var(--ink);font-weight:600}
+  .k{font-family:var(--mono);font-weight:700;font-size:12px;padding:3px 12px;border-radius:11px;display:inline-block}
+  .kp{background:#DFF0E8;color:#1E7F5C}.kr{background:#F5EBD3;color:#8A6A15}
+  .kf{background:#F6E2E2;color:#B03030}.ks{background:#E4DFF6;color:#5B4BC4}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0 0}
+  .big{font-family:var(--serif);font-size:clamp(72px,14vw,150px);font-weight:600;
+    color:var(--purple);line-height:1}
+  .cards{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));margin:18px 0}
+  .card{background:var(--bg2);border:1px solid #3A3160;border-radius:13px;padding:15px 17px}
+  .card h3{font-size:15px;margin-bottom:5px;color:var(--ink)}
+  .card p{font-size:13.5px}
+  table{border-collapse:collapse;margin:16px 0;font-size:clamp(12.5px,1.5vw,15px);width:100%;max-width:720px}
+  td,th{text-align:left;padding:8px 12px;border-bottom:1px solid #3A3160}
+  th{color:var(--faint);font:600 11.5px var(--mono);text-transform:uppercase;letter-spacing:.06em}
+  td{color:var(--soft)} td.mono{font-family:var(--mono);color:var(--ink)}
+  .flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:18px 0;font:600 13px var(--mono)}
+  .fbox{background:var(--bg2);border:1px solid #3A3160;border-radius:10px;padding:9px 13px;color:var(--ink)}
+  .farr{color:var(--purple)}
+  .note{color:var(--faint);font-size:13px;margin-top:18px;max-width:66ch}
+  .beats{counter-reset:beat;display:grid;gap:11px;margin:14px 0}
+  .beat{display:flex;gap:12px;align-items:flex-start}
+  .beat::before{counter-increment:beat;content:counter(beat);flex:none;width:26px;height:26px;
+    border-radius:50%;background:var(--purple);color:var(--bg);font:700 13px/26px var(--mono);text-align:center}
+  .beat p{font-size:clamp(13.5px,1.5vw,15.5px)}
+  /* chrome */
+  .hud{position:fixed;left:0;right:0;bottom:0;display:flex;align-items:center;gap:14px;
+    padding:12px clamp(16px,4vw,40px);background:linear-gradient(transparent,rgba(36,30,56,.92) 40%)}
+  .dots{display:flex;gap:7px;flex:1;justify-content:center}
+  .dot{width:9px;height:9px;border-radius:50%;background:#453B6E;border:0;padding:0;cursor:pointer}
+  .dot.on{background:var(--purple)}
+  .navb{font:600 15px var(--mono);background:var(--bg2);color:var(--lav);border:1px solid #3A3160;
+    border-radius:9px;padding:7px 14px;cursor:pointer}
+  .navb:hover{border-color:var(--purple)}
+  .navb:focus-visible,.dot:focus-visible{outline:2px solid var(--purple);outline-offset:2px}
+  .count{font:600 12px var(--mono);color:var(--faint);min-width:44px;text-align:right}
+  .back{position:fixed;top:14px;left:clamp(16px,4vw,40px);font:600 12px var(--mono);
+    color:var(--faint);text-decoration:none;z-index:3}
+  .back:hover{color:var(--lav)}
+  .in .rise{animation:rise .5s ease both}
+  .in .rise:nth-child(2){animation-delay:.06s}.in .rise:nth-child(3){animation-delay:.12s}
+  .in .rise:nth-child(4){animation-delay:.18s}.in .rise:nth-child(5){animation-delay:.24s}
+  .in .rise:nth-child(6){animation-delay:.3s}
+  @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  @media(prefers-reduced-motion:reduce){.in .rise{animation:none}}
+</style>
+</head>
+<body>
+<a class="back" href="index.html">&larr; back to the explainer</a>
+<div class="deck" id="deck">
+
+<section class="slide"><div>
+  <div class="rise eyebrow">MANOLO Innovation Lab · Thessaloniki · August 2026</div>
+  <h1 class="rise" style="max-width:16ch">A claim is not evidence</h1>
+  <p class="rise sub">until it carries a receipt.</p>
+  <p class="rise">MANOLO-Bench + TRACE receipts. We read the framework's own assessment deliverable and built the missing piece.</p>
+  <div class="rise chips"><span class="k kp">PASS</span><span class="k kr">REVIEW</span>
+    <span class="k kf">BLOCK</span><span class="k ks">SIGNED</span></div>
+</div></section>
+
+<section class="slide"><div>
+  <span class="tag">Impact 20</span>
+  <div class="rise eyebrow">The anchor: D5.1 · section 7.2.5 · Table 7 · pages 47 to 49</div>
+  <div class="rise big">14 / 15</div>
+  <h1 class="rise" style="font-size:clamp(22px,3.4vw,36px)">claims in the framework's published assessment table carry no direct evidence, in the assessment itself</h1>
+  <p class="rise">CLAIM-4: sub-100 ms latency, no direct evidence cited. CLAIM-7: compression maintains accuracy, quantitative benchmarks needed. These are the deliverable's own words, and they name our build.</p>
+  <p class="rise note">This is not a gap we found. It is a gap the deliverable documented, which is what honest assessment looks like. We built the instrument that pays the debt down.</p>
+</div></section>
+
+<section class="slide"><div>
+  <span class="tag">Technical 30</span>
+  <div class="rise eyebrow">Approach</div>
+  <h1 class="rise">Every verdict becomes a signed, replayable receipt</h1>
+  <div class="rise flow">
+    <span class="fbox">bench measures</span><span class="farr">&rarr;</span>
+    <span class="fbox">evidence + declared origin</span><span class="farr">&rarr;</span>
+    <span class="fbox">gate</span><span class="farr">&rarr;</span>
+    <span class="fbox">verdict</span><span class="farr">&rarr;</span>
+    <span class="fbox">Ed25519 receipt, chained</span><span class="farr">&rarr;</span>
+    <span class="fbox">ledger</span>
+  </div>
+  <ul class="rise">
+    <li><b>Origins before arithmetic:</b> measured, published, upstream, assumed. A threshold match from an unaccepted origin is REVIEW, never PASS.</li>
+    <li><b>Dispositions:</b> PASS&rarr;CONTINUE, REVIEW and FAIL&rarr;PAUSE, BLOCK&rarr;STOP.</li>
+    <li><b>Oversight:</b> only REVIEW is overridable, by a named actor with reason and scope, and the override is itself a signed receipt. Integrity failures are never overridable.</li>
+  </ul>
+</div></section>
+
+<section class="slide"><div>
+  <span class="tag">Technical 30</span>
+  <div class="rise eyebrow">Evidence, measured 2026-08-27 · seed 42 · one command to reproduce</div>
+  <h1 class="rise">3.94x less memory at recall 0.988, and we tried to break the gate</h1>
+  <table class="rise">
+    <tr><th>series</th><th>p50</th><th>p95</th><th>bytes/vec</th><th>recall@10</th></tr>
+    <tr><td>fp32 exact, ground truth</td><td class="mono">3.66 ms</td><td class="mono">10.04 ms</td><td class="mono">1024</td><td class="mono">1.000</td></tr>
+    <tr><td>int8 quantized</td><td class="mono">3.38 ms</td><td class="mono">5.35 ms</td><td class="mono">260</td><td class="mono">0.988</td></tr>
+    <tr><td>RuVector HNSW, native SIMD</td><td class="mono">1.076 ms</td><td class="mono">1.387 ms</td><td class="mono">n/m</td><td class="mono">0.944</td></tr>
+  </table>
+  <p class="rise">Gate tested with predeclared acceptance gates: 6/6 verdict fixtures, 3/3 tamper mutations caught, 3/3 canonicalization variants to one digest, verify p95 under 0.25 ms, zero network calls. Public CI replays all of it on every push.</p>
+  <p class="rise note">Said out loud: HNSW latency crosses runtimes (native SIMD Rust vs a JS loop). Read it as packaged-system latency for a deployment decision.</p>
+</div></section>
+
+<section class="slide"><div>
+  <span class="tag">Trustworthy + Efficient 30</span>
+  <div class="rise eyebrow">The receipts, live</div>
+  <h1 class="rise">The gate refuses to launder</h1>
+  <div class="rise beats">
+    <div class="beat"><p>The naive baseline passes an upstream 82 ms quote against the CLAIM-4 threshold. The gate: <span class="k kr">REVIEW</span> and PAUSE, origin named.</p></div>
+    <div class="beat"><p>Primary claims: 3 PASS, 2 honest REVIEWs, including energy unmetered: "No direct evidence cited", applied to ourselves.</p></div>
+    <div class="beat"><p>Placement pair, identical claims: Sweden <span class="k kp">CONTINUE</span>, Greece <span class="k kf">STOP</span> under a declared 100 g carbon budget. Ember 2024, Eurostat 2025-S2, digest-bound.</p></div>
+    <div class="beat"><p>The cost claim meets its threshold and still PAUSEs: one ingredient is assumed, and arithmetic on a guess is a guess.</p></div>
+    <div class="beat"><p>Edit one digit of the evidence, verify: <span class="k kf">INVALID</span>, mismatch named. Undo, green. Close on receipt-0007: the table's one evidenced claim already carries a receipt.</p></div>
+  </div>
+</div></section>
+
+<section class="slide"><div>
+  <span class="tag">Novelty 20</span>
+  <div class="rise eyebrow">Non-duplication, checked against all five public deliverables</div>
+  <h1 class="rise">The missing joint between lineage, alerts, and audits</h1>
+  <div class="rise cards">
+    <div class="card"><h3>D2.1 lineage</h3><p>says where an artifact came from. No verdicts.</p></div>
+    <div class="card"><h3>D4.1 policy alerts</h3><p>say a rule fired, live. No persisted verdict artifact.</p></div>
+    <div class="card"><h3>D6.1 CAE</h3><p>qualitative, socio-technical evidence base. We are its machine-executable counterpart.</p></div>
+  </div>
+  <p class="rise">No deliverable mentions signed receipts, attestation, or claim-verdict artifacts. The receipt is the missing joint, and it speaks the framework's vocabulary: IDP YAML, AIWorkloadID.</p>
+  <p class="rise note">MANOLO-shaped and adapter-ready, never claimed compatible: no public schema exists to bind against, and the receipts say so.</p>
+</div></section>
+
+<section class="slide"><div>
+  <span class="tag">Technical 30 · credibility</span>
+  <div class="rise eyebrow">Limitations, read plainly</div>
+  <h1 class="rise">We score ourselves REVIEW where we are REVIEW</h1>
+  <ul class="rise">
+    <li>Claims here are self-declared, about our own system. The value for MANOLO is the contract applied to their table, with use-case owners declaring thresholds.</li>
+    <li>Single local keypair, no PKI. Tamper-evident, not tamper-proof: the mitigation is the published chain-head hash.</li>
+    <li>Energy is not metered in joules. Our own energy claim pauses itself instead of pretending.</li>
+    <li>Synthetic seeded corpus; recall on real embedding distributions will differ. Latency crosses runtimes, as stated.</li>
+  </ul>
+  <p class="rise note">Scoring ourselves honestly is the credibility of everything else on these slides.</p>
+</div></section>
+
+<section class="slide"><div>
+  <span class="tag">Impact 20</span>
+  <div class="rise eyebrow">The ask</div>
+  <h1 class="rise">Adopt the contract before Trust in the Loop</h1>
+  <p class="rise sub">Thirty minutes with WP5.</p>
+  <p class="rise">Point the contract at the Table 7 claims, the use-case owners declare the thresholds, the receipts recompute. We hand over the specification and rename every field to your internal vocabulary. The remaining fourteen rows are an afternoon, not a program.</p>
+  <p class="rise"><b>Hand-over ready. Dublin, October 20.</b></p>
+  <p class="rise note" style="font-family:var(--mono)">github.com/adambkovacs/manolo-innovation-lab-bench · Apache-2.0 · every verdict replays from the repo</p>
+  <div class="rise chips"><span class="k kp">PASS</span><span class="k kp">CONTINUE</span><span class="k ks">SIGNED</span></div>
+</div></section>
+
+</div>
+<div class="hud">
+  <button class="navb" id="prev" aria-label="previous slide">&larr;</button>
+  <div class="dots" id="dots" role="tablist" aria-label="slides"></div>
+  <button class="navb" id="next" aria-label="next slide">&rarr;</button>
+  <span class="count" id="count">1 / 8</span>
+</div>
+<script>
+'use strict';
+const deck = document.getElementById('deck');
+const slides = [...deck.children];
+const dots = document.getElementById('dots');
+let cur = 0;
+slides.forEach((s, i) => {
+  const d = document.createElement('button');
+  d.className = 'dot'; d.setAttribute('aria-label', 'slide ' + (i + 1));
+  d.onclick = () => go(i);
+  dots.appendChild(d);
+});
+function go(i) {
+  cur = Math.max(0, Math.min(slides.length - 1, i));
+  deck.style.transform = 'translateX(-' + cur * 100 + '%)';
+  [...dots.children].forEach((d, j) => d.classList.toggle('on', j === cur));
+  slides.forEach((s, j) => s.classList.toggle('in', j === cur));
+  document.getElementById('count').textContent = (cur + 1) + ' / ' + slides.length;
+  history.replaceState(null, '', '#' + (cur + 1));
+}
+document.getElementById('prev').onclick = () => go(cur - 1);
+document.getElementById('next').onclick = () => go(cur + 1);
+addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); go(cur + 1); }
+  if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); go(cur - 1); }
+  if (e.key === 'Home') go(0);
+  if (e.key === 'End') go(slides.length - 1);
+});
+let tx = null;
+addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
+addEventListener('touchend', e => {
+  if (tx === null) return;
+  const dx = e.changedTouches[0].clientX - tx;
+  if (Math.abs(dx) > 48) go(cur + (dx < 0 ? 1 : -1));
+  tx = null;
+}, { passive: true });
+go(Math.min(slides.length, Math.max(1, parseInt(location.hash.slice(1), 10) || 1)) - 1);
+</script>
+</body>
+</html>
