@@ -1,44 +1,48 @@
-# Publish: the repository already exists, push is one command
+# Publish: pushed to github.com/adambkovacs/manolo-innovation-lab
 
-The zip contains a fully initialized git repository: CLAUDE.md at the root auto-loads project context for any future Claude Code session (competition facts, decision log, gotchas, task tracker), so a fresh session opening this repo has what this one had. One clean commit
-(author Adam Kovacs, GitHub noreply email), 54 tracked files,
-node_modules and the private signing key excluded by .gitignore. The
-private key stays on your machine for live signing during the demo;
-every receipt embeds its public key, so anyone who clones can verify
-the whole chain without it.
+The repository is public at
+https://github.com/adambkovacs/manolo-innovation-lab, branch main. The
+history is the original build commit plus one commit pointing the two
+docs/index.html links (hero button and footer) at the published repo
+name. CLAUDE.md at the root auto-loads project context for any future
+Claude Code session (competition facts, decision log, gotchas, task
+tracker), so a fresh session opening this repo has what the build
+session had. 55 tracked files, node_modules and the private signing key
+excluded by .gitignore. The private key stays on your machine for live
+signing during the demo; every receipt embeds its public key, so anyone
+who clones can verify the whole chain without it.
 
-Assumed repo name: manolo-bench under github.com/adambkovacs. If you
-pick another name, adjust the two links in docs/index.html (hero button
-and footer) in one commit.
+The project name inside the code stays manolo-bench (package.json,
+prose, deck). Only the GitHub repo is named manolo-innovation-lab.
 
-## Push with the gh CLI
+## Still to do by hand, two minutes
+
+The session that pushed this had no permission to call the GitHub
+settings APIs, so these two are yours:
+
+1. Repo Settings, Pages, Deploy from a branch, main, /docs, Save.
+2. Repo About, add topics: trustworthy-ai, benchmarking, ed25519,
+   horizon-europe.
+
+With the gh CLI instead:
 
 ```
-cd manolo-bench
-gh repo create manolo-bench --public --source=. --push \
-  --description "Signed claim receipts for the MANOLO assessment loop: measured evidence, declared origins, replayable verdicts. Apache-2.0."
-gh repo edit adambkovacs/manolo-bench --add-topic trustworthy-ai \
+gh repo edit adambkovacs/manolo-innovation-lab --add-topic trustworthy-ai \
   --add-topic benchmarking --add-topic ed25519 --add-topic horizon-europe
-gh api repos/adambkovacs/manolo-bench/pages -X POST \
+gh api repos/adambkovacs/manolo-innovation-lab/pages -X POST \
   -f "source[branch]=main" -f "source[path]=/docs"
 ```
 
-## Without gh
+## If you want your real email on the commits
 
-1. Create an empty public repo named manolo-bench on github.com.
-2. `git remote add origin git@github.com:adambkovacs/manolo-bench.git`
-3. `git push -u origin main`
-4. Repo Settings, Pages, Deploy from a branch, main, /docs, Save.
+The commits carry Adam Kovacs with the GitHub noreply email. To swap in
+another identity you would have to rewrite pushed history, so leave it
+unless the submission needs a different address.
 
-## If you want your real email on the commit
+## Verify after Pages is on, two minutes
 
-Before pushing, with your own git identity configured:
-`git commit --amend --reset-author`
-
-## Verify after the push, two minutes
-
-- https://adambkovacs.github.io/manolo-bench/ loads the explainer and
-  the Live demo link opens the dashboard in sample mode.
+- https://adambkovacs.github.io/manolo-innovation-lab/ loads the
+  explainer and the Live demo link opens the dashboard in sample mode.
 - `git ls-files | grep -c node_modules` returns 0, and
   `git ls-files results/keys/` shows the public key only.
 - On any other machine: `git clone`, then `node --test` (5 pass), then

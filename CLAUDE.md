@@ -31,8 +31,12 @@ Adam first.
 ## Task tracker (human-only, none confirmed as of last session)
 
 1. Email organizers the two pre-work questions above.
-2. Push this repo public on GitHub (PUBLISH.md has the exact commands; the
-   repo is already git-initialized with one clean commit).
+2. ~~Push this repo public on GitHub.~~ Done 27 Aug 2026: public at
+   github.com/adambkovacs/manolo-innovation-lab, branch main. The GitHub
+   repo name differs from the package name manolo-bench, so the two
+   docs/index.html links were repointed in a follow-up commit. Two
+   settings still need a human with repo admin rights: Pages (main,
+   /docs) and the four topics. See PUBLISH.md.
 3. Open docs/index.html and docs/demo.html on a phone once, real device,
    before relying on them in front of a jury.
 4. Update the two session-number slots in presentation.pptx (slides 4 and
