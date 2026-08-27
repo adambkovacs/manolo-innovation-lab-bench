@@ -164,7 +164,7 @@ const SAMPLE = {
   },
   method:"artifact-derived status assessment v0.2 (implemented / partial / absent); numeric mapping for charts only",
   receipt:{
-    file:"receipt-0006.json",summary:{PASS:3,REVIEW:2},all_valid:true,
+    file:"Sample verdicts drawn from receipts 0005 to 0011",summary:{PASS:3,REVIEW:2},all_valid:true,
     overridden:["MB-ROB-01","MB-ENE-01"],
     verdicts:[
       {id:"MB-LAT-01",verdict:"PASS",measured:1.076,rule:"< 5 ms",txt:"modeled on D5.1 CLAIM-4 · CONTINUE"},
@@ -251,7 +251,7 @@ function drawClaims(){
       <span class="vid">${v.id}</span>
       <span class="vtxt">${v.measured===null?"no evidence":"measured "+v.measured} against ${v.rule} · ${v.txt}</span>
     </div>`}).join("");
-  $("receiptMeta").textContent=`Latest ${r.file} · Ed25519 signed, evidence digests bound, chain ${r.all_valid?"verified":"BROKEN"}. Claim patterns from MANOLO D5.1 Table 7 (pp. 47-49).`;
+  $("receiptMeta").textContent=`${r.file} · Ed25519 signed, evidence digests bound, chain ${r.all_valid?"verified":"BROKEN"}. Claim patterns from MANOLO D5.1 Table 7 (pp. 47-49).`;
 }
 function drawChain(){
   const v=S.data.verify,recs=S.data.chain,el=$("chain");
@@ -290,7 +290,7 @@ async function pullLive(){
     if(rec.latest&&rec.latest.type==="evaluation"){
       const ov=[];
       for(const f of rec.files){/* overrides listed via ledger types below */}
-      S.data.receipt={file:rec.files[rec.files.length-1],
+      S.data.receipt={file:"Latest "+rec.files[rec.files.length-1],
         summary:rec.latest.summary,all_valid:rec.verification.all_valid,
         overridden:S.data.receipt?S.data.receipt.overridden:[],
         verdicts:rec.latest.verdicts.map(v=>({id:v.id,verdict:v.verdict,
