@@ -3,15 +3,44 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>MANOLO-Bench + TRACE receipts: the human version</title>
-<meta name="description" content="Every AI promise gets a checkable, signed receipt. Plain-language explainer, live demo, FAQ.">
+<title>MANOLO-Bench + TRACE receipts: signed, checkable receipts for AI promises</title>
+<meta name="description" content="Every AI promise gets a checkable, Ed25519-signed receipt: the claim, the bar, the measured number, the verdict. Built for the MANOLO assessment loop (Horizon Europe). Plain-language explainer, live demo, FAQ.">
+<link rel="canonical" href="https://adambkovacs.github.io/manolo-innovation-lab-bench/">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<meta name="theme-color" content="#241E38">
+<meta property="og:type" content="website">
+<meta property="og:title" content="A claim is not evidence, until it carries a receipt">
+<meta property="og:description" content="Signed, replayable receipts for AI promises: measured evidence, declared origins, verdicts anyone can re-check. Apache-2.0.">
+<meta property="og:url" content="https://adambkovacs.github.io/manolo-innovation-lab-bench/">
+<meta property="og:image" content="https://adambkovacs.github.io/manolo-innovation-lab-bench/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareSourceCode",
+  "name": "MANOLO-Bench + TRACE receipts",
+  "description": "Measured evidence and Ed25519-signed claim receipts for the MANOLO assessment loop: declared origins, replayable verdicts, tamper-evident history.",
+  "url": "https://adambkovacs.github.io/manolo-innovation-lab-bench/",
+  "codeRepository": "https://github.com/adambkovacs/manolo-innovation-lab-bench",
+  "programmingLanguage": "JavaScript",
+  "runtimePlatform": "Node.js 18+",
+  "license": "https://www.apache.org/licenses/LICENSE-2.0",
+  "author": {"@type": "Person", "name": "Adam Kovacs"},
+  "keywords": ["trustworthy AI", "AI benchmark", "signed receipts", "Ed25519", "evidence provenance", "MANOLO", "Horizon Europe", "AI auditing"]
+}
+</script>
 <style>
   :root{--bg:#F7F5FB;--ink:#2A2440;--soft:#6A6480;--purple:#5B4BC4;--lav:#E4DFF6;
     --ok:#1E7F5C;--okbg:#DFF0E8;--warn:#8A6A15;--warnbg:#F5EBD3;--bad:#B03030;--badbg:#F6E2E2;
     --card:#FFFFFF;--line:#E3DEF2}
   *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
   body{margin:0;background:var(--bg);color:var(--ink);
     font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  h1,h2,.hero .sub{font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif}
   .wrap{max-width:860px;margin:0 auto;padding:0 20px 60px}
   a{color:var(--purple)}
   nav{position:sticky;top:0;background:rgba(247,245,251,.94);backdrop-filter:blur(6px);
@@ -31,7 +60,7 @@
     padding:3px 12px;border-radius:11px;display:inline-block}
   .kp{background:var(--okbg);color:var(--ok)}.kr{background:var(--warnbg);color:var(--warn)}
   .kf{background:var(--badbg);color:var(--bad)}.ks{background:var(--lav);color:var(--purple)}
-  h2{font-size:24px;margin:44px 0 12px}
+  h2{font-size:25px;margin:44px 0 12px;scroll-margin-top:64px}
   h3{font-size:17px;margin:22px 0 6px}
   .card{background:var(--card);border:1px solid var(--line);border-radius:14px;
     padding:18px 20px;margin:14px 0;box-shadow:0 2px 8px rgba(42,36,64,.06)}
@@ -51,8 +80,11 @@
   summary{cursor:pointer;font-weight:600;padding:10px 0}
   details p{margin:6px 0 12px;color:var(--soft);font-size:15px}
   .cta{display:inline-block;background:var(--purple);color:#fff;text-decoration:none;
-    font-weight:700;padding:12px 22px;border-radius:12px;margin:8px 12px 8px 0}
+    font-weight:700;padding:12px 22px;border-radius:12px;margin:8px 12px 8px 0;
+    transition:filter .15s ease}
+  .cta:hover{filter:brightness(1.12)}
   .cta.ghost{background:transparent;color:var(--purple);border:2px solid var(--purple)}
+  .cta.ghost:hover{filter:none;background:var(--lav)}
   footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);
     color:var(--soft);font-size:13px}
   table{border-collapse:collapse;width:100%;font-size:14px}

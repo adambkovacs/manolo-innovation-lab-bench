@@ -1,8 +1,25 @@
+<div align="center">
+
 # MANOLO-Bench + TRACE receipts
 
-[![verify](https://github.com/adambkovacs/manolo-innovation-lab-bench/actions/workflows/verify.yml/badge.svg)](https://github.com/adambkovacs/manolo-innovation-lab-bench/actions/workflows/verify.yml)
+**A claim is not evidence until it carries a receipt.**
 
-Measured evidence and cryptographically signed claim receipts for the MANOLO assessment loop. New to the repo? EXPLAINER.md is the three-minute version: what this is, why it exists, how it works. Plain-language site with the guided demo: https://adambkovacs.github.io/manolo-innovation-lab-bench/. The badge above is an independent runner replaying the test suite and re-verifying every receipt and the ledger on each push, from the committed state alone.
+Measured evidence and Ed25519-signed claim receipts for the MANOLO assessment loop:
+declared origins, replayable verdicts, tamper-evident history.
+
+[![verify](https://github.com/adambkovacs/manolo-innovation-lab-bench/actions/workflows/verify.yml/badge.svg)](https://github.com/adambkovacs/manolo-innovation-lab-bench/actions/workflows/verify.yml)
+[![license](https://img.shields.io/badge/license-Apache--2.0-5B4BC4)](LICENSE)
+[![node](https://img.shields.io/badge/node-%E2%89%A518-5B4BC4)](package.json)
+[![dependencies](https://img.shields.io/badge/core%20dependencies-0-1E7F5C)](package.json)
+
+[Plain-language site](https://adambkovacs.github.io/manolo-innovation-lab-bench/) ·
+[Live demo](https://adambkovacs.github.io/manolo-innovation-lab-bench/demo.html) ·
+[Three-minute explainer](EXPLAINER.md) ·
+[Quickstart](#quickstart-zero-dependencies-node-18)
+
+</div>
+
+The verify badge is an independent runner replaying the test suite and re-verifying every receipt and the ledger on each push, from the committed state alone.
 
 The subject is the MANOLO framework's assessment loop. Deliverable D5.1 (Trustworthy Efficiency-Performance Assessment v1.0) builds claim-evidence tables for the project's industry use cases; in the table published in full (section 7.2.5, Table 7, pages 47 to 49, one wearable use case), eight of fifteen claims are marked "No direct evidence cited" and six "Requires validation study". Only one carries actual evidence. That is a property of the loop, not the partner: the framework writes honest tables, runs a benchmarking engine (KOBE) for performance and energy, and has no instrument that binds a claim to its evidence and persists the verdict. Two of the table's rows, CLAIM-4 (the system maintains sub-100 ms real-time latency) and CLAIM-7 (model compression maintains accuracy while reducing computational requirements), are exactly the shape of thing this repo measures, so that table serves as the worked example throughout.
 
@@ -12,6 +29,17 @@ This repo closes that loop for its own system and proposes the contract for thei
 2. Declared claims, in a small JSON contract modeled on D5.1's claim patterns, are evaluated against that evidence. Evidence carries an origin (measured, published, upstream, assumed) and each claim declares which origins it accepts, defaulting to measured, so a threshold match from a mere quote can never become PASS.
 3. Every evaluation emits a canonical, Ed25519-signed receipt binding claim, threshold, measured value, verdict, and the SHA-256 digest of the evidence artifact, chained to the prior receipt and anchored in a tamper-evident ledger.
 4. Verdicts are PASS, REVIEW (borderline or missing evidence), FAIL (soft miss), BLOCK (hard policy miss). Every verdict maps to an operational disposition: CONTINUE, PAUSE, or STOP. Only REVIEW is overridable, only by a named actor with a reason and scope, and the override is itself a signed receipt. Integrity failures are never overridable.
+
+```mermaid
+flowchart LR
+  B[bench<br>measures] --> E[evidence artifact<br>+ declared origin]
+  C[claims contract<br>thresholds, accepted origins] --> G{gate}
+  E --> G
+  G --> V[verdict<br>PASS / REVIEW / FAIL / BLOCK]
+  V --> R[Ed25519 receipt<br>digest-bound, chained]
+  R --> L[(ledger)]
+  V -. REVIEW only, signed,<br>actor + reason + scope .-> O[override receipt] --> L
+```
 
 ## Why this does not duplicate MANOLO
 

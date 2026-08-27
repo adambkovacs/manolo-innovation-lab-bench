@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://adambkovacs.github.io/manolo-innovation-lab-bench/sitemap.xml
