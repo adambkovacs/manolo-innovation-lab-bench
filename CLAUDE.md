@@ -95,8 +95,7 @@ silently; strike them so the history of what shipped when survives.
   attaches the claim to the run); the claims list is reproduced in D5.1
   from D6.1's socio-technical scenarios, cite it that way. Also caught
   there: the acronym is IPD YAML (Infrastructure and Policy Definition),
-  not IDP; the committed pptx still carries the old spelling until the
-  in-session deck regen. Copy that drifts toward "no evidence exists"
+  not IDP; the pptx was regenerated 27 Aug with the corrected spelling. Copy that drifts toward "no evidence exists"
   gets corrected, not defended. QA question 9 carries the answer for the
   MLflow challenge. Keep the framing at four use cases with Table 7 as
   the one published in full, not a single-use-case story.

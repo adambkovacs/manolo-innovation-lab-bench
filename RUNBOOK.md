@@ -26,6 +26,7 @@
 - 0:55-1:00  Submit repo link and slides to manolosummerschool@28digital.eu, cristian.boschserrano@ucd.ie, ricardo.simoncarbajo@ucd.ie. Hand Ricardo ADOPTION.md printed or linked.
 
 ## Fallbacks
+- Fast venue machine: if the hard tail-latency set evaluates PASS instead of BLOCK (p95 under the 5 ms budget), tighten the threshold in fixtures/claims-block.json in-session and re-evaluate; supersession keeps the old receipt as history. Verified on a fast container: p95 4.48 ms slipped under the budget.
 - npm broken: zero-dep core only; committed results prove the RuVector series ran.
 - Port taken: PORT=8899 node src/server.js; dashboard has a port field.
 - Browser blocks fetch: dashboard falls back to embedded sample data; say so, it is an honesty feature.

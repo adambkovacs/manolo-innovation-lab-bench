@@ -1,5 +1,5 @@
 node_modules/
-results/ruvector-bench.db/
+results/ruvector-bench.db
 *.log
 .DS_Store
 slide-*.jpg
