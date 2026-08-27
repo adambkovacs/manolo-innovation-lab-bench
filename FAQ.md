@@ -5,7 +5,8 @@ in plain language, and the same content is hosted on the project site
 (docs/index.html).
 
 **What is this in one sentence?**
-A tool that turns AI promises into signed, checkable receipts, so decisions rest on records,
+A tool that turns claims about an AI system, like "answers in under 100
+milliseconds", into signed, checkable receipts, so decisions rest on records,
 not on whoever sounds most confident.
 
 **What exactly is a "claim"?**

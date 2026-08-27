@@ -36,7 +36,7 @@ Not a provenance store: D2.1 owns lineage. Not a policy engine: D4.1 owns live a
 
 ## Who it is for and where it goes
 
-For the people who own claims: assessment work like WP5 and use-case owners who can declare thresholds. Point the contract at the Table 7 claims with owner-declared thresholds and the receipts recompute; the remaining fourteen rows are an afternoon, not a program. When live inputs are wanted, Ember and ENTSO-E publish under CC BY 4.0 and slot into the origin field. The hand-over path is in ADOPTION.md.
+For the people who own claims: assessment work like WP5 and use-case owners who can declare thresholds. Point the contract at the Table 7 claims with owner-declared thresholds and the receipts recompute; the remaining fourteen rows are an afternoon, not a program, and each of the other use cases' tables is the same afternoon. When live inputs are wanted, Ember and ENTSO-E publish under CC BY 4.0 and slot into the origin field. The hand-over path is in ADOPTION.md.
 
 ## Run it in sixty seconds
 

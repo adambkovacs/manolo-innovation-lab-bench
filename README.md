@@ -27,7 +27,7 @@ The subject is the MANOLO framework's assessment loop. Deliverable D5.1 assesses
 
 The data is not missing. MANOLO stores run metrics in MLflow, Thanos, and Grafana, records provenance in the D2.1 Data Operations Manager, and benchmarks workloads with KOBE. What is missing is the connection: the log is attached to the run, but nothing attaches the claim to the run, and nothing keeps the verdict. The table's annotations are what that gap looks like from the outside.
 
-Two of those rows describe things a benchmark can measure directly: CLAIM-4 (sub-100 ms real-time latency) and CLAIM-7 (compression keeps accuracy while cutting compute). That table is the worked example throughout this repo.
+Two of those rows describe things a benchmark can measure directly: CLAIM-4 (sub-100 ms real-time latency) and CLAIM-7 (compression keeps accuracy while cutting compute). That table is the worked example throughout this repo, and only the example: the contract knows nothing about any use case, the same assessment process produces a claims table for each of the four, and nine of the eleven committed receipts gate claims (energy zones, cost, this repo's own benchmark) that have nothing to do with wearables.
 
 ## What this builds
 
