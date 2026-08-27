@@ -1,4 +1,4 @@
-# Q&A hardening: the seven questions that decide the room
+# Q&A hardening: the eight questions that decide the room
 
 Answer in two sentences, then stop talking. Every answer ends on a fact, not a defense.
 
@@ -23,4 +23,7 @@ The if statement is our baseline, and we demo it failing open on an upstream quo
 7. Where do your carbon and price numbers come from?
 Transcribed, dated, and source-linked: Ember 2024 lifecycle intensity via Our World in Data and Eurostat 2025-S2 non-household prices with band and tax basis stated, and the transcription digest is bound into the receipt. Swap the file for a signed Ember or ENTSO-E feed, both CC BY 4.0, and the receipts recompute; the origin field is already there.
 
-If an eighth question lands that you cannot answer, say: that is a REVIEW, not a PASS, and we would rather receipt it than bluff it.
+8. Where are your datasets and model evals?
+The contribution is the gate, and the gate ships its own eval suite: adversarial tests with predeclared acceptance gates, replayed by public CI on every push from the committed state alone. The benchmark regenerates its seeded corpus deterministically instead of bundling data, and real datasets enter as evidence with declared origins, exactly how BOAS enters receipt-0007.
+
+If a ninth question lands that you cannot answer, say: that is a REVIEW, not a PASS, and we would rather receipt it than bluff it.
