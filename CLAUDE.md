@@ -102,9 +102,9 @@ silently; strike them so the history of what shipped when survives.
   Confirmed firsthand from D1.3: AIWorkloadID in section 3.7, the
   controlled-actions roadmap, and the author-consent reproduction term
   ("Reproduction is authorised provided the author gives consent and the
-  source is acknowledged", D1.3 only; the other deliverables use the
-  source-acknowledgement form, except D4.1 whose title page did not
-  extract, so cite no reproduction terms for D4.1). Acronym nuance: D1.3
+  source is acknowledged", D1.3 only; every other deliverable uses the
+  source-acknowledgement form, D4.1 included, confirmed visually from
+  its page 3 after text extraction dropped it). Acronym nuance: D1.3
   spells out "Infrastructure & Policy Definition YAML" and never
   abbreviates; the IPD abbreviation is D5.1's (body, figures, section
   3.1.2), and D5.1's own terms table misprints it as IDP, so attribute
