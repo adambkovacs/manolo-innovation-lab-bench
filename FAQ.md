@@ -61,6 +61,6 @@ effective. It proves one thing well: that a claim, its evidence, and its
 verdict are bound together and unedited.
 
 **What happens after the hackathon?**
-The ask is thirty minutes with the people who own the claims: they declare the
-bars, the receipts recompute, and the fourteen unevidenced promises start
-getting evidence. The code is Apache-2.0 and ready to hand over.
+The code is Apache-2.0, so anyone can adopt or adapt it. The natural next step
+is pointing the contract at the project's own claims tables: the people who own
+each claim declare its bar, and every verdict arrives as a signed receipt.
