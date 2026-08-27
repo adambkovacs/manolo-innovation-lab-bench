@@ -141,7 +141,7 @@ s.addText('HNSW latency crosses runtimes (native SIMD Rust vs a JS loop): read i
 s.addText('gate tested: 6/6 verdicts · 3/3 tamper caught · 3/3 canonicalization · verify p95 under 0.25 ms · 0 network calls',
   { x: 0.6, y: 6.35, w: 12.1, h: 0.4, fontFace: MONO, fontSize: 11.5, color: PURPLE,
     isTextBox: true, margin: 0 });
-s.addNotes('SESSION SLOT: after the hour-1 rerun, update the three bar values and the recall numbers with the live run. Say the runtime caveat out loud, do not wait to be asked.');
+s.addNotes('SESSION SLOT: after the hour-1 rerun, update the three bar values and the recall numbers with the live run. State the runtime caveat unprompted.');
 
 // Slide 5, the demo
 s = p.addSlide(); s.background = { color: BG };

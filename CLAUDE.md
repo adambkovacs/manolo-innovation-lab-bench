@@ -84,6 +84,18 @@ silently; strike them so the history of what shipped when survives.
   mapping, the adversarial test suite with predeclared gates, and the
   fail-open baseline. Those four made it in; the rest of that proposal did
   not.
+- **Never say MANOLO lacks evidence; say the binding is missing.** MANOLO
+  stores run metrics (MLflow, Thanos, Grafana per D1.3/D5.1), provenance
+  (D2.1 Data Operations Manager), and alerts (D4.1). The accurate claim,
+  validated 27 Aug 2026 against the decision package and a second
+  independent source audit: the D5.1 Table 7 annotations ("No direct
+  evidence cited", "Requires validation study") are the deliverable's own
+  words, and no component binds a declared claim to the specific run
+  evidence that would support it with a persisted verdict. Copy that
+  drifts toward "no evidence exists" gets corrected, not defended. QA
+  question 9 carries the answer for the MLflow challenge. Related: keep
+  the framing at four use cases with Table 7 as the one published in
+  full, not a single-use-case story.
 - **Never claim MANOLO compatibility.** No public MANOLO schema exists to
   bind against (its GitHub org is empty, no public OpenAPI). The repo says
   "MANOLO-shaped, adapter-ready" everywhere, never "MANOLO-compatible."

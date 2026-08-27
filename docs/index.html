@@ -122,7 +122,7 @@
   <p class="sub">until it carries a receipt.</p>
   <p>AI teams make promises: fast, private, accurate, battery-friendly, clean. This project turns
   each promise into a checkable receipt that anyone can verify, and that breaks visibly if anyone
-  edits the story afterwards. No AI expertise needed to read one.</p>
+  edits the story afterwards.</p>
   <div class="chips">
     <span class="k kp">PASS</span><span class="k kr">REVIEW</span>
     <span class="k kf">BLOCK</span><span class="k ks">SIGNED</span>
@@ -135,7 +135,7 @@
 
 <main class="wrap">
 
-<h2 id="story">The idea, in plain words</h2>
+<h2 id="story">The idea</h2>
 <p>When you buy groceries, you get a receipt: what you bought, the price, the time, the shop.
 An elevator carries an inspection sticker: who checked it, against what standard, and when.
 AI systems make bigger promises than groceries and mostly hand you neither.</p>
@@ -151,24 +151,23 @@ signs their name, their reason, and its scope. That override becomes a receipt t
 <h2 id="why">Why this exists</h2>
 <div class="card">
   <div class="big">14 / 15</div>
-  <p style="margin:4px 0 8px">MANOLO builds trustworthy, efficient AI: tools that track where
-  data came from and raise alerts while systems run, plus an honest assessment method that writes
-  down every promise a system makes and marks which ones have evidence. In its fully published
-  promise table, written for one industry use case, fourteen of fifteen promises have no direct
-  evidence yet. What is missing is an instrument: nothing binds a
-  promise to its evidence and keeps the verdict. We built that instrument; the
-  published table is the worked example.</p>
+  <p style="margin:4px 0 8px">MANOLO builds trustworthy, efficient AI for four industry domains: robots, healthcare, telecoms,
+  and wearables. It already stores run metrics, tracks where data came from, and raises alerts
+  while systems run. Its assessment method writes down every promise a system makes and marks
+  which ones have cited evidence; in the one promise table published in full, the table itself
+  marks fourteen of fifteen promises "no direct evidence cited" or "requires validation study".
+  The run logs exist. What is missing is the binding: nothing connects a specific promise to the
+  specific run that would evidence it and keeps the verdict. We built that binding; the published
+  table is the worked example.</p>
   <p class="muted" style="margin:0">Source: MANOLO deliverable D5.1, section 7.2.5, Table 7.
   MANOLO is an EU Horizon Europe project on trustworthy, efficient AI:
   <a href="https://manolo-project.eu">manolo-project.eu</a></p>
 </div>
 <p>Two rows of that table are things a benchmark can simply measure: "the system answers in under
-100 milliseconds" and "compressing the model keeps it accurate". So we measured them on a
-comparable workload, wrote the verdicts as signed receipts, and gave the one promise that already
-had published evidence its receipt as well. That instrument now exists here, open
+100 milliseconds" and "compressing the model keeps it accurate". We measured them on a comparable workload, wrote the verdicts as signed receipts, and gave the one promise that already had cited evidence its receipt as well. That instrument now exists here, open
   source, under Apache-2.0.</p>
 
-<h2 id="how">How it works, no jargon</h2>
+<h2 id="how">How it works</h2>
 <div class="grid">
   <div class="card step"><b>1. Measure.</b> A benchmark runs the same task three ways and records
   speed, memory, and accuracy. One command, same result on any machine, because the test data is

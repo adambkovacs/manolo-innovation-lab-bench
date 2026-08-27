@@ -21,7 +21,7 @@ declared origins, replayable verdicts, tamper-evident history.
 
 The verify badge is an independent runner replaying the test suite and re-verifying every receipt and the ledger on each push, from the committed state alone.
 
-The subject is the MANOLO framework's assessment loop. Deliverable D5.1 (Trustworthy Efficiency-Performance Assessment v1.0) builds claim-evidence tables for the project's industry use cases; in the table published in full (section 7.2.5, Table 7, pages 47 to 49, one wearable use case), eight of fifteen claims are marked "No direct evidence cited" and six "Requires validation study". Only one carries actual evidence. That is a property of the loop, not the partner: the framework documents its evidence gaps, runs a benchmarking engine (KOBE) for performance and energy, and has no instrument that binds a claim to its evidence and persists the verdict. Two of the table's rows, CLAIM-4 (the system maintains sub-100 ms real-time latency) and CLAIM-7 (model compression maintains accuracy while reducing computational requirements), are exactly the shape of thing this repo measures, so that table serves as the worked example throughout.
+The subject is the MANOLO framework's assessment loop. Deliverable D5.1 (Trustworthy Efficiency-Performance Assessment v1.0) builds claim-evidence tables for the project's four industry use cases; in the one table published in full (section 7.2.5, Table 7, pages 47 to 49), the deliverable's own annotations mark eight of fifteen claims "No direct evidence cited" and six "Requires validation study". One carries cited evidence. This is not an absence of data: the framework stores run metrics through MLflow, Thanos, and Grafana, records provenance through the D2.1 Data Operations Manager, and runs a benchmarking engine (KOBE) for performance and energy. What no component does is bind a declared claim to the specific run evidence that would support it and persist the verdict, and the table's annotations are the visible symptom. Two of the table's rows, CLAIM-4 (the system maintains sub-100 ms real-time latency) and CLAIM-7 (model compression maintains accuracy while reducing computational requirements), are exactly the shape of thing this repo measures, so that table serves as the worked example throughout.
 
 This repo closes that loop for its own system and proposes the contract for theirs:
 
@@ -76,7 +76,7 @@ Measured 2026-08-27, Node v22.22.2, seed 42, N=5000, D=256, Q=50. Reproduce with
 | int8 scalar quantization | 3.38 ms | 5.35 ms | 260 | 0.988 |
 | RuVector 0.3.0 HNSW (native, SIMD) | 1.076 ms | 1.387 ms | not measured | 0.944 |
 
-Read: quantization buys 3.94x memory reduction for a 1.2 point recall cost. RuVector's approximate index buys 3.4x lower median latency for a 5.6 point recall cost. One fairness caveat: the latency comparison crosses runtimes (SIMD native Rust vs a JS typed-array loop), so read it as packaged-system latency for a deployment decision, not an isolated algorithmic result.
+Quantization buys 3.94x memory reduction for a 1.2 point recall cost. RuVector's approximate index buys 3.4x lower median latency for a 5.6 point recall cost. One fairness caveat: the latency comparison crosses runtimes (SIMD native Rust vs a JS typed-array loop), so read it as packaged-system latency for a deployment decision, not an isolated algorithmic result.
 
 Receipt lifecycle, verified end to end in this repo's committed state: primary claim set evaluates to 3 PASS and 2 REVIEW (recall 0.944 inside a declared 0.02 margin; energy unmetered and declared so, the same "No direct evidence cited" state the D5.1 table records). The hard tail-latency set produces BLOCK (p95 10.04 ms against a 5 ms hard budget). A governed override of the REVIEW items is receipt-0003. Editing one digit of the evidence file makes receipt verification fail with the mismatched artifact named; restoring makes it pass.
 The contract has also processed the real table: receipt-0007 formalizes D5.1 CLAIM-2 itself, the only Table 7 row with cited evidence (87.08 percent PSG and 86.64 percent wearable match, BOAS on OpenNeuro, Esparza-Iaizzo et al. 2024), as a published-evidence receipt. The receipt binds a source-linked transcription and its digest, not the underlying study, and says so in the evidence file. The remaining fourteen rows need only thresholds declared by the use-case owners.
@@ -151,9 +151,9 @@ Fairness and privacy are identified as out of scope rather than skipped: no pers
 - RuVector findings reported constructively: silent default persistence to ./ruvector.db that ignores new dimensionality (always set storagePath), default maxElements pre-allocating roughly 4.4 GB (size it to the corpus), and a 955 MB optional install.
 - agentdb (3.0.0-alpha.20, MIT OR Apache-2.0) is declared optional for a future ledger backend swap; the shipped ledger is our own 70 lines so the core stays dependency-free.
 
-## The human version
+## The plain-language site
 
-Non-engineers start at https://adambkovacs.github.io/manolo-innovation-lab-bench/ (docs/index.html on GitHub Pages: explainer, guided demo, real-life examples, FAQ). FAQ.md is the same FAQ as text. EXPLAINER.md is the three-minute technical version. docs/demo.html is the dashboard on embedded sample receipts; demo/dashboard.html is the same page in live mode against the local server.
+https://adambkovacs.github.io/manolo-innovation-lab-bench/ (docs/index.html on GitHub Pages): explainer, guided demo, real-life examples, FAQ. FAQ.md is the same FAQ as text. EXPLAINER.md is the three-minute technical version. docs/demo.html is the dashboard on embedded sample receipts; demo/dashboard.html is the same page in live mode against the local server.
 
 ## Licensing
 

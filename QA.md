@@ -1,4 +1,4 @@
-# Q&A hardening: the eight questions that decide the room
+# Q&A hardening: the nine questions that decide the room
 
 Answer in two sentences, then stop talking. Every answer ends on a fact, not a defense.
 
@@ -26,4 +26,7 @@ Transcribed, dated, and source-linked: Ember 2024 lifecycle intensity via Our Wo
 8. Where are your datasets and model evals?
 The contribution is the gate, and the gate ships its own eval suite: adversarial tests with predeclared acceptance gates, replayed by public CI on every push from the committed state alone. The benchmark regenerates its seeded corpus deterministically instead of bundling data, and real datasets enter as evidence with declared origins, exactly how BOAS enters receipt-0007.
 
-If a ninth question lands that you cannot answer, say: that is a REVIEW, not a PASS, and we would rather receipt it than bluff it.
+9. We store every run in MLflow. How can you say our claims lack evidence?
+We never say that: the metrics exist, and your own D5.1 table still marks fourteen of fifteen claims "no direct evidence cited" or "requires validation study", because nothing binds a declared claim to the specific run that would support it and persists the verdict. The receipt is that binding, and it points at your stored runs rather than replacing them.
+
+If a tenth question lands that you cannot answer, say: that is a REVIEW, not a PASS, and we would rather receipt it than bluff it.

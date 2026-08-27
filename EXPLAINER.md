@@ -2,9 +2,9 @@
 
 ## What we built
 
-One breath: MANOLO-Bench with TRACE receipts is an evidence engine plus a claim gate. The bench produces measured evidence about an AI workload. The gate evaluates declared claims against that evidence and turns every evaluation into a cryptographically signed, replayable receipt. The result is a portable answer to one question: is the evidence strong enough to act?
+MANOLO-Bench with TRACE receipts is an evidence engine plus a claim gate. The bench produces measured evidence about an AI workload. The gate evaluates declared claims against that evidence and turns every evaluation into a cryptographically signed, replayable receipt. The result is a portable answer to one question: is the evidence strong enough to act?
 
-In plain words: when you buy groceries you get a receipt that says what you bought, for how much, and when. This gives AI promises the same treatment. The promise, the bar it must clear, the number we saw, the verdict, and a signature that breaks if anyone edits the story afterwards. FAQ.md holds the no-jargon version of everything below.
+When you buy groceries you get a receipt that says what you bought, for how much, and when. This gives AI promises the same treatment. The promise, the bar it must clear, the number we saw, the verdict, and a signature that breaks if anyone edits the story afterwards. FAQ.md covers the same ground in plain language.
 
 Three layers, all zero-dependency Node:
 
@@ -14,7 +14,7 @@ Three layers, all zero-dependency Node:
 
 ## Why
 
-The problem sits in the MANOLO framework's own assessment loop. Deliverable D5.1 (Trustworthy Efficiency-Performance Assessment) builds claim-evidence tables for the project's industry use cases. In the table published in full (section 7.2.5, Table 7, pages 47 to 49, one wearable use case), eight of fifteen claims are marked "No direct evidence cited", six "Requires validation study", and exactly one carries evidence. Fourteen of fifteen lack direct evidence, and the deliverable says so itself. The gap belongs to the loop, not the use case: the tables exist, a benchmarking engine (KOBE) evaluates performance and energy, and no instrument binds a claim to its evidence and keeps the verdict. Two of the table's rows, CLAIM-4 (sub-100 ms latency) and CLAIM-7 (compression maintains accuracy while reducing compute), describe exactly what a benchmark can evidence, so that table is the worked example here.
+The problem sits in the MANOLO framework's own assessment loop. Deliverable D5.1 (Trustworthy Efficiency-Performance Assessment) builds claim-evidence tables for the project's four industry use cases. In the one table published in full (section 7.2.5, Table 7, pages 47 to 49), the deliverable's own annotations mark eight of fifteen claims "No direct evidence cited", six "Requires validation study", and one with cited evidence. The gap belongs to the loop, not to any use case, and it is not an absence of data: run metrics land in MLflow and Thanos, provenance in the D2.1 Data Operations Manager, and a benchmarking engine (KOBE) evaluates performance and energy. No instrument binds a declared claim to the specific run evidence that would support it and keeps the verdict. Two of the table's rows, CLAIM-4 (sub-100 ms latency) and CLAIM-7 (compression maintains accuracy while reducing compute), describe exactly what a benchmark can evidence, so that table is the worked example here.
 
 And across the five public deliverables, nothing binds a declared claim to its evidence in a machine-verifiable, signed form. D2.1's Data Operations Manager records lineage, meaning where artifacts came from. D4.1's Policy Manager raises live alerts without a persisted verdict. D6.1's claims, arguments, and evidence process is qualitative and socio-technical. The signed claim-to-evidence receipt is the missing joint between them, and this repo supplies it under Apache-2.0, using MANOLO's own vocabulary (IDP YAML, AIWorkloadID), as the machine-executable counterpart to the existing process rather than a replacement.
 

@@ -101,9 +101,9 @@
   <span class="tag">Impact 20</span>
   <div class="rise eyebrow">The anchor: D5.1 · section 7.2.5 · Table 7 · pages 47 to 49</div>
   <div class="rise big">14 / 15</div>
-  <h1 class="rise" style="font-size:clamp(22px,3.4vw,36px)">claims in the framework's published assessment table carry no direct evidence, in the assessment itself</h1>
+  <h1 class="rise" style="font-size:clamp(22px,3.4vw,36px)">claims in the published assessment table are marked without direct cited evidence, by the assessment itself</h1>
   <p class="rise">CLAIM-4: sub-100 ms latency, no direct evidence cited. CLAIM-7: compression maintains accuracy, quantitative benchmarks needed. These are the deliverable's own words, and they name our build.</p>
-  <p class="rise note">The deliverable documented this gap itself. We built the instrument for it.</p>
+  <p class="rise note">The run logs exist: MLflow, Thanos, provenance in D2.1. What nothing does is bind a claim to its run and keep the verdict. The deliverable documented this gap itself; we built the instrument for it.</p>
 </div></section>
 
 <section class="slide"><div>
@@ -136,7 +136,7 @@
     <tr><td>RuVector HNSW, native SIMD</td><td class="mono">1.076 ms</td><td class="mono">1.387 ms</td><td class="mono">n/m</td><td class="mono">0.944</td></tr>
   </table>
   <p class="rise">Gate tested with predeclared acceptance gates: 6/6 verdict fixtures, 3/3 tamper mutations caught, 3/3 canonicalization variants to one digest, verify p95 under 0.25 ms, zero network calls. Public CI replays all of it on every push.</p>
-  <p class="rise note">Said out loud: HNSW latency crosses runtimes (native SIMD Rust vs a JS loop). Read it as packaged-system latency for a deployment decision.</p>
+  <p class="rise note">Caveat: HNSW latency crosses runtimes (native SIMD Rust vs a JS loop). It is packaged-system latency for a deployment decision, not an isolated algorithmic result.</p>
 </div></section>
 
 <section class="slide"><div>

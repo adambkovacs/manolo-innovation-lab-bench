@@ -1,8 +1,8 @@
 # FAQ, in plain language
 
-The judge-preparation answers live in QA.md. This file is for everyone else:
-teammates, jury members, and anyone who opens the repo without an engineering
-background. The same content is hosted on the project site (docs/index.html).
+The judge-preparation answers live in QA.md. This file covers the same ground
+in plain language, and the same content is hosted on the project site
+(docs/index.html).
 
 **What is this in one sentence?**
 A tool that turns AI promises into signed, checkable receipts, so decisions rest on records,
