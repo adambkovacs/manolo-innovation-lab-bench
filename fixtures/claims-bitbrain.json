@@ -1,0 +1,31 @@
+{
+  "workload_id": "wf-bitbrain-uc3",
+  "evidence": "evidence/bitbrain-claim2.json",
+  "source_frame": "First receipt issued against the actual D5.1 Table 7: CLAIM-2 is the only row with cited evidence, formalized here as a published-evidence receipt. The remaining fourteen rows await thresholds declared by the use-case owners.",
+  "claims": [
+    {
+      "id": "BB-CLAIM2-WEAR",
+      "modeled_on": "D5.1 CLAIM-2, wearable EEG side, evidence: BOAS on OpenNeuro; Esparza-Iaizzo et al. 2024",
+      "statement": "DL reference model matches human-consensus labels on wearable EEG at 86 percent or better",
+      "metric": "reported.wearable_match_pct",
+      "comparator": ">=",
+      "threshold": 86,
+      "unit": "%",
+      "accepted_origins": [
+        "published"
+      ]
+    },
+    {
+      "id": "BB-CLAIM2-PSG",
+      "modeled_on": "D5.1 CLAIM-2, PSG side",
+      "statement": "DL reference model matches human-consensus labels on PSG data at 87 percent or better",
+      "metric": "reported.psg_match_pct",
+      "comparator": ">=",
+      "threshold": 87,
+      "unit": "%",
+      "accepted_origins": [
+        "published"
+      ]
+    }
+  ]
+}

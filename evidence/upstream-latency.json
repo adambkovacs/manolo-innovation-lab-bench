@@ -1,0 +1,6 @@
+{
+  "origin": "upstream",
+  "claim_ref": "Shaped like MANOLO D5.1 Table 7 CLAIM-4, which the table marks 'No direct evidence cited'",
+  "reported": { "p50_ms": 82 },
+  "note": "A number quoted from a document, not produced by a run. No workload binding, no run identity, no artifact lineage. Exactly the kind of value a bare threshold check accepts."
+}

@@ -1,0 +1,80 @@
+{
+  "schema": "trace-receipt/0.1",
+  "type": "evaluation",
+  "created": "2026-08-27T09:23:58.682Z",
+  "workload_id": "wf-manolo-bench-001",
+  "claims_set": "claims.json",
+  "verdicts": [
+    {
+      "id": "MB-LAT-01",
+      "statement": "ANN query p50 latency stays under 5 ms on the reference corpus",
+      "modeled_on": "D5.1 CLAIM-4: system maintains <100ms real-time latency; Evidence: No direct evidence cited",
+      "metric": "ruvector.p50_ms",
+      "comparator": "<",
+      "threshold": 5,
+      "unit": "ms",
+      "verdict": "PASS",
+      "measured": 1.076,
+      "reason": "measured value satisfies threshold"
+    },
+    {
+      "id": "MB-CMP-01",
+      "statement": "int8 quantization achieves at least 3.5x memory reduction",
+      "modeled_on": "D5.1 CLAIM-7: compression maintains accuracy while reducing compute; Evidence: No direct evidence cited",
+      "metric": "int8_quantized.compression_x",
+      "comparator": ">=",
+      "threshold": 3.5,
+      "unit": "x",
+      "verdict": "PASS",
+      "measured": 3.94,
+      "reason": "measured value satisfies threshold"
+    },
+    {
+      "id": "MB-CMP-02",
+      "statement": "int8 quantization keeps recall@10 at or above 0.98",
+      "modeled_on": "D5.1 CLAIM-7 accuracy side",
+      "metric": "int8_quantized.recall_at_10",
+      "comparator": ">=",
+      "threshold": 0.98,
+      "unit": "recall",
+      "verdict": "PASS",
+      "measured": 0.988,
+      "reason": "measured value satisfies threshold"
+    },
+    {
+      "id": "MB-ROB-01",
+      "statement": "HNSW approximate search keeps recall@10 at or above 0.95",
+      "modeled_on": "D5.1 CLAIM-10 robustness pattern: Requires validation study",
+      "metric": "ruvector.recall_at_10",
+      "comparator": ">=",
+      "threshold": 0.95,
+      "unit": "recall",
+      "verdict": "REVIEW",
+      "measured": 0.944,
+      "reason": "within declared review margin of 0.02; human decision required"
+    },
+    {
+      "id": "MB-ENE-01",
+      "statement": "Energy per query is metered in joules",
+      "modeled_on": "D5.1 CLAIM-5 power pattern: Evidence: No direct evidence cited",
+      "metric": "energy.joules_per_query",
+      "comparator": "<",
+      "threshold": 0.01,
+      "unit": "J",
+      "verdict": "REVIEW",
+      "measured": null,
+      "reason": "no direct evidence: metric energy.joules_per_query not present in evidence artifact"
+    }
+  ],
+  "summary": {
+    "PASS": 3,
+    "REVIEW": 2
+  },
+  "evidence_digests": {
+    "results/results.json": "cfe8136a04e5557d1a6f132e3f42b7a2749c0fe2f6b73a4988a6113e7c500344",
+    "fixtures/claims.json": "e2266ef2e41e52bfa92a7788a86cc808cb5fe9b4999c9f16f035b9e9bbc34588"
+  },
+  "prev_receipt_hash": "GENESIS",
+  "public_key": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEArAwfahQt95u2D5dhCpgEhvGGO/iRVLyFdXzVD/EI33A=\n-----END PUBLIC KEY-----\n",
+  "signature": "/0O/j++y2QwBDuD0CpdKkHgSN2cgeaTRfFLqbOFu7t69o8I11edJRQNXxP9a7hK3IFQ2En7RerTXLu6dBSVJCg=="
+}

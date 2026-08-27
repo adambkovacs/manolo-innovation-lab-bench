@@ -1,0 +1,36 @@
+{
+  "schema": "trace-receipt/0.1",
+  "type": "evaluation",
+  "created": "2026-08-27T10:05:04.606Z",
+  "workload_id": "wf-manolo-bench-001",
+  "claims_set": "claims-upstream.json",
+  "verdicts": [
+    {
+      "id": "MB-LAT-UP",
+      "statement": "Real-time p50 latency stays under 100 ms",
+      "modeled_on": "D5.1 CLAIM-4 (<100ms real-time latency) with quoted, not measured, evidence",
+      "metric": "reported.p50_ms",
+      "comparator": "<",
+      "threshold": 100,
+      "unit": "ms",
+      "verdict": "REVIEW",
+      "measured": 82,
+      "origin": "upstream",
+      "reason": "value originates from upstream evidence, not from measured; a threshold match alone is not enough to act on",
+      "disposition": "PAUSE"
+    }
+  ],
+  "summary": {
+    "REVIEW": 1
+  },
+  "dispositions": {
+    "PAUSE": 1
+  },
+  "evidence_digests": {
+    "evidence/upstream-latency.json": "5e74abae6d812c88e0884f1a7ca2860faca885b702be3adee7e1fc64dbe293b3",
+    "fixtures/claims-upstream.json": "9b4168d63fb587a26550fe1e81d96dd225f7dd56832225ee365d53e1dd8c47b6"
+  },
+  "prev_receipt_hash": "c83543660237ea2f01469a0a7bec677b7c42724acf39c6ccec7a336b5fbb0fc7",
+  "public_key": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEArAwfahQt95u2D5dhCpgEhvGGO/iRVLyFdXzVD/EI33A=\n-----END PUBLIC KEY-----\n",
+  "signature": "yI5YUXxd+Q4pFL3U2OGG5SuMIqUqfckOLKBkPObihtVpGUG9FmJM8m1pJhtY8whIPeYNiMjzcvbgEajao6dmAA=="
+}

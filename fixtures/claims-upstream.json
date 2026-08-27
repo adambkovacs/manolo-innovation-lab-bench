@@ -1,0 +1,13 @@
+{
+  "workload_id": "wf-manolo-bench-001",
+  "evidence": "evidence/upstream-latency.json",
+  "source_frame": "Fail-open demonstration: the D5.1 CLAIM-4 pattern fed by an upstream quote instead of a measured run. The naive baseline passes it; the gate pauses it.",
+  "claims": [
+    {
+      "id": "MB-LAT-UP",
+      "modeled_on": "D5.1 CLAIM-4 (<100ms real-time latency) with quoted, not measured, evidence",
+      "statement": "Real-time p50 latency stays under 100 ms",
+      "metric": "reported.p50_ms", "comparator": "<", "threshold": 100, "unit": "ms"
+    }
+  ]
+}

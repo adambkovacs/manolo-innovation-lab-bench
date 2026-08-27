@@ -1,0 +1,16 @@
+{
+  "origin": "assumed",
+  "claim_ref": "Cost per million queries in zone GR, composed from mixed-origin components",
+  "components": {
+    "cpu_ms_per_query": { "value": 1.076, "origin": "measured", "source": "results/results.json ruvector.p50_ms, seed 42" },
+    "active_power_w": { "value": 15, "origin": "assumed", "source": "assumed laptop CPU package draw; not metered" },
+    "eur_per_kwh": { "value": 0.1738, "origin": "published", "source": "Eurostat nrg_pc_205, 2025-S2, GR, band IC excl. VAT" }
+  },
+  "derived": {
+    "cpu_seconds_per_1m_queries": 1076,
+    "energy_kwh_per_1m_queries": 0.004483,
+    "eur_per_1m_queries": 0.000779
+  },
+  "transcribed": "2026-08-27",
+  "note": "The weakest component origin governs the whole artifact: assumed. The gate must not let a threshold match launder this into PASS."
+}

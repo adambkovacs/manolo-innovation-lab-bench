@@ -1,0 +1,21 @@
+{
+  "origin": "published",
+  "zone": "SE (Sweden)",
+  "intensity": {
+    "g_co2e_per_kwh": 34.91,
+    "methodology": "lifecycle, all GHGs, 100-year GWP",
+    "period": "2024",
+    "source": "Ember Yearly Electricity Data via Our World in Data",
+    "url": "https://ourworldindata.org/grapher/carbon-intensity-electricity",
+    "license": "CC BY 4.0"
+  },
+  "price": {
+    "eur_per_kwh": 0.0970,
+    "basis": "non-household, band 500-2000 MWh (IC), excluding VAT and recoverable taxes",
+    "period": "2025-S2",
+    "source": "Eurostat nrg_pc_205; value confirmed verbatim in Eurostat Statistics Explained",
+    "url": "https://ec.europa.eu/eurostat/statistics-explained/index.php?title=Electricity_price_statistics"
+  },
+  "transcribed": "2026-08-27",
+  "note": "The receipt binds this transcription and its digest, not the grid itself."
+}

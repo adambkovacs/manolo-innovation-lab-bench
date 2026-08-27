@@ -1,0 +1,8 @@
+node_modules/
+results/ruvector-bench.db/
+*.log
+.DS_Store
+slide-*.jpg
+pair-*.jpg
+presentation.pdf
+results/keys/ed25519.priv.pem

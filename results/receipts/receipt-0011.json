@@ -1,0 +1,36 @@
+{
+  "schema": "trace-receipt/0.1",
+  "type": "evaluation",
+  "created": "2026-08-27T10:41:46.015Z",
+  "workload_id": "wf-manolo-bench-001",
+  "claims_set": "claims-cost.json",
+  "verdicts": [
+    {
+      "id": "EN-CST-01",
+      "statement": "Energy cost under 0.01 EUR per million queries in zone GR",
+      "modeled_on": "D5.1 CLAIM-5 power pattern, priced",
+      "metric": "derived.eur_per_1m_queries",
+      "comparator": "<",
+      "threshold": 0.01,
+      "unit": "EUR/1M queries",
+      "verdict": "REVIEW",
+      "measured": 0.000779,
+      "origin": "assumed",
+      "reason": "value originates from assumed evidence, not from measured; a threshold match alone is not enough to act on",
+      "disposition": "PAUSE"
+    }
+  ],
+  "summary": {
+    "REVIEW": 1
+  },
+  "dispositions": {
+    "PAUSE": 1
+  },
+  "evidence_digests": {
+    "evidence/cost-model-gr.json": "fc5dc3cdfb27819610c977c98762d728b1ade92f80bde1d3b30930baa3fb63fe",
+    "fixtures/claims-cost.json": "25f5ea700500454cc587515deab66db57be1860fa66a841f9d6811b157fe925d"
+  },
+  "prev_receipt_hash": "6917cd953d8b5a6a114a782d7024c7c8f4f17d24c69f7eff14f7b945c9fd0612",
+  "public_key": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEArAwfahQt95u2D5dhCpgEhvGGO/iRVLyFdXzVD/EI33A=\n-----END PUBLIC KEY-----\n",
+  "signature": "qQkOdm+Srq6J7tfmmSbmh+Razgi9jtNYlo7R7Uc2KJb73+pSELIL8fLOA+MM/IWaqCVcpbn9T6UjEHxJf6JBCQ=="
+}

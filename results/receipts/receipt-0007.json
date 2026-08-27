@@ -1,0 +1,50 @@
+{
+  "schema": "trace-receipt/0.1",
+  "type": "evaluation",
+  "created": "2026-08-27T10:05:04.747Z",
+  "workload_id": "wf-bitbrain-uc3",
+  "claims_set": "claims-bitbrain.json",
+  "verdicts": [
+    {
+      "id": "BB-CLAIM2-WEAR",
+      "statement": "DL reference model matches human-consensus labels on wearable EEG at 86 percent or better",
+      "modeled_on": "D5.1 CLAIM-2, wearable EEG side, evidence: BOAS on OpenNeuro; Esparza-Iaizzo et al. 2024",
+      "metric": "reported.wearable_match_pct",
+      "comparator": ">=",
+      "threshold": 86,
+      "unit": "%",
+      "verdict": "PASS",
+      "measured": 86.64,
+      "origin": "published",
+      "reason": "value from an accepted evidence origin satisfies the threshold",
+      "disposition": "CONTINUE"
+    },
+    {
+      "id": "BB-CLAIM2-PSG",
+      "statement": "DL reference model matches human-consensus labels on PSG data at 87 percent or better",
+      "modeled_on": "D5.1 CLAIM-2, PSG side",
+      "metric": "reported.psg_match_pct",
+      "comparator": ">=",
+      "threshold": 87,
+      "unit": "%",
+      "verdict": "PASS",
+      "measured": 87.08,
+      "origin": "published",
+      "reason": "value from an accepted evidence origin satisfies the threshold",
+      "disposition": "CONTINUE"
+    }
+  ],
+  "summary": {
+    "PASS": 2
+  },
+  "dispositions": {
+    "CONTINUE": 2
+  },
+  "evidence_digests": {
+    "evidence/bitbrain-claim2.json": "ef1a58d2e6c9672dda53a5644d555bb82cefd23197671d7f027654a721fc7868",
+    "fixtures/claims-bitbrain.json": "30fc3c63815e767e8b47dbe4741eb5343568cba9a3f3ab515bff798efd179691"
+  },
+  "prev_receipt_hash": "63b89e05f87ce125ab6bb5d06aa2ac30234d3c0224231eafaa9c0206f9f577ef",
+  "public_key": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEArAwfahQt95u2D5dhCpgEhvGGO/iRVLyFdXzVD/EI33A=\n-----END PUBLIC KEY-----\n",
+  "signature": "1PqREnhnNMzS4/4bTnYYowJMDkJWKCwFOdKvBO4+afkDOpSHTiIujlwDs76U4kZODV34/18IgPH03B8BXTBuDQ=="
+}

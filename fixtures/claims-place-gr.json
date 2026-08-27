@@ -1,0 +1,21 @@
+{
+  "workload_id": "wf-manolo-bench-001",
+  "evidence": "evidence/energy-gr.json",
+  "source_frame": "Placement pair, zone GR: the same workload-declared claims evaluated per zone. The budget belongs to the workload, not to the grid; relax it and the receipts recompute. D5.1 CLAIM-5 and CLAIM-6 name this claim category with no direct evidence cited.",
+  "claims": [
+    {
+      "id": "EN-CI-01",
+      "modeled_on": "D5.1 CLAIM-5/CLAIM-6 energy and placement pattern; workload-declared clean-energy budget",
+      "statement": "Execution-zone grid carbon intensity under 100 gCO2e/kWh (hard placement budget)",
+      "metric": "intensity.g_co2e_per_kwh", "comparator": "<", "threshold": 100,
+      "unit": "gCO2e/kWh", "hard": true, "accepted_origins": ["published"]
+    },
+    {
+      "id": "EN-PRC-01",
+      "modeled_on": "Efficiency economics of placement",
+      "statement": "Non-household electricity price at or under 0.12 EUR per kWh",
+      "metric": "price.eur_per_kwh", "comparator": "<=", "threshold": 0.12,
+      "unit": "EUR/kWh", "accepted_origins": ["published"]
+    }
+  ]
+}

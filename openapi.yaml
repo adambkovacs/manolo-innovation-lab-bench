@@ -1,0 +1,145 @@
+openapi: 3.0.3
+info:
+  title: MANOLO-Bench API (community proposal)
+  version: 0.1.0
+  description: >
+    A proposed open API contract for the two pillars the MANOLO project
+    (Horizon Europe GA 101135782) documents but does not yet expose as a
+    public interface: (1) a benchmark system to monitor, evaluate and
+    compare AI algorithms and deployments, and (2) provenance tracking of
+    assets with Z-Inspection-aligned trustworthiness assessment.
+    Any backend (vector store, model server, edge runtime) that implements
+    this contract becomes comparable and auditable through one interface.
+    This is an independent community proposal, not an official MANOLO
+    consortium artifact. License: Apache-2.0.
+  license:
+    name: Apache-2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+  - url: http://localhost:8787
+paths:
+  /benchmark:
+    post:
+      summary: Run a reproducible efficiency benchmark on a target backend
+      description: >
+        Executes a seeded, deterministic benchmark and returns the
+        efficiency frontier for the target: latency percentiles, memory
+        per vector, and retrieval quality (recall@10) against an exact
+        fp32 ground truth. Every run appends a provenance record.
+      parameters:
+        - in: query
+          name: n
+          schema: { type: integer, default: 2000 }
+          description: Corpus size for the live run.
+      responses:
+        '200':
+          description: Benchmark results
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/BenchmarkResult' }
+  /assess:
+    get:
+      summary: Trustworthiness status assessment (recorded)
+      description: >
+        Computes the artifact-derived status assessment and records it
+        to the provenance ledger. Intentionally non-idempotent record
+        keeping, stated out loud because a GET with a side effect
+        deserves disclosure.
+      description: >
+        Returns a per-principle scorecard derived from verifiable
+        artifacts (benchmark results, ledger integrity, published
+        contract, documented limitations). Each entry carries evidence
+        and an explicit gap. Method is disclosed in the response.
+      responses:
+        '200':
+          description: Scorecard
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Assessment' }
+  /provenance:
+    get:
+      summary: Full provenance chain
+      responses:
+        '200':
+          description: All ledger records in order.
+  /verify:
+    get:
+      summary: Verify ledger integrity
+      description: >
+        Recomputes the SHA-256 hash chain. Any edited, removed, or
+        reordered record is reported with the index where integrity
+        breaks.
+      responses:
+        '200':
+          description: Verification result
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/VerifyResult' }
+  /claims/evaluate:
+    post:
+      summary: Evaluate a declared claims set against measured evidence
+      description: >
+        Evaluates each claim in the fixture set against the evidence
+        artifact it names, emits verdicts (PASS, REVIEW, FAIL, BLOCK),
+        and writes a canonical Ed25519-signed receipt binding claim,
+        threshold, measured value, verdict, and evidence digests,
+        chained to the prior receipt and anchored in the ledger.
+      parameters:
+        - in: query
+          name: set
+          schema: { type: string, enum: [primary, block] }
+          description: Which fixture set to evaluate. Defaults to primary.
+      responses:
+        '200':
+          description: The signed receipt as written.
+  /receipts:
+    get:
+      summary: List receipts with full-chain verification
+      description: >
+        Returns all receipt files, the latest receipt, and a
+        verification result covering signatures, evidence digests,
+        prev-hash linkage, and supersession status for the whole chain.
+      responses:
+        '200':
+          description: Receipt inventory and verification.
+components:
+  schemas:
+    BenchmarkResult:
+      type: object
+      properties:
+        generated: { type: string, format: date-time }
+        config:
+          type: object
+          properties:
+            N: { type: integer }
+            D: { type: integer }
+            Q: { type: integer }
+            seed: { type: integer }
+        fp32_baseline: { $ref: '#/components/schemas/SeriesMetrics' }
+        int8_quantized: { $ref: '#/components/schemas/SeriesMetrics' }
+    SeriesMetrics:
+      type: object
+      properties:
+        p50_ms: { type: number }
+        p95_ms: { type: number }
+        bytes_per_vector: { type: integer }
+        recall_at_10: { type: number }
+        compression_x: { type: number }
+    Assessment:
+      type: object
+      properties:
+        method: { type: string }
+        scorecard:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              score: { type: integer, minimum: 0, maximum: 100 }
+              evidence: { type: string }
+              gap: { type: string }
+    VerifyResult:
+      type: object
+      properties:
+        valid: { type: boolean }
+        records: { type: integer }
+        break_index: { type: integer, nullable: true }

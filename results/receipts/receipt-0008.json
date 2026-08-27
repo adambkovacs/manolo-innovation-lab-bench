@@ -1,0 +1,36 @@
+{
+  "schema": "trace-receipt/0.1",
+  "type": "evaluation",
+  "created": "2026-08-27T10:05:57.065Z",
+  "workload_id": "wf-manolo-bench-001",
+  "claims_set": "claims-block.json",
+  "verdicts": [
+    {
+      "id": "MB-P95-HARD",
+      "statement": "Exact fp32 baseline p95 latency stays under 5 ms (hard budget)",
+      "modeled_on": "Hard tail-latency budget in the D5.1 CLAIM-4 pattern",
+      "metric": "fp32_baseline.p95_ms",
+      "comparator": "<",
+      "threshold": 5,
+      "unit": "ms",
+      "verdict": "BLOCK",
+      "measured": 10.04,
+      "origin": "measured",
+      "reason": "hard claim violated; not overridable",
+      "disposition": "STOP"
+    }
+  ],
+  "summary": {
+    "BLOCK": 1
+  },
+  "dispositions": {
+    "STOP": 1
+  },
+  "evidence_digests": {
+    "results/results.json": "cfe8136a04e5557d1a6f132e3f42b7a2749c0fe2f6b73a4988a6113e7c500344",
+    "fixtures/claims-block.json": "517fa8de3331a1599a12cd7dcb9a45248981c91725305078631ab5aa10cedb0d"
+  },
+  "prev_receipt_hash": "c7d5a66de822550866c0ba2320f39f6f595c7ce7b201ffd51cefa5175e8a12b5",
+  "public_key": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEArAwfahQt95u2D5dhCpgEhvGGO/iRVLyFdXzVD/EI33A=\n-----END PUBLIC KEY-----\n",
+  "signature": "8tQ2LjFJr9Uy8Fsd3NO16RV1G7hnnWPhd9lloEYdD7tnnNb/TYkRR/g7Pm/OgTSXrHb28pgwq20MfBQQ4dc5Cw=="
+}

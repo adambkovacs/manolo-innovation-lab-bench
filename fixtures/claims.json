@@ -1,0 +1,54 @@
+{
+  "workload_id": "wf-manolo-bench-001",
+  "evidence": "results/results.json",
+  "source_frame": "Claim patterns taken from MANOLO D5.1 section 7.2.5 Table 7 (pp. 47-49) and applied to this repo's own measured system. We evidence our own claims first; the contract then generalizes to theirs.",
+  "claims": [
+    {
+      "id": "MB-LAT-01",
+      "modeled_on": "D5.1 CLAIM-4: system maintains <100ms real-time latency; Evidence: No direct evidence cited",
+      "statement": "ANN query p50 latency stays under 5 ms on the reference corpus",
+      "metric": "ruvector.p50_ms",
+      "comparator": "<",
+      "threshold": 5,
+      "unit": "ms"
+    },
+    {
+      "id": "MB-CMP-01",
+      "modeled_on": "D5.1 CLAIM-7: compression maintains accuracy while reducing compute; Evidence: No direct evidence cited",
+      "statement": "int8 quantization achieves at least 3.5x memory reduction",
+      "metric": "int8_quantized.compression_x",
+      "comparator": ">=",
+      "threshold": 3.5,
+      "unit": "x"
+    },
+    {
+      "id": "MB-CMP-02",
+      "modeled_on": "D5.1 CLAIM-7 accuracy side",
+      "statement": "int8 quantization keeps recall@10 at or above 0.98",
+      "metric": "int8_quantized.recall_at_10",
+      "comparator": ">=",
+      "threshold": 0.98,
+      "unit": "recall"
+    },
+    {
+      "id": "MB-ROB-01",
+      "modeled_on": "D5.1 CLAIM-10 robustness pattern: Requires validation study",
+      "statement": "HNSW approximate search keeps recall@10 at or above 0.95",
+      "metric": "ruvector.recall_at_10",
+      "comparator": ">=",
+      "threshold": 0.95,
+      "review_margin": 0.02,
+      "unit": "recall"
+    },
+    {
+      "id": "MB-ENE-01",
+      "modeled_on": "D5.1 CLAIM-5 power pattern: Evidence: No direct evidence cited",
+      "statement": "Energy per query is metered in joules",
+      "metric": "energy.joules_per_query",
+      "comparator": "<",
+      "threshold": 0.01,
+      "unit": "J"
+    }
+  ],
+  "evidence_origin": "measured"
+}

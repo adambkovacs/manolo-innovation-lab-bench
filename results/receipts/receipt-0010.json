@@ -1,0 +1,50 @@
+{
+  "schema": "trace-receipt/0.1",
+  "type": "evaluation",
+  "created": "2026-08-27T10:41:45.945Z",
+  "workload_id": "wf-manolo-bench-001",
+  "claims_set": "claims-place-se.json",
+  "verdicts": [
+    {
+      "id": "EN-CI-01",
+      "statement": "Execution-zone grid carbon intensity under 100 gCO2e/kWh (hard placement budget)",
+      "modeled_on": "D5.1 CLAIM-5/CLAIM-6 energy and placement pattern; workload-declared clean-energy budget",
+      "metric": "intensity.g_co2e_per_kwh",
+      "comparator": "<",
+      "threshold": 100,
+      "unit": "gCO2e/kWh",
+      "verdict": "PASS",
+      "measured": 34.91,
+      "origin": "published",
+      "reason": "value from an accepted evidence origin satisfies the threshold",
+      "disposition": "CONTINUE"
+    },
+    {
+      "id": "EN-PRC-01",
+      "statement": "Non-household electricity price at or under 0.12 EUR per kWh",
+      "modeled_on": "Efficiency economics of placement",
+      "metric": "price.eur_per_kwh",
+      "comparator": "<=",
+      "threshold": 0.12,
+      "unit": "EUR/kWh",
+      "verdict": "PASS",
+      "measured": 0.097,
+      "origin": "published",
+      "reason": "value from an accepted evidence origin satisfies the threshold",
+      "disposition": "CONTINUE"
+    }
+  ],
+  "summary": {
+    "PASS": 2
+  },
+  "dispositions": {
+    "CONTINUE": 2
+  },
+  "evidence_digests": {
+    "evidence/energy-se.json": "6e60ead4ca113880bf208420275cab01962e4f1c7e6e56c1eaccbb7db7c0ec56",
+    "fixtures/claims-place-se.json": "741cc761efdf92ac8fd31f4475a2dc311da39aee4f6a03e557584cd1b992ae0d"
+  },
+  "prev_receipt_hash": "745f5b536d94f43b3cf86c4a399814ad5453ad8d896364e486b7c88df7e2b940",
+  "public_key": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEArAwfahQt95u2D5dhCpgEhvGGO/iRVLyFdXzVD/EI33A=\n-----END PUBLIC KEY-----\n",
+  "signature": "XzcNmnzYTIN6+lDq5vCBR/yJAorvrBqy2VN2FRpzE3jO+BqtvQBEM6dzPDLYuVReJ71KDSitCxYncszNX5PyDQ=="
+}

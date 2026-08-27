@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MANOLO-Bench console</title>
+<style>
+  :root{
+    --paper:#F7F5FB; --panel:#FFFFFF; --chip:#E9E3F5; --ink:#3B2A63;
+    --ink-soft:#6A5B94; --accent:#6C3FC5; --ok:#1E8A5A; --break:#C63A3A;
+    --line:#DCD4EE; --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box;margin:0}
+  body{background:var(--paper);color:var(--ink);
+    font:15px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif;padding:20px 16px 48px}
+  .wrap{max-width:880px;margin:0 auto}
+  h1{font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    font-weight:600;font-size:clamp(26px,5vw,36px);letter-spacing:-0.01em}
+  .sub{color:var(--ink-soft);margin:4px 0 18px;max-width:60ch}
+  .chip{display:inline-block;background:var(--chip);color:var(--ink);
+    font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    font-weight:600;font-size:17px;padding:4px 14px;border-radius:10px;margin:26px 0 12px}
+  .pill{display:inline-flex;align-items:center;gap:7px;font:600 12px var(--mono);
+    padding:5px 11px;border-radius:999px;border:1px solid var(--line);background:var(--panel)}
+  .pill .dot{width:8px;height:8px;border-radius:50%}
+  .live .dot{background:var(--ok)} .sample .dot{background:var(--ink-soft)}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;
+    padding:18px 18px 16px;overflow:hidden}
+  .row{display:grid;grid-template-columns:150px 1fr 118px;gap:10px;align-items:center;
+    padding:10px 0;border-top:1px solid var(--line)}
+  .row:first-of-type{border-top:0}
+  .row .name{font-weight:600;font-size:14px}
+  .row .name small{display:block;font-weight:400;color:var(--ink-soft);font-size:12px}
+  .barwrap{background:var(--paper);border-radius:6px;height:22px;position:relative}
+  .bar{height:100%;border-radius:6px;background:var(--accent);opacity:.85;
+    min-width:3px;transition:width .5s ease}
+  .barwrap span{position:absolute;left:8px;top:0;line-height:22px;
+    font:600 12px var(--mono);color:var(--ink)}
+  .badge{font:600 12px var(--mono);text-align:right}
+  .badge b{display:block;font-size:15px}
+  .legend{color:var(--ink-soft);font-size:12.5px;margin-top:10px}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:680px){.cols{grid-template-columns:1fr}
+    .row{grid-template-columns:112px 1fr 96px}}
+  svg text{font:600 11px system-ui;fill:var(--ink-soft)}
+  .gaps{font-size:13px}
+  .gaps li{margin:7px 0;color:var(--ink-soft)}
+  .gaps b{color:var(--ink);font-weight:600}
+  .score{font:600 12px var(--mono);color:var(--accent)}
+  /* provenance chain: the signature */
+  .chain{display:flex;align-items:stretch;gap:0;overflow-x:auto;padding:6px 2px 10px}
+  .block{min-width:168px;background:var(--paper);border:1.5px solid var(--line);
+    border-radius:10px;padding:10px 12px;flex:0 0 auto}
+  .block .t{font-weight:700;font-size:13px;text-transform:capitalize}
+  .block .h{font:11px var(--mono);color:var(--ink-soft);margin-top:6px;word-break:break-all}
+  .block .ts{font:10.5px var(--mono);color:var(--ink-soft);margin-top:2px}
+  .link{flex:0 0 auto;width:34px;display:flex;align-items:center;justify-content:center}
+  .link::before{content:"";width:100%;height:3px;background:var(--ok);border-radius:2px;
+    transition:background .3s}
+  .broken .link.snap::before{background:var(--break)}
+  .broken .block.bad{border-color:var(--break);animation:shake .35s ease 1}
+  .broken .block.dim{opacity:.45}
+  @keyframes shake{25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
+  @media(prefers-reduced-motion:reduce){.broken .block.bad{animation:none}
+    .bar{transition:none}}
+  .banner{margin-top:10px;padding:10px 14px;border-radius:10px;font:600 13px var(--mono)}
+  .banner.ok{background:#E4F3EC;color:var(--ok)}
+  .banner.bad{background:#F8E7E7;color:var(--break)}
+  .btns{display:flex;flex-wrap:wrap;gap:9px;margin-top:14px}
+  button{font:600 13.5px system-ui;color:#fff;background:var(--accent);border:0;
+    border-radius:9px;padding:9px 15px;cursor:pointer}
+  button.ghost{background:var(--panel);color:var(--accent);border:1.5px solid var(--accent)}
+  button:disabled{opacity:.4;cursor:not-allowed}
+  button:focus-visible{outline:3px solid var(--chip);outline-offset:2px}
+  .src{color:var(--ink-soft);font-size:12.5px;margin-top:26px}
+  .port{font:600 12px var(--mono);width:64px;border:1px solid var(--line);
+    border-radius:7px;padding:5px 7px;background:var(--panel);color:var(--ink)}
+  .vrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:9px 0;
+    border-top:1px solid var(--line)}
+  .vrow:first-child{border-top:0}
+  .vchip{font:700 11.5px var(--mono);padding:4px 10px;border-radius:999px;min-width:64px;
+    text-align:center}
+  .v-PASS{background:#E4F3EC;color:var(--ok)}
+  .v-REVIEW{background:#F7EEDB;color:#8A6A15}
+  .v-FAIL,.v-BLOCK{background:#F8E7E7;color:var(--break)}
+  .v-OVERRIDDEN{background:var(--chip);color:var(--accent)}
+  .vrow .vid{font:600 12.5px var(--mono)}
+  .vrow .vtxt{color:var(--ink-soft);font-size:12.5px;flex:1;min-width:180px}
+  .hdr{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+  .howto{background:var(--panel2,#EFEAFB);border:1px solid #DCD4F2;border-radius:12px;padding:4px 16px;margin:14px 0 18px}
+  .howto summary{cursor:pointer;font-weight:600;padding:8px 0;color:var(--ink)}
+  .howto p{font-size:13px;line-height:1.55;color:var(--ink-soft);margin:8px 0}
+  .howto .k{font-family:ui-monospace,Menlo,monospace;font-weight:700;font-size:11.5px;padding:1px 8px;border-radius:9px}
+  .howto .kp{background:#DFF0E8;color:#1E7F5C}.howto .kr{background:#F5EBD3;color:#8A6A15}
+  .howto .kf{background:#F6E2E2;color:#B03030}.howto .kb{background:#F6E2E2;color:#B03030}
+</style>
+</head>
+<body><div class="wrap">
+  <div class="hdr">
+    <h1>MANOLO-Bench</h1>
+    <span id="mode" class="pill sample"><span class="dot"></span><span id="modeTxt">sample data</span>
+      <input id="port" class="port" value="8787" aria-label="server port"></span>
+  </div>
+  <p class="sub">The benchmark and trustworthiness API the MANOLO framework describes but does not yet expose. Measured trade-offs, per-principle scores with named gaps, and a provenance chain you can watch break.</p>
+
+  
+  <details class="howto"><summary>New here? How to read this page</summary>
+    <p>Every AI promise here is checked against evidence and turned into a signed receipt, like the inspection sticker in an elevator. Green means the promise held. Amber means a named human must look. Red means stop.</p>
+    <p><span class="k kp">PASS</span> promise kept, evidence accepted &nbsp; <span class="k kr">REVIEW</span> paused for a human decision &nbsp; <span class="k kf">FAIL</span> promise missed &nbsp; <span class="k kb">BLOCK</span> hard stop, do not proceed</p>
+    <p>Where a number comes from matters: measured here, published by a named source, quoted by a vendor, or assumed. A vendor quote can pause a check even when the number looks good, because a quote is not a measurement.</p>
+    <p>Buttons: Verify chain re-checks every record. Preview tamper shows what one edited digit does. Nothing leaves this page; there are no network calls.</p>
+  </details>
+
+  <div class="chip">Efficiency, measured</div>
+  <div class="panel" id="effPanel"></div>
+  <p class="legend">Bars: query latency p50, lower is better. Memory column: bytes per vector where measured. Recall@10 vs exact fp32 ground truth. Seeded, one command to reproduce.</p>
+
+  <div class="chip">Trustworthiness scorecard</div>
+  <div class="panel"><div class="cols">
+    <div><svg id="radar" viewBox="0 0 320 300" role="img" aria-label="per-principle scores"></svg></div>
+    <div><ul class="gaps" id="gaps"></ul>
+      <p class="legend" id="method"></p></div>
+  </div></div>
+
+  <div class="chip">Claim receipts</div>
+  <div class="panel">
+    <div id="claims"></div>
+    <p class="legend" id="receiptMeta"></p>
+  </div>
+
+  <div class="chip">Provenance chain</div>
+  <div class="panel">
+    <div class="chain" id="chain"></div>
+    <div id="banner" class="banner ok">Chain intact</div>
+    <div class="btns">
+      <button id="bVerify">Verify chain</button>
+      <button id="bBench" class="ghost">Run benchmark</button>
+      <button id="bAssess" class="ghost">Run assessment</button>
+      <button id="bTamper" class="ghost">Preview tamper</button>
+    </div>
+    <p class="legend">Live mode: edit one digit in results/ledger.jsonl, save, verify. The chain reports the exact record where integrity breaks. Preview tamper simulates that state on sample data.</p>
+  </div>
+
+  <p class="src" id="src">Data: embedded sample from a verified run (2026-08-27, Node v22.22.2, seed 42). Start <code>node src/server.js</code> and reload for live mode.</p>
+</div>
+<script>
+// Embedded sample = a real verified run from this repo, not invented numbers.
+const SAMPLE = {
+  results: {
+    config:{N:5000,D:256,Q:50,seed:42,node:"v22.22.2"},
+    series:[
+      {name:"fp32 exact",note:"ground truth",p50:3.66,p95:10.04,bytes:1024,recall:1.0},
+      {name:"int8 quantized",note:"3.94x compression",p50:3.38,p95:5.35,bytes:260,recall:0.988},
+      {name:"RuVector HNSW",note:"native 0.3.0, SIMD",p50:1.076,p95:1.387,bytes:null,recall:0.944}
+    ]
+  },
+  scorecard:{
+    efficiency_sustainability:{score:100,status:"implemented",gap:"Energy not metered in joules; memory and latency are the proxies."},
+    transparency_explainability:{score:100,status:"implemented",gap:"No per-decision explanations; scope is system transparency."},
+    accountability_auditability:{score:100,status:"implemented",gap:"Single-node ledger, single keypair; no replication or PKI."},
+    reliability_robustness:{score:50,status:"partial",gap:"No out-of-distribution or drift testing; synthetic corpus."},
+    security_misuse_resistance:{score:50,status:"partial",gap:"No injection screening; tamper-evident, not tamper-proof."},
+    human_agency_oversight:{score:50,status:"partial",gap:"Governed signed override exists; no pre-action approval gate yet."}
+  },
+  method:"artifact-derived status assessment v0.2 (implemented / partial / absent); numeric mapping for charts only",
+  receipt:{
+    file:"receipt-0006.json",summary:{PASS:3,REVIEW:2},all_valid:true,
+    overridden:["MB-ROB-01","MB-ENE-01"],
+    verdicts:[
+      {id:"MB-LAT-01",verdict:"PASS",measured:1.076,rule:"< 5 ms",txt:"modeled on D5.1 CLAIM-4 · CONTINUE"},
+      {id:"MB-CMP-01",verdict:"PASS",measured:3.94,rule:">= 3.5x",txt:"modeled on D5.1 CLAIM-7 · CONTINUE"},
+      {id:"MB-CMP-02",verdict:"PASS",measured:0.988,rule:">= 0.98 recall",txt:"CLAIM-7 accuracy side · CONTINUE"},
+      {id:"MB-ROB-01",verdict:"REVIEW",measured:0.944,rule:">= 0.95 recall",txt:"within declared 0.02 margin · PAUSE, overridden by adam.kovacs, scoped to demo corpus"},
+      {id:"MB-ENE-01",verdict:"REVIEW",measured:null,rule:"< 0.01 J",txt:"no direct evidence: energy unmetered, on purpose · PAUSE"},
+      {id:"MB-LAT-UP",verdict:"REVIEW",measured:82,rule:"< 100 ms",txt:"upstream quote, not a run: the naive baseline PASSes this, the gate PAUSEs it (receipt-0005)"},
+      {id:"BB-CLAIM2-WEAR",verdict:"PASS",measured:86.64,rule:">= 86 %",txt:"D5.1 Table 7 CLAIM-2 itself, receipt-0007, published evidence (BOAS, Esparza-Iaizzo 2024)"},
+      {id:"EN-CI-01",verdict:"BLOCK",measured:321.65,rule:"< 100 g/kWh hard",txt:"placement pair: GR 321.65 STOP vs SE 34.91 CONTINUE under the declared budget (Ember 2024; receipts 0009/0010)"},
+      {id:"EN-CST-01",verdict:"REVIEW",measured:0.000779,rule:"< 0.01 EUR/1M q",txt:"threshold met, origin assumed (15 W wattage x Eurostat price): the gate refuses to launder it into PASS (receipt-0011)"}
+    ]
+  },
+  chain:[
+    {index:0,type:"benchmark",ts:"2026-08-27T08:12:33Z",hash:"6be39b877ffc238773eaf848eebd5063"},
+    {index:1,type:"assessment",ts:"2026-08-27T08:13:57Z",hash:"31fd2054bec604140b265e16ffc7b9a3"},
+    {index:2,type:"benchmark",ts:"2026-08-27T08:16:31Z",hash:"8e2854f737e85241ab7ab9d62a8afebf"},
+    {index:3,type:"benchmark",ts:"2026-08-27T08:45:42Z",hash:"cc505011594dc89e37efc82eafc98d3e"},
+    {index:4,type:"receipt",ts:"2026-08-27T09:23:58Z",hash:"d2ac66fca59b50425100149b8e0e0114"},
+    {index:5,type:"receipt",ts:"2026-08-27T09:23:58Z",hash:"86d434d607af837ad3bd6c5e1b4fe3a7"},
+    {index:6,type:"receipt",ts:"2026-08-27T09:23:58Z",hash:"898802c60691e25609c8153dda39f7c4"},
+    {index:7,type:"receipt",ts:"2026-08-27T09:30:30Z",hash:"1159106c782bbc64f5c4859bb47e7e1e"},
+    {index:8,type:"assessment",ts:"2026-08-27T09:30:51Z",hash:"a4558ea3f0cedb7a0505aa3370da14bd"},
+    {index:9,type:"assessment",ts:"2026-08-27T09:33:08Z",hash:"9e7aa47b54e9e4d72e621e689df92306"},
+    {index:10,type:"receipt",ts:"2026-08-27T10:05:04Z",hash:"424271b480b5f622ab8a47e0b2bd9243"},
+    {index:11,type:"receipt",ts:"2026-08-27T10:05:04Z",hash:"8076513ae1c08d1a8e7574d903e4d10d"},
+    {index:12,type:"receipt",ts:"2026-08-27T10:05:04Z",hash:"0fc01de98c479e7428a205829a12e3da"},
+    {index:13,type:"receipt",ts:"2026-08-27T10:05:57Z",hash:"956d6fa4c1ebadd8dfb3502fc1b9cb84"},
+    {index:14,type:"receipt",ts:"2026-08-27T10:41:45Z",hash:"ac6bc7c06ad417b9006e81f4f1ac7157"},
+    {index:15,type:"receipt",ts:"2026-08-27T10:41:45Z",hash:"9f460919c7069157e449c16ccf9fefce"},
+    {index:16,type:"receipt",ts:"2026-08-27T10:41:46Z",hash:"99844dd74bc0a6c1ed56f0f27d1af33e"}
+  ],
+  verify:{valid:true,records:17}
+};
+const S={live:false,data:JSON.parse(JSON.stringify(SAMPLE)),tampered:false};
+const $=id=>document.getElementById(id);
+const base=()=>`http://localhost:${$("port").value||8787}`;
+const j=async(p,opt)=>{const c=new AbortController();const t=setTimeout(()=>c.abort(),4000);
+  try{const r=await fetch(base()+p,{...opt,signal:c.signal});return await r.json()}
+  finally{clearTimeout(t)}};
+
+function drawEff(){
+  const s=S.data.results.series,maxP=Math.max(...s.map(x=>x.p50));
+  $("effPanel").innerHTML=s.map(x=>`
+    <div class="row">
+      <div class="name">${x.name}<small>${x.note||""}</small></div>
+      <div class="barwrap"><div class="bar" style="width:${(x.p50/maxP*100).toFixed(1)}%"></div>
+        <span>p50 ${x.p50} ms · p95 ${x.p95} ms</span></div>
+      <div class="badge"><b>${x.bytes==null?"n/m":x.bytes+" B"}</b>recall ${x.recall.toFixed(3)}</div>
+    </div>`).join("");
+}
+function drawRadar(){
+  const sc=S.data.scorecard,keys=Object.keys(sc);
+  const labels={efficiency_sustainability:"Efficiency",transparency_explainability:"Transparency",
+    accountability_auditability:"Accountability",reliability_robustness:"Reliability",
+    security_misuse_resistance:"Security",human_agency_oversight:"Oversight"};
+  const cx=160,cy=150,R=104,n=keys.length;
+  const pt=(i,r)=>{const a=-Math.PI/2+i*2*Math.PI/n;
+    return[cx+r*Math.cos(a),cy+r*Math.sin(a)]};
+  let svg="";
+  for(const g of[.25,.5,.75,1]){
+    svg+=`<polygon points="${keys.map((_,i)=>pt(i,R*g).join(",")).join(" ")}"
+      fill="none" stroke="#DCD4EE" stroke-width="1"/>`;}
+  keys.forEach((_,i)=>{const[x,y]=pt(i,R);
+    svg+=`<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#DCD4EE"/>`;});
+  svg+=`<polygon points="${keys.map((k,i)=>pt(i,R*sc[k].score/100).join(",")).join(" ")}"
+    fill="rgba(108,63,197,.22)" stroke="#6C3FC5" stroke-width="2.5" stroke-linejoin="round"/>`;
+  const glyph={implemented:"\u25CF",partial:"\u25D0",absent:"\u25CB"};
+  keys.forEach((k,i)=>{const[x,y]=pt(i,R+22);
+    svg+=`<text x="${x}" y="${y}" text-anchor="middle">${labels[k]} ${glyph[sc[k].status]||sc[k].score}</text>`;});
+  $("radar").innerHTML=svg;
+  $("gaps").innerHTML=keys.map(k=>`<li><b>${labels[k]}</b>
+    <span class="score">${sc[k].status||sc[k].score}</span> · ${sc[k].gap}</li>`).join("");
+  $("method").textContent="Method: "+S.data.method;
+}
+function drawClaims(){
+  const r=S.data.receipt;
+  if(!r){$("claims").innerHTML="";$("receiptMeta").textContent="No receipts yet.";return;}
+  $("claims").innerHTML=r.verdicts.map(v=>{
+    const ov=(r.overridden||[]).includes(v.id)&&v.verdict==="REVIEW";
+    return `<div class="vrow">
+      <span class="vchip v-${v.verdict}">${v.verdict}</span>
+      ${ov?'<span class="vchip v-OVERRIDDEN">OVERRIDDEN</span>':''}
+      <span class="vid">${v.id}</span>
+      <span class="vtxt">${v.measured===null?"no evidence":"measured "+v.measured} against ${v.rule} · ${v.txt}</span>
+    </div>`}).join("");
+  $("receiptMeta").textContent=`Latest ${r.file} · Ed25519 signed, evidence digests bound, chain ${r.all_valid?"verified":"BROKEN"}. Claim patterns from MANOLO D5.1 Table 7 (pp. 47-49).`;
+}
+function drawChain(){
+  const v=S.data.verify,recs=S.data.chain,el=$("chain");
+  el.classList.toggle("broken",!v.valid);
+  el.innerHTML=recs.map((r,i)=>{
+    const bad=!v.valid&&r.index===v.break_index;
+    const dim=!v.valid&&r.index>v.break_index;
+    const snap=!v.valid&&r.index===v.break_index;
+    return (i?`<div class="link${snap?" snap":""}"></div>`:"")+
+      `<div class="block${bad?" bad":dim?" dim":""}">
+        <div class="t">${r.index} · ${r.type}</div>
+        <div class="h">${(r.hash||"").slice(0,20)}…</div>
+        <div class="ts">${r.ts}</div></div>`;
+  }).join("");
+  const b=$("banner");
+  if(v.valid){b.className="banner ok";
+    b.textContent=`Chain intact · ${v.records} record${v.records===1?"":"s"}`;}
+  else{b.className="banner bad";
+    b.textContent=`Break at record ${v.break_index}: hash mismatch. Everything after is untrusted.`;}
+}
+function setMode(live){S.live=live;
+  $("mode").className="pill "+(live?"live":"sample");
+  $("modeTxt").textContent=live?"live server":"sample data";
+  $("bBench").disabled=!live;$("bAssess").disabled=!live;
+  $("bTamper").disabled=live;
+  $("src").innerHTML=live
+    ?`Data: live from <code>${base()}</code>. Ledger file: results/ledger.jsonl.`
+    :`Data: embedded sample from a verified run (2026-08-27, Node v22.22.2, seed 42). Start <code>node src/server.js</code> and reload for live mode.`;}
+function render(){drawEff();drawRadar();drawClaims();drawChain()}
+
+async function pullLive(){
+  const ver=await j("/verify");
+  const prov=await j("/provenance");
+  try{
+    const rec=await j("/receipts");
+    if(rec.latest&&rec.latest.type==="evaluation"){
+      const ov=[];
+      for(const f of rec.files){/* overrides listed via ledger types below */}
+      S.data.receipt={file:rec.files[rec.files.length-1],
+        summary:rec.latest.summary,all_valid:rec.verification.all_valid,
+        overridden:S.data.receipt?S.data.receipt.overridden:[],
+        verdicts:rec.latest.verdicts.map(v=>({id:v.id,verdict:v.verdict,
+          measured:v.measured,rule:v.comparator+" "+v.threshold+(v.unit?" "+v.unit:""),
+          txt:(v.modeled_on||"").slice(0,80)}))};
+    }else if(rec.latest&&rec.latest.type==="override"){
+      if(S.data.receipt)S.data.receipt.overridden=rec.latest.override.overridden_claims;
+      if(rec.verification)S.data.receipt.all_valid=rec.verification.all_valid;
+    }
+  }catch(_){/* receipts endpoint optional */}
+  S.data.chain=prov.records.map(r=>({index:r.index,type:r.type,ts:r.ts,hash:r.hash}));
+  S.data.verify=ver;
+  const lastA=[...prov.records].reverse().find(r=>r.type==="assessment");
+  if(lastA){for(const[k,v]of Object.entries(lastA.payload.scores||{}))
+    if(S.data.scorecard[k])S.data.scorecard[k].score=v;}
+  const lastB=[...prov.records].reverse().find(r=>r.type==="benchmark");
+  if(lastB&&lastB.payload){const p=lastB.payload;
+    S.data.results.series[0].p50=p.fp32_p50_ms??S.data.results.series[0].p50;
+    S.data.results.series[1].p50=p.int8_p50_ms??S.data.results.series[1].p50;}
+}
+async function boot(){
+  try{await pullLive();setMode(true)}catch(_){setMode(false)}
+  render();
+}
+$("bVerify").onclick=async()=>{
+  if(S.live){try{S.data.verify=await j("/verify");await pullLive()}catch(_){setMode(false)}}
+  else{S.data.verify=S.tampered
+    ?{valid:false,break_index:1,records:S.data.chain.length}
+    :{valid:true,records:S.data.chain.length};}
+  render();};
+$("bTamper").onclick=()=>{S.tampered=!S.tampered;
+  $("bTamper").textContent=S.tampered?"Restore sample":"Preview tamper";
+  $("bVerify").click();};
+$("bBench").onclick=async()=>{$("bBench").disabled=true;
+  try{const r=await j("/benchmark?n=2000",{method:"POST"});
+    const m={fp32_baseline:0,int8_quantized:1};
+    for(const[k,i]of Object.entries(m)){const s=r[k];if(!s)continue;
+      Object.assign(S.data.results.series[i],{p50:s.p50_ms,p95:s.p95_ms,
+        bytes:s.bytes_per_vector,recall:s.recall_at_10});}
+    if(r.ruvector&&r.ruvector.status==="benchmarked")
+      Object.assign(S.data.results.series[2],{p50:r.ruvector.p50_ms,
+        p95:r.ruvector.p95_ms,recall:r.ruvector.recall_at_10});
+    S.data.results.config=r.config;await pullLive();}catch(_){setMode(false)}
+  $("bBench").disabled=!S.live;render();};
+$("bAssess").onclick=async()=>{try{const a=await j("/assess");
+  for(const[k,v]of Object.entries(a.scorecard))
+    if(S.data.scorecard[k])S.data.scorecard[k]={score:v.score,status:v.status,gap:v.gap};
+  S.data.method=a.method;await pullLive();}catch(_){setMode(false)}render();};
+$("port").onchange=boot;
+boot();
+</script>
+</body></html>

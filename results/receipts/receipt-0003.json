@@ -1,0 +1,25 @@
+{
+  "schema": "trace-receipt/0.1",
+  "type": "override",
+  "created": "2026-08-27T09:23:58.809Z",
+  "workload_id": "wf-manolo-bench-001",
+  "override": {
+    "actor": "adam.kovacs",
+    "decision": "accept",
+    "reason": "0.944 within declared 0.02 margin; acceptable for non-clinical retrieval",
+    "scope": "demo corpus only",
+    "prior_receipt": "receipt-0001.json",
+    "prior_receipt_hash": "5035f10564fd8078f1e8426fe18de14f8d137addf66ff42ddce07d53e780d5d1",
+    "overridden_claims": [
+      "MB-ROB-01",
+      "MB-ENE-01"
+    ]
+  },
+  "summary": {
+    "OVERRIDDEN": 2
+  },
+  "evidence_digests": {},
+  "prev_receipt_hash": "7f2728ea0d658aa41775589573c82662b811a2a5d32b2d3c526f8e5483b1dfb8",
+  "public_key": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEArAwfahQt95u2D5dhCpgEhvGGO/iRVLyFdXzVD/EI33A=\n-----END PUBLIC KEY-----\n",
+  "signature": "lTCpD/UjalUDsDE8dU5miJltguOvqfxGZ08rVE35Afb21kSK2V1ApdsMiz/FiG1MwZ5jJXiC/zS5novgZOXVBQ=="
+}

@@ -1,0 +1,40 @@
+{
+  "generated": "2026-08-27T08:45:42.227Z",
+  "config": {
+    "N": 5000,
+    "D": 256,
+    "Q": 50,
+    "seed": 42,
+    "node": "v22.22.2"
+  },
+  "fp32_baseline": {
+    "p50_ms": 3.66,
+    "p95_ms": 10.04,
+    "bytes_per_vector": 1024,
+    "recall_at_10": 1
+  },
+  "int8_quantized": {
+    "p50_ms": 3.38,
+    "p95_ms": 5.35,
+    "bytes_per_vector": 260,
+    "recall_at_10": 0.988,
+    "compression_x": 3.94
+  },
+  "ruvector": {
+    "status": "benchmarked",
+    "backend": {
+      "type": "native",
+      "version": "0.3.0",
+      "features": [
+        "SIMD",
+        "Multi-threading",
+        "Rust-native"
+      ]
+    },
+    "p50_ms": 1.076,
+    "p95_ms": 1.387,
+    "recall_at_10": 0.944,
+    "bytes_per_vector": null,
+    "note": "HNSW ANN, explicit config m=32, efConstruction=200, efSearch=100, maxElements=N+16. Memory footprint not measured."
+  }
+}

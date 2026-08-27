@@ -1,0 +1,11 @@
+{
+  "evidence_type": "published",
+  "claim_ref": "MANOLO D5.1 section 7.2.5 Table 7, CLAIM-2, p. 48",
+  "sources": [
+    { "title": "Esparza-Iaizzo et al. (2024), bioRxiv", "note": "reported match between human-consensus labels and network labels" },
+    { "title": "BOAS dataset, OpenNeuro", "note": "published PSG and wearable EEG dataset named as the evidence in Table 7" }
+  ],
+  "reported": { "psg_match_pct": 87.08, "wearable_match_pct": 86.64 },
+  "transcribed_by": "manolo-bench team, 2026-08-27",
+  "transcription_note": "Values transcribed verbatim from the D5.1 CLAIM-2 row. This receipt binds the transcription and its digest, not the underlying study; replication of the study is out of scope and stated as such."
+}

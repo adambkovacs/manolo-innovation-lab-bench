@@ -1,0 +1,14 @@
+{
+  "workload_id": "wf-manolo-bench-001",
+  "evidence": "evidence/cost-model-gr.json",
+  "source_frame": "The laundering refusal: a cost figure that satisfies its threshold but is built on an assumed wattage. The gate answers with origin, not arithmetic.",
+  "claims": [
+    {
+      "id": "EN-CST-01",
+      "modeled_on": "D5.1 CLAIM-5 power pattern, priced",
+      "statement": "Energy cost under 0.01 EUR per million queries in zone GR",
+      "metric": "derived.eur_per_1m_queries", "comparator": "<", "threshold": 0.01,
+      "unit": "EUR/1M queries"
+    }
+  ]
+}

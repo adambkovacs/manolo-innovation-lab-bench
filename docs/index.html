@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MANOLO-Bench + TRACE receipts: the human version</title>
+<meta name="description" content="Every AI promise gets a checkable, signed receipt. Plain-language explainer, live demo, FAQ.">
+<style>
+  :root{--bg:#F7F5FB;--ink:#2A2440;--soft:#6A6480;--purple:#5B4BC4;--lav:#E4DFF6;
+    --ok:#1E7F5C;--okbg:#DFF0E8;--warn:#8A6A15;--warnbg:#F5EBD3;--bad:#B03030;--badbg:#F6E2E2;
+    --card:#FFFFFF;--line:#E3DEF2}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  .wrap{max-width:860px;margin:0 auto;padding:0 20px 60px}
+  a{color:var(--purple)}
+  nav{position:sticky;top:0;background:rgba(247,245,251,.94);backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);z-index:5}
+  nav .row{max-width:860px;margin:0 auto;padding:10px 20px;display:flex;gap:14px;flex-wrap:wrap;
+    align-items:center;font-size:13.5px}
+  nav a{text-decoration:none;color:var(--soft)}
+  nav a:hover{color:var(--purple)}
+  nav .brand{font-weight:700;color:var(--ink);font-family:ui-monospace,Menlo,monospace;font-size:13px}
+  .hero{background:#241E38;color:#fff;margin:0 -20px;padding:56px 20px 44px}
+  .hero .in{max-width:860px;margin:0 auto;padding:0 20px}
+  .hero h1{font-size:clamp(28px,5vw,42px);line-height:1.15;margin:0 0 10px}
+  .hero .sub{color:#CDC5EE;font-size:clamp(16px,2.6vw,20px);font-style:italic;margin:0 0 22px}
+  .hero p{color:#B9B0D6;max-width:640px}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+  .k{font-family:ui-monospace,Menlo,monospace;font-weight:700;font-size:11.5px;
+    padding:3px 12px;border-radius:11px;display:inline-block}
+  .kp{background:var(--okbg);color:var(--ok)}.kr{background:var(--warnbg);color:var(--warn)}
+  .kf{background:var(--badbg);color:var(--bad)}.ks{background:var(--lav);color:var(--purple)}
+  h2{font-size:24px;margin:44px 0 12px}
+  h3{font-size:17px;margin:22px 0 6px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 20px;margin:14px 0;box-shadow:0 2px 8px rgba(42,36,64,.06)}
+  .tint{background:var(--lav);border-color:#D6CCF0}
+  .muted{color:var(--soft);font-size:14px}
+  .big{font-size:clamp(40px,8vw,64px);font-weight:800;color:var(--purple);line-height:1;margin:6px 0}
+  .grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+  .step{border-left:none}
+  .step b{color:var(--purple)}
+  .mono{font-family:ui-monospace,Menlo,monospace;font-size:13px}
+  .num{background:var(--purple);color:#fff;font-weight:700;border-radius:50%;
+    width:26px;height:26px;display:inline-flex;align-items:center;justify-content:center;
+    font-size:14px;flex:none}
+  .beat{display:flex;gap:12px;align-items:flex-start;margin:12px 0}
+  details{background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:4px 18px;margin:10px 0}
+  summary{cursor:pointer;font-weight:600;padding:10px 0}
+  details p{margin:6px 0 12px;color:var(--soft);font-size:15px}
+  .cta{display:inline-block;background:var(--purple);color:#fff;text-decoration:none;
+    font-weight:700;padding:12px 22px;border-radius:12px;margin:8px 12px 8px 0}
+  .cta.ghost{background:transparent;color:var(--purple);border:2px solid var(--purple)}
+  footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);
+    color:var(--soft);font-size:13px}
+  table{border-collapse:collapse;width:100%;font-size:14px}
+  td,th{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line)}
+  th{color:var(--soft);font-weight:600;font-size:12.5px}
+</style>
+</head>
+<body>
+<nav><div class="row">
+  <span class="brand">MANOLO-Bench + TRACE</span>
+  <a href="#story">The idea</a><a href="#why">Why</a><a href="#how">How</a>
+  <a href="#reallife">Real life</a><a href="#faq">FAQ</a><a href="demo.html">Live demo</a>
+</div></nav>
+
+<div class="hero"><div class="in">
+  <h1>A claim is not evidence</h1>
+  <p class="sub">until it carries a receipt.</p>
+  <p>AI teams make promises: fast, private, accurate, battery-friendly, clean. This project turns
+  each promise into a checkable receipt that anyone can verify, and that breaks visibly if anyone
+  edits the story afterwards. No AI expertise needed to read one.</p>
+  <div class="chips">
+    <span class="k kp">PASS</span><span class="k kr">REVIEW</span>
+    <span class="k kf">BLOCK</span><span class="k ks">SIGNED</span>
+  </div>
+  <p style="margin-top:24px">
+    <a class="cta" href="demo.html">Open the demo</a>
+    <a class="cta ghost" href="https://github.com/adambkovacs/manolo-bench">See the code</a>
+  </p>
+</div></div>
+
+<div class="wrap">
+
+<h2 id="story">The idea, in plain words</h2>
+<p>When you buy groceries, you get a receipt: what you bought, the price, the time, the shop.
+An elevator carries an inspection sticker: who checked it, against what standard, and when.
+AI systems make bigger promises than groceries and mostly hand you neither.</p>
+<div class="card tint"><p style="margin:0;font-weight:600">Our receipt holds five things: the
+promise, the bar it must clear, the number we actually saw, the verdict, and a cryptographic
+signature. Change any digit later and the signature breaks in public.</p></div>
+<p>Verdicts work like traffic lights, and each one decides what happens next.
+<span class="k kp">PASS</span> means continue. <span class="k kr">REVIEW</span> means a named
+human must look before anything proceeds. <span class="k kf">BLOCK</span> means stop.
+Nobody can wave a red light through, and the amber one can only be overridden by a person who
+signs their name, their reason, and its scope. That override becomes a receipt too.</p>
+
+<h2 id="why">Why this exists</h2>
+<div class="card">
+  <div class="big">14 / 15</div>
+  <p style="margin:4px 0 8px">MANOLO builds trustworthy, efficient AI: tools that track where
+  data came from and raise alerts while systems run, plus an honest assessment method that writes
+  down every promise a system makes and marks which ones have evidence. In its fully published
+  promise table, written for one industry use case, fourteen of fifteen promises have no direct
+  evidence yet. The missing piece is not honesty or effort. It is an instrument: nothing binds a
+  promise to its evidence and keeps the verdict. We built that instrument for the framework; the
+  published table is the worked example.</p>
+  <p class="muted" style="margin:0">Source: MANOLO deliverable D5.1, section 7.2.5, Table 7.
+  MANOLO is an EU Horizon Europe project on trustworthy, efficient AI:
+  <a href="https://manolo-project.eu">manolo-project.eu</a></p>
+</div>
+<p>Two rows of that table are things a benchmark can simply measure: "the system answers in under
+100 milliseconds" and "compressing the model keeps it accurate". So we measured them on a
+comparable workload, wrote the verdicts as signed receipts, and gave the one promise that already
+had published evidence its receipt as well. The missing instrument now exists, open source,
+ready to hand over.</p>
+
+<h2 id="how">How it works, no jargon</h2>
+<div class="grid">
+  <div class="card step"><b>1. Measure.</b> A benchmark runs the same task three ways and records
+  speed, memory, and accuracy. One command, same result on any machine, because the test data is
+  generated from a fixed seed.</div>
+  <div class="card step"><b>2. Judge.</b> Each promise is compared against the evidence. But first
+  comes a question most systems skip: where did this number come from? We measured it, a named
+  source published it, a vendor quoted it, or someone assumed it.</div>
+  <div class="card step"><b>3. Receipt.</b> The verdict is signed, chained to every verdict before
+  it, and saved. Anyone can re-check the whole chain in under a second, forever.</div>
+</div>
+<div class="card">
+  <h3 style="margin-top:0">The part that surprises people</h3>
+  <p style="margin:0">A number can look perfect and still not pass. In our demo, a cost estimate
+  beats its target easily, but it is built on a guessed power draw. The system pauses it anyway:
+  arithmetic on top of a guess is still a guess. And a vendor's quoted "82 milliseconds" pauses
+  too, while a naive checker happily passes it. That refusal to launder guesses into green lights
+  is the whole point.</p>
+</div>
+
+<h2>Five moments to watch in the demo</h2>
+<div class="beat"><span class="num">1</span><p style="margin:0">A naive checker passes a vendor's
+quoted speed number. Our gate pauses the same number and names why: it was quoted, not measured.
+<span class="k kr">REVIEW</span></p></div>
+<div class="beat"><span class="num">2</span><p style="margin:0">The same promises, checked for two
+countries. Sweden gets a green light, Greece gets a stop, under a carbon budget the workload
+itself declared. <span class="k kf">STOP</span></p></div>
+<div class="beat"><span class="num">3</span><p style="margin:0">A cost estimate meets its target
+and still pauses, because one ingredient was assumed. <span class="k kr">PAUSE</span></p></div>
+<div class="beat"><span class="num">4</span><p style="margin:0">We edit one digit of the evidence.
+The chain breaks instantly and names the exact file. Undo, and it heals.
+<span class="k kf">INVALID</span></p></div>
+<div class="beat"><span class="num">5</span><p style="margin:0">The one promise in the MANOLO
+table that had published evidence gets its receipt: number 0007. The other fourteen are an
+afternoon of work with the people who own them. <span class="k kp">PASS</span></p></div>
+<p><a class="cta" href="demo.html">Open the demo</a></p>
+
+<h2 id="reallife">What this means in real life</h2>
+<div class="grid">
+  <div class="card"><h3 style="margin-top:0">A hospital buying a sleep wearable</h3>
+  <p class="muted" style="margin:0">The brochure says "real-time and private". Instead of trusting
+  the brochure, procurement asks for receipts. A vendor quote alone shows as paused, never as
+  passed. The evidence trail survives the sales meeting.</p></div>
+  <div class="card"><h3 style="margin-top:0">A funder or project officer</h3>
+  <p class="muted" style="margin:0">Research projects publish claim tables. Receipts make those
+  tables checkable years later: who claimed what, against which evidence, and what the verdict
+  was, with a signature that still verifies.</p></div>
+  <div class="card"><h3 style="margin-top:0">A team choosing where to run AI</h3>
+  <p class="muted" style="margin:0">The same workload, two countries, real public data. The
+  cleaner and cheaper option gets the green light, and the decision itself becomes a signed
+  record instead of a hallway opinion.</p></div>
+</div>
+<div class="card">
+  <h3 style="margin-top:0">The energy numbers are real</h3>
+  <table>
+    <tr><th></th><th>Grid carbon (gCO2e/kWh, 2024)</th><th>Electricity price (EUR/kWh, 2025)</th><th>Verdict under a 100 g budget</th></tr>
+    <tr><td><b>Sweden</b></td><td class="mono">34.91</td><td class="mono">0.0970</td><td><span class="k kp">CONTINUE</span></td></tr>
+    <tr><td><b>Greece</b></td><td class="mono">321.65</td><td class="mono">0.1738</td><td><span class="k kf">STOP</span></td></tr>
+  </table>
+  <p class="muted" style="margin:10px 0 0">Sources:
+  <a href="https://ourworldindata.org/grapher/carbon-intensity-electricity">Ember 2024, lifecycle, via Our World in Data</a> ·
+  <a href="https://ec.europa.eu/eurostat/statistics-explained/index.php?title=Electricity_price_statistics">Eurostat, non-household prices, 2025 second half</a>.
+  The budget belongs to the workload, not to any country. Relax it and the receipts recompute.</p>
+</div>
+
+<h2 id="faq">Frequently asked questions</h2>
+<details><summary>What is this in one sentence?</summary>
+<p>A tool that turns AI promises into signed, checkable receipts, so trust stops depending on
+whoever speaks most confidently.</p></details>
+<details><summary>What exactly is a "claim"?</summary>
+<p>Any promise about an AI system stated with a number: "answers in under 100 milliseconds",
+"keeps 95 percent accuracy after compression", "runs on a grid cleaner than 100 grams of CO2 per
+kilowatt hour". If it has a bar to clear, it is a claim.</p></details>
+<details><summary>Is the receipt like a store receipt?</summary>
+<p>Very close. A store receipt records what happened in a purchase. Ours records what happened in
+a check: the promise, the bar, the observed number, the verdict, and when. The difference is the
+signature: edit ours afterwards and the forgery is detectable by anyone, in under a second.</p></details>
+<details><summary>Do I need to be a programmer to use it?</summary>
+<p>To read receipts, no: the demo page shows them as colored verdicts with plain reasons. To
+connect it to a new system, someone technical writes a small file listing the promises and their
+bars. That is the whole integration.</p></details>
+<details><summary>Can someone fake or quietly edit a receipt?</summary>
+<p>Edits are detectable, which is the honest promise. Every receipt is chained to the one before
+it and signed. Change any digit of the evidence or the receipt and verification fails, naming the
+exact spot. We demonstrate this live by breaking it on purpose.</p></details>
+<details><summary>Why do some of your own checks fail?</summary>
+<p>On purpose. We did not meter energy in joules, so our own energy claim pauses itself instead
+of pretending. A trust tool that gives itself perfect marks would be the least trustworthy thing
+in the room.</p></details>
+<details><summary>What does the energy part mean for a normal company?</summary>
+<p>Where you run AI changes its carbon footprint and its electricity bill. The same workload can
+be nine times cleaner and almost half the price in one country versus another, using public data
+anyone can check. Receipts turn that choice into an accountable record.</p></details>
+<details><summary>Is this an official MANOLO tool?</summary>
+<p>No. It is an independent, open-source build for the MANOLO Innovation Lab, based on the
+project's public documents. It speaks their vocabulary and is designed to plug in, and it never
+claims compatibility with systems that have no public interface yet.</p></details>
+<details><summary>Does it send my data anywhere?</summary>
+<p>No. Zero network calls, verified by the test suite. Everything runs and verifies locally, and
+the whole history replays from the repository.</p></details>
+<details><summary>What does it deliberately not do?</summary>
+<p>It does not meter energy in joules, does not store data lineage, does not replace live
+monitoring, and does not prove a model is safe or clinically effective. It proves one thing well:
+that a claim, its evidence, and its verdict are bound together and unedited.</p></details>
+<details><summary>What happens after the hackathon?</summary>
+<p>The ask is thirty minutes with the people who own the claims: they declare the bars, the
+receipts recompute, and the fourteen unevidenced promises start getting paid down. The code is
+Apache-2.0 and hand-over ready.</p></details>
+
+<h2>What it is not</h2>
+<p class="muted">No estimated joules dressed as measurements. No live third-party feeds in the
+demo. No claim of MANOLO compatibility. No perfect self-score. The limitations section in the
+repository grades this project as strictly as it grades anyone.</p>
+
+<footer>
+  MANOLO-Bench + TRACE receipts · Apache-2.0 · built for the MANOLO Innovation Lab,
+  Thessaloniki, August 2026 ·
+  <a href="https://github.com/adambkovacs/manolo-bench">github.com/adambkovacs/manolo-bench</a>
+  · every verdict on this site replays from the repository
+</footer>
+</div>
+</body>
+</html>

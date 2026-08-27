@@ -1,0 +1,23 @@
+{
+  "name": "manolo-bench",
+  "version": "0.1.0",
+  "description": "Measured evidence plus Ed25519-signed claim receipts for the MANOLO assessment loop (Horizon Europe GA 101135782). Anchored on D5.1 Table 7. Zero-dependency core.",
+  "license": "Apache-2.0",
+  "scripts": {
+    "bench": "node src/bench.js",
+    "assess": "node src/assess.js",
+    "serve": "node src/server.js",
+    "verify": "node src/ledger.js verify",
+    "claims": "node src/claims.js evaluate",
+    "claims:block": "node src/claims.js evaluate fixtures/claims-block.json",
+    "receipts:verify": "node src/claims.js verify",
+    "baseline": "node src/baseline.js",
+    "gate:test": "node --test",
+    "deck": "node scripts/make-deck.js"
+  },
+  "optionalDependencies": {
+    "agentdb": "3.0.0-alpha.20",
+    "ruvector": "^0.3.0",
+    "pptxgenjs": "^4.0.1"
+  }
+}

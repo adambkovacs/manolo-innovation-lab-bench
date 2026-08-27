@@ -1,0 +1,18 @@
+{
+  "workload_id": "wf-manolo-bench-001",
+  "evidence": "results/results.json",
+  "source_frame": "Hard-policy demonstration set: a declared hard budget the measured system violates, producing BLOCK.",
+  "claims": [
+    {
+      "id": "MB-P95-HARD",
+      "modeled_on": "Hard tail-latency budget in the D5.1 CLAIM-4 pattern",
+      "statement": "Exact fp32 baseline p95 latency stays under 5 ms (hard budget)",
+      "metric": "fp32_baseline.p95_ms",
+      "comparator": "<",
+      "threshold": 5,
+      "unit": "ms",
+      "hard": true
+    }
+  ],
+  "evidence_origin": "measured"
+}

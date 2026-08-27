@@ -1,0 +1,12 @@
+MANOLO-Bench
+Copyright 2026 MANOLO-Bench contributors
+
+Licensed under the Apache License, Version 2.0.
+
+This product optionally interoperates with, but does not bundle:
+- ruvector (https://github.com/ruvnet/ruvector), MIT License, by rUv and contributors
+- agentdb (https://github.com/ruvnet/agentdb), MIT OR Apache-2.0, by rUv and contributors
+
+MANOLO is a Horizon Europe project (GA 101135782). This repository is an
+independent community proposal and is not an official MANOLO consortium
+artifact.
