@@ -1,4 +1,4 @@
-# Q&A hardening: the nine questions that decide the room
+# Q&A hardening: the fourteen questions that decide the room
 
 Answer in two sentences, then stop talking. Every answer ends on a fact, not a defense.
 
@@ -30,3 +30,18 @@ The contribution is the gate, and the gate ships its own eval suite: adversarial
 The log is attached to the run; nothing attaches the claim to the run. Your own table's evidence column is titled "Evidence from Case Log", and for eight claims that cell reads "No direct evidence cited": the receipt is the missing attachment, and it points at your stored runs rather than replacing them.
 
 If a tenth question lands that you cannot answer, say: that is a REVIEW, not a PASS, and we would rather receipt it than bluff it.
+
+10. Why not in-toto, DSSE, Sigstore, or SLSA?
+Those give you attestation envelopes and signer infrastructure, and our envelope can adopt them. What they do not carry is the claim contract: threshold, accepted evidence origins, verdict, disposition, and the REVIEW-only override model, which is the part built here.
+
+11. Can someone relabel an upstream number as measured?
+Yes: origin is declared, and the gate enforces the declared policy rather than detecting lies, so the receipt makes the declaration signed, permanent, and attributable. The stated next step is a signed evidence envelope from the measurement producer, which turns origin from self-report into attestation.
+
+12. Why not just store this in MLflow?
+Storing receipts as MLflow artifacts is a sensible integration and the adapter is small. MLflow does not carry a predeclared threshold, accepted origins, a verdict, or a disposition, so the contract is what TRACE adds, wherever the record lives.
+
+13. Who chooses the threshold?
+The claim owner declares it before evaluation, and the receipt binds the exact claim-file digest, so moving the bar afterwards is visible. For MANOLO that means use-case owners declaring bars for their own Table 16 rows.
+
+14. What if MANOLO already has this internally?
+Then this becomes an adapter and a conformance check for that component, which beats duplication. We asked exactly this as a pre-work question, and the answer changes one slide, not the build.

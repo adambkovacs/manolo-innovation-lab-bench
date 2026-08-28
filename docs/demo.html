@@ -122,28 +122,14 @@
     <span id="mode" class="pill sample" aria-live="polite"><span class="dot"></span><span id="modeTxt">sample data</span>
       <input id="port" class="port" value="8787" aria-label="server port"></span>
   </div>
-  <p class="sub">A benchmark and trustworthiness API in the shape of MANOLO's public deliverables; nothing like it is publicly exposed yet, so this is a proposal, demonstrated. Measured trade-offs, per-principle scores with named gaps, and a provenance chain you can watch break.</p>
+  <p class="sub">A benchmark and trustworthiness API in the shape of MANOLO's public deliverables; nothing like it is publicly exposed yet, so this is a proposal, demonstrated. Measured trade-offs, per-principle evidence coverage with named gaps, and a provenance chain you can watch break. This hosted page is an interactive snapshot of committed receipts; cryptographic verification runs in the local Node demo and in CI.</p>
 
   
   <details class="howto" open><summary>New here? How to read this page</summary>
     <p>Every AI promise here is checked against evidence and turned into a signed receipt, like the inspection sticker in an elevator. Green means the promise held. Amber means a named human must look. Red means stop.</p>
     <p><span class="k kp">PASS</span> promise kept, evidence accepted &nbsp; <span class="k kr">REVIEW</span> paused for a human decision &nbsp; <span class="k kf">FAIL</span> promise missed &nbsp; <span class="k kb">BLOCK</span> hard stop, do not proceed</p>
-    <p>Where a number comes from matters: measured here, published by a named source, quoted by a vendor, or assumed. A vendor quote can pause a check even when the number looks good, because a quote is not a measurement.</p>
-    <p>Buttons: Verify chain re-checks every record. Preview tamper shows what one edited digit does. Nothing leaves your machine.</p>
-  </details>
-
-  <div class="chip">Efficiency, measured</div>
-  <div class="panel" id="effPanel"></div>
-  <p class="legend">Bars: query latency p50, lower is better. Memory column: bytes per vector where measured. Recall@10 vs exact fp32 ground truth. Seeded, one command to reproduce.</p>
-
-  <div class="chip">Trustworthiness scorecard</div>
-  <div class="panel"><div class="cols">
-    <div><svg id="radar" viewBox="0 0 320 300" role="img" aria-label="per-principle scores"></svg></div>
-    <div><ul class="gaps" id="gaps"></ul>
-      <p class="legend" id="method"></p></div>
-  </div></div>
-
-  <div class="chip">Claim receipts</div>
+    <p>Where a number comes from matters: measured here, published by a named source, quoted by a vendor, or assumed. A vendor quote can pause a check even when the number looks good, because a quote is not a measurement.</p>    <p>Buttons: Preview verification re-checks the snapshot state. Simulate tamper shows what one edited digit does. Connect local verifier switches to your own running server, where the checks are cryptographic. Nothing leaves your machine unless you connect.</p>
+  </details>  <div class="chip">Claim receipts</div>
   <div class="panel">
     <div id="claims"></div>
     <p class="legend" id="receiptMeta"></p>
@@ -154,12 +140,23 @@
     <div class="chain" id="chain" tabindex="0" role="region" aria-label="provenance chain, scrolls sideways"></div>
     <div id="banner" class="banner ok" role="status" aria-live="polite">Chain intact</div>
     <div class="btns">
-      <button id="bVerify">Verify chain</button>
+      <button id="bVerify">Preview verification</button>
+      <button id="bConnect" class="ghost">Connect local verifier</button>
       <button id="bBench" class="ghost">Run benchmark</button>
       <button id="bAssess" class="ghost">Run assessment</button>
-      <button id="bTamper" class="ghost">Preview tamper</button>
+      <button id="bTamper" class="ghost">Simulate tamper</button>
     </div>
-    <p class="legend">Live mode: edit one digit in results/ledger.jsonl, save, verify. The chain reports the exact record where integrity breaks. Preview tamper simulates that state on sample data.</p>
+    <p class="legend">Connected to a local server: edit one digit in results/ledger.jsonl, save, verify, and the chain reports the exact record where integrity breaks. In snapshot mode, Simulate tamper previews that state on the sample.</p>
+  </div>
+
+  <div class="chip">Efficiency evidence, the bench that feeds the claims</div>
+  <div class="panel" id="effPanel"></div>
+  <p class="legend">Bars: query latency p50, lower is better. Bytes column: encoded payload per vector where measured. Recall@10 vs exact fp32 ground truth. Seeded, one command to reproduce.</p>
+
+  <div class="chip">Trustworthiness evidence coverage</div>
+  <div class="panel">
+    <div id="coverage"></div>
+    <p class="legend" id="method"></p>
   </div>
 
   <p class="src" id="src">Data: embedded sample from a verified run (2026-08-27, Node v22.22.2, seed 42). Start <code>node src/server.js</code> and reload for live mode.</p>
@@ -187,16 +184,7 @@ const SAMPLE = {
   receipt:{
     file:"Sample verdicts drawn from receipts 0005 to 0011",summary:{PASS:3,REVIEW:2},all_valid:true,
     overridden:["MB-ROB-01","MB-ENE-01"],
-    verdicts:[
-      {id:"MB-LAT-01",verdict:"PASS",measured:1.076,rule:"< 5 ms",txt:"modeled on D5.1 CLAIM-4 · CONTINUE"},
-      {id:"MB-CMP-01",verdict:"PASS",measured:3.94,rule:">= 3.5x",txt:"modeled on D5.1 CLAIM-7 · CONTINUE"},
-      {id:"MB-CMP-02",verdict:"PASS",measured:0.988,rule:">= 0.98 recall",txt:"CLAIM-7 accuracy side · CONTINUE"},
-      {id:"MB-ROB-01",verdict:"REVIEW",measured:0.944,rule:">= 0.95 recall",txt:"within declared 0.02 margin · PAUSE, overridden by adam.kovacs, scoped to demo corpus"},
-      {id:"MB-ENE-01",verdict:"REVIEW",measured:null,rule:"< 0.01 J",txt:"no direct evidence: energy unmetered, on purpose · PAUSE"},
-      {id:"MB-LAT-UP",verdict:"REVIEW",measured:82,rule:"< 100 ms",txt:"upstream quote, not a run: the naive baseline PASSes this, the gate PAUSEs it (receipt-0005)"},
-      {id:"BB-CLAIM2-WEAR",verdict:"PASS",measured:86.64,rule:">= 86 %",txt:"D5.1 Table 7 CLAIM-2 itself, receipt-0007, published evidence (BOAS, Esparza-Iaizzo 2024)"},
-      {id:"EN-CI-01",verdict:"BLOCK",measured:321.65,rule:"< 100 g/kWh hard",txt:"placement pair: GR 321.65 STOP vs SE 34.91 CONTINUE under the declared budget (Ember 2024; receipts 0009/0010)"},
-      {id:"EN-CST-01",verdict:"REVIEW",measured:0.000779,rule:"< 0.01 EUR/1M q",txt:"threshold met, origin assumed (15 W wattage x Eurostat price): the gate refuses to launder it into PASS (receipt-0011)"}
+    verdicts:[      {id:"MB-LAT-01",verdict:"PASS",measured:1.076,origin:"measured",rule:"< 5 ms",txt:"modeled on D5.1 CLAIM-4 · CONTINUE"},      {id:"MB-CMP-01",verdict:"PASS",measured:3.94,origin:"measured",rule:">= 3.5x",txt:"modeled on D5.1 CLAIM-7 · CONTINUE"},      {id:"MB-CMP-02",verdict:"PASS",measured:0.988,origin:"measured",rule:">= 0.98 recall",txt:"CLAIM-7 accuracy side · CONTINUE"},      {id:"MB-ROB-01",verdict:"REVIEW",measured:0.944,origin:"measured",rule:">= 0.95 recall",txt:"within declared 0.02 margin · PAUSE, overridden by adam.kovacs, scoped to demo corpus"},      {id:"MB-ENE-01",verdict:"REVIEW",measured:null,origin:"missing",rule:"< 0.01 J",txt:"no direct evidence: energy unmetered, on purpose · PAUSE"},      {id:"MB-LAT-UP",verdict:"REVIEW",measured:82,origin:"upstream",rule:"< 100 ms",txt:"upstream quote, not a run: the naive baseline PASSes this, the gate PAUSEs it (receipt-0005)"},      {id:"BB-CLAIM2-WEAR",verdict:"PASS",measured:86.64,origin:"published",rule:">= 86 %",txt:"D5.1 Table 7 CLAIM-2 itself, receipt-0007, published evidence (BOAS, Esparza-Iaizzo 2024)"},      {id:"EN-CI-01",verdict:"BLOCK",measured:321.65,origin:"published",rule:"< 100 g/kWh hard",txt:"placement pair: GR 321.65 STOP vs SE 34.91 CONTINUE under the declared budget (Ember 2024; receipts 0009/0010)"},      {id:"EN-CST-01",verdict:"REVIEW",measured:0.000779,origin:"assumed",rule:"< 0.01 EUR/1M q",txt:"threshold met, origin assumed (15 W wattage x Eurostat price): the gate refuses to launder it into PASS (receipt-0011)"}
     ]
   },
   chain:[
@@ -237,29 +225,19 @@ function drawEff(){
       <div class="badge"><b>${x.bytes==null?"n/m":x.bytes+" B"}</b>recall ${x.recall.toFixed(3)}</div>
     </div>`).join("");
 }
-function drawRadar(){
+function drawCoverage(){
   const sc=S.data.scorecard,keys=Object.keys(sc);
   const labels={efficiency_sustainability:"Efficiency",transparency_explainability:"Transparency",
     accountability_auditability:"Accountability",reliability_robustness:"Reliability",
     security_misuse_resistance:"Security",human_agency_oversight:"Oversight"};
-  const cx=160,cy=150,R=104,n=keys.length;
-  const pt=(i,r)=>{const a=-Math.PI/2+i*2*Math.PI/n;
-    return[cx+r*Math.cos(a),cy+r*Math.sin(a)]};
-  let svg="";
-  for(const g of[.25,.5,.75,1]){
-    svg+=`<polygon points="${keys.map((_,i)=>pt(i,R*g).join(",")).join(" ")}"
-      fill="none" stroke="#DCD4EE" stroke-width="1"/>`;}
-  keys.forEach((_,i)=>{const[x,y]=pt(i,R);
-    svg+=`<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#DCD4EE"/>`;});
-  svg+=`<polygon points="${keys.map((k,i)=>pt(i,R*sc[k].score/100).join(",")).join(" ")}"
-    fill="rgba(108,63,197,.22)" stroke="#6C3FC5" stroke-width="2.5" stroke-linejoin="round"/>`;
-  const glyph={implemented:"\u25CF",partial:"\u25D0",absent:"\u25CB"};
-  keys.forEach((k,i)=>{const[x,y]=pt(i,R+22);
-    svg+=`<text x="${x}" y="${y}" text-anchor="middle">${labels[k]} ${glyph[sc[k].status]||sc[k].score}</text>`;});
-  $("radar").innerHTML=svg;
-  $("gaps").innerHTML=keys.map(k=>`<li><b>${labels[k]}</b>
-    <span class="score">${sc[k].status||sc[k].score}</span> · ${sc[k].gap}</li>`).join("");
-  $("method").textContent="Method: "+S.data.method;
+  const word={implemented:"SUPPORTED",partial:"PARTIAL",absent:"NOT DEMONSTRATED"};
+  const cls={implemented:"PASS",partial:"REVIEW",absent:"FAIL"};
+  $("coverage").innerHTML=keys.map(k=>`<div class="vrow">
+      <span class="vchip v-${cls[sc[k].status]||"REVIEW"}">${word[sc[k].status]||sc[k].status}</span>
+      <span class="vid">${labels[k]}</span>
+      <span class="vtxt">gap: ${sc[k].gap}</span>
+    </div>`).join("");
+  $("method").textContent="Method: "+S.data.method+" No numeric self-scores: coverage states what an artifact supports, and each row names its gap.";
 }
 function drawClaims(){
   const r=S.data.receipt;
@@ -268,16 +246,22 @@ function drawClaims(){
     const ov=(r.overridden||[]).includes(v.id)&&v.verdict==="REVIEW";
     return `<div class="vrow">
       <span class="vchip v-${v.verdict}">${v.verdict}</span>
-      ${ov?'<span class="vchip v-OVERRIDDEN">OVERRIDDEN</span>':''}
-      <span class="vid">${v.id}</span>
-      <span class="vtxt">${v.measured===null?"no evidence":"measured "+v.measured} against ${v.rule} · ${v.txt}</span>
+      ${ov?'<span class="vchip v-OVERRIDDEN">OVERRIDDEN</span>':''}      <span class="vid">${v.id}</span>
+      <span class="vid" style="opacity:.72">origin: ${v.origin||"n/a"}</span>
+      <span class="vtxt">${v.measured===null?"no evidence":"value "+v.measured} against ${v.rule} · ${v.txt}</span>
     </div>`}).join("");
   $("receiptMeta").textContent=`${r.file} · Ed25519 signed, evidence digests bound, chain ${r.all_valid?"verified":"BROKEN"}. Claim patterns from MANOLO D5.1 Table 7 (pp. 47-49).`;
 }
 function drawChain(){
-  const v=S.data.verify,recs=S.data.chain,el=$("chain");
+  const v=S.data.verify,all=S.data.chain,el=$("chain");
+  if(!v.valid)S.showAll=true;
+  const recs=(S.showAll||all.length<=6)?all:all.slice(-5);
+  const hidden=all.length-recs.length;
   el.classList.toggle("broken",!v.valid);
-  el.innerHTML=recs.map((r,i)=>{
+  el.innerHTML=(hidden>0?`<div class="block" style="cursor:pointer" role="button" tabindex="0" onclick="S.showAll=true;drawChain()" onkeydown="if(event.key==='Enter'){S.showAll=true;drawChain()}">
+        <div class="t">history</div>
+        <div class="h">${hidden} earlier records</div>
+        <div class="ts">activate to expand</div></div><div class="link"></div>`:"")+recs.map((r,i)=>{
     const bad=!v.valid&&r.index===v.break_index;
     const dim=!v.valid&&r.index>v.break_index;
     const snap=!v.valid&&r.index===v.break_index;
@@ -295,13 +279,14 @@ function drawChain(){
 }
 function setMode(live){S.live=live;
   $("mode").className="pill "+(live?"live":"sample");
-  $("modeTxt").textContent=live?"live server":"sample data";
+  $("modeTxt").textContent=live?"live server":"snapshot";
+  $("bVerify").textContent=live?"Verify chain":"Preview verification";
   $("bBench").disabled=!live;$("bAssess").disabled=!live;
   $("bTamper").disabled=live;
   $("src").innerHTML=live
     ?`Data: live from <code>${base()}</code>. Ledger file: results/ledger.jsonl.`
     :`Data: embedded sample from a verified run (2026-08-27, Node v22.22.2, seed 42). Start <code>node src/server.js</code> and reload for live mode.`;}
-function render(){drawEff();drawRadar();drawClaims();drawChain()}
+function render(){drawEff();drawCoverage();drawClaims();drawChain()}
 
 async function pullLive(){
   const ver=await j("/verify");
@@ -313,9 +298,9 @@ async function pullLive(){
       for(const f of rec.files){/* overrides listed via ledger types below */}
       S.data.receipt={file:"Latest "+rec.files[rec.files.length-1],
         summary:rec.latest.summary,all_valid:rec.verification.all_valid,
-        overridden:S.data.receipt?S.data.receipt.overridden:[],
-        verdicts:rec.latest.verdicts.map(v=>({id:v.id,verdict:v.verdict,
-          measured:v.measured,rule:v.comparator+" "+v.threshold+(v.unit?" "+v.unit:""),
+        overridden:S.data.receipt?S.data.receipt.overridden:[],        verdicts:rec.latest.verdicts.map(v=>({id:v.id,verdict:v.verdict,
+          measured:v.measured,origin:v.origin,
+          rule:v.comparator+" "+v.threshold+(v.unit?" "+v.unit:""),
           txt:(v.modeled_on||"").slice(0,80)}))};
     }else if(rec.latest&&rec.latest.type==="override"){
       if(S.data.receipt)S.data.receipt.overridden=rec.latest.override.overridden_claims;
@@ -323,19 +308,27 @@ async function pullLive(){
     }
   }catch(_){/* receipts endpoint optional */}
   S.data.chain=prov.records.map(r=>({index:r.index,type:r.type,ts:r.ts,hash:r.hash}));
-  S.data.verify=ver;
-  const lastA=[...prov.records].reverse().find(r=>r.type==="assessment");
+  S.data.verify=ver;  const lastA=[...prov.records].reverse().find(r=>r.type==="assessment");
   if(lastA){for(const[k,v]of Object.entries(lastA.payload.scores||{}))
-    if(S.data.scorecard[k])S.data.scorecard[k].score=v;}
+    if(S.data.scorecard[k])S.data.scorecard[k].score=v;
+    for(const[k,v]of Object.entries(lastA.payload.statuses||{}))
+      if(S.data.scorecard[k])S.data.scorecard[k].status=v;}
   const lastB=[...prov.records].reverse().find(r=>r.type==="benchmark");
   if(lastB&&lastB.payload){const p=lastB.payload;
     S.data.results.series[0].p50=p.fp32_p50_ms??S.data.results.series[0].p50;
     S.data.results.series[1].p50=p.int8_p50_ms??S.data.results.series[1].p50;}
 }
 async function boot(){
+  // No automatic probe: the page starts in snapshot mode and touches the
+  // network only when the visitor explicitly connects a local verifier.
+  setMode(false);
+  render();
+}
+async function connect(){
   try{await pullLive();setMode(true)}catch(_){setMode(false)}
   render();
 }
+$("bConnect").onclick=connect;
 $("bVerify").onclick=async()=>{
   if(S.live){try{S.data.verify=await j("/verify");await pullLive()}catch(_){setMode(false)}}
   else{S.data.verify=S.tampered
@@ -343,7 +336,7 @@ $("bVerify").onclick=async()=>{
     :{valid:true,records:S.data.chain.length};}
   render();};
 $("bTamper").onclick=()=>{S.tampered=!S.tampered;
-  $("bTamper").textContent=S.tampered?"Restore sample":"Preview tamper";
+  $("bTamper").textContent=S.tampered?"Restore snapshot":"Simulate tamper";
   $("bVerify").click();};
 $("bBench").onclick=async()=>{$("bBench").disabled=true;
   try{const r=await j("/benchmark?n=2000",{method:"POST"});
@@ -364,7 +357,7 @@ document.documentElement.classList.add('js');
 const revEls=[...document.querySelectorAll('h1,.sub,.chip,.panel')];
 const revIO=new IntersectionObserver(es=>{for(const e of es)if(e.isIntersecting){e.target.classList.add('in');revIO.unobserve(e.target)}},{rootMargin:'0px 0px -6% 0px'});
 revEls.forEach(el=>revIO.observe(el));
-$("port").onchange=boot;
+$("port").onchange=()=>{if(S.live)connect();};
 boot();
 </script>
 </body></html>

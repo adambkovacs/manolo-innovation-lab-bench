@@ -119,14 +119,11 @@
 
   <div class="chip">Efficiency, measured</div>
   <div class="panel" id="effPanel"></div>
-  <p class="legend">Bars: query latency p50, lower is better. Memory column: bytes per vector where measured. Recall@10 vs exact fp32 ground truth. Seeded, one command to reproduce.</p>
-
-  <div class="chip">Trustworthiness scorecard</div>
-  <div class="panel"><div class="cols">
-    <div><svg id="radar" viewBox="0 0 320 300" role="img" aria-label="per-principle scores"></svg></div>
-    <div><ul class="gaps" id="gaps"></ul>
-      <p class="legend" id="method"></p></div>
-  </div></div>
+  <p class="legend">Bars: query latency p50, lower is better. Memory column: bytes per vector where measured. Recall@10 vs exact fp32 ground truth. Seeded, one command to reproduce.</p>  <div class="chip">Trustworthiness evidence coverage</div>
+  <div class="panel">
+    <div id="coverage"></div>
+    <p class="legend" id="method"></p>
+  </div>
 
   <div class="chip">Claim receipts</div>
   <div class="panel">
@@ -172,16 +169,7 @@ const SAMPLE = {
   receipt:{
     file:"Sample verdicts drawn from receipts 0005 to 0011",summary:{PASS:3,REVIEW:2},all_valid:true,
     overridden:["MB-ROB-01","MB-ENE-01"],
-    verdicts:[
-      {id:"MB-LAT-01",verdict:"PASS",measured:1.076,rule:"< 5 ms",txt:"modeled on D5.1 CLAIM-4 · CONTINUE"},
-      {id:"MB-CMP-01",verdict:"PASS",measured:3.94,rule:">= 3.5x",txt:"modeled on D5.1 CLAIM-7 · CONTINUE"},
-      {id:"MB-CMP-02",verdict:"PASS",measured:0.988,rule:">= 0.98 recall",txt:"CLAIM-7 accuracy side · CONTINUE"},
-      {id:"MB-ROB-01",verdict:"REVIEW",measured:0.944,rule:">= 0.95 recall",txt:"within declared 0.02 margin · PAUSE, overridden by adam.kovacs, scoped to demo corpus"},
-      {id:"MB-ENE-01",verdict:"REVIEW",measured:null,rule:"< 0.01 J",txt:"no direct evidence: energy unmetered, on purpose · PAUSE"},
-      {id:"MB-LAT-UP",verdict:"REVIEW",measured:82,rule:"< 100 ms",txt:"upstream quote, not a run: the naive baseline PASSes this, the gate PAUSEs it (receipt-0005)"},
-      {id:"BB-CLAIM2-WEAR",verdict:"PASS",measured:86.64,rule:">= 86 %",txt:"D5.1 Table 7 CLAIM-2 itself, receipt-0007, published evidence (BOAS, Esparza-Iaizzo 2024)"},
-      {id:"EN-CI-01",verdict:"BLOCK",measured:321.65,rule:"< 100 g/kWh hard",txt:"placement pair: GR 321.65 STOP vs SE 34.91 CONTINUE under the declared budget (Ember 2024; receipts 0009/0010)"},
-      {id:"EN-CST-01",verdict:"REVIEW",measured:0.000779,rule:"< 0.01 EUR/1M q",txt:"threshold met, origin assumed (15 W wattage x Eurostat price): the gate refuses to launder it into PASS (receipt-0011)"}
+    verdicts:[      {id:"MB-LAT-01",verdict:"PASS",measured:1.076,origin:"measured",rule:"< 5 ms",txt:"modeled on D5.1 CLAIM-4 · CONTINUE"},      {id:"MB-CMP-01",verdict:"PASS",measured:3.94,origin:"measured",rule:">= 3.5x",txt:"modeled on D5.1 CLAIM-7 · CONTINUE"},      {id:"MB-CMP-02",verdict:"PASS",measured:0.988,origin:"measured",rule:">= 0.98 recall",txt:"CLAIM-7 accuracy side · CONTINUE"},      {id:"MB-ROB-01",verdict:"REVIEW",measured:0.944,origin:"measured",rule:">= 0.95 recall",txt:"within declared 0.02 margin · PAUSE, overridden by adam.kovacs, scoped to demo corpus"},      {id:"MB-ENE-01",verdict:"REVIEW",measured:null,origin:"missing",rule:"< 0.01 J",txt:"no direct evidence: energy unmetered, on purpose · PAUSE"},      {id:"MB-LAT-UP",verdict:"REVIEW",measured:82,origin:"upstream",rule:"< 100 ms",txt:"upstream quote, not a run: the naive baseline PASSes this, the gate PAUSEs it (receipt-0005)"},      {id:"BB-CLAIM2-WEAR",verdict:"PASS",measured:86.64,origin:"published",rule:">= 86 %",txt:"D5.1 Table 7 CLAIM-2 itself, receipt-0007, published evidence (BOAS, Esparza-Iaizzo 2024)"},      {id:"EN-CI-01",verdict:"BLOCK",measured:321.65,origin:"published",rule:"< 100 g/kWh hard",txt:"placement pair: GR 321.65 STOP vs SE 34.91 CONTINUE under the declared budget (Ember 2024; receipts 0009/0010)"},      {id:"EN-CST-01",verdict:"REVIEW",measured:0.000779,origin:"assumed",rule:"< 0.01 EUR/1M q",txt:"threshold met, origin assumed (15 W wattage x Eurostat price): the gate refuses to launder it into PASS (receipt-0011)"}
     ]
   },
   chain:[
@@ -222,29 +210,19 @@ function drawEff(){
       <div class="badge"><b>${x.bytes==null?"n/m":x.bytes+" B"}</b>recall ${x.recall.toFixed(3)}</div>
     </div>`).join("");
 }
-function drawRadar(){
+function drawCoverage(){
   const sc=S.data.scorecard,keys=Object.keys(sc);
   const labels={efficiency_sustainability:"Efficiency",transparency_explainability:"Transparency",
     accountability_auditability:"Accountability",reliability_robustness:"Reliability",
     security_misuse_resistance:"Security",human_agency_oversight:"Oversight"};
-  const cx=160,cy=150,R=104,n=keys.length;
-  const pt=(i,r)=>{const a=-Math.PI/2+i*2*Math.PI/n;
-    return[cx+r*Math.cos(a),cy+r*Math.sin(a)]};
-  let svg="";
-  for(const g of[.25,.5,.75,1]){
-    svg+=`<polygon points="${keys.map((_,i)=>pt(i,R*g).join(",")).join(" ")}"
-      fill="none" stroke="#DCD4EE" stroke-width="1"/>`;}
-  keys.forEach((_,i)=>{const[x,y]=pt(i,R);
-    svg+=`<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#DCD4EE"/>`;});
-  svg+=`<polygon points="${keys.map((k,i)=>pt(i,R*sc[k].score/100).join(",")).join(" ")}"
-    fill="rgba(108,63,197,.22)" stroke="#6C3FC5" stroke-width="2.5" stroke-linejoin="round"/>`;
-  const glyph={implemented:"\u25CF",partial:"\u25D0",absent:"\u25CB"};
-  keys.forEach((k,i)=>{const[x,y]=pt(i,R+22);
-    svg+=`<text x="${x}" y="${y}" text-anchor="middle">${labels[k]} ${glyph[sc[k].status]||sc[k].score}</text>`;});
-  $("radar").innerHTML=svg;
-  $("gaps").innerHTML=keys.map(k=>`<li><b>${labels[k]}</b>
-    <span class="score">${sc[k].status||sc[k].score}</span> · ${sc[k].gap}</li>`).join("");
-  $("method").textContent="Method: "+S.data.method;
+  const word={implemented:"SUPPORTED",partial:"PARTIAL",absent:"NOT DEMONSTRATED"};
+  const cls={implemented:"PASS",partial:"REVIEW",absent:"FAIL"};
+  $("coverage").innerHTML=keys.map(k=>`<div class="vrow">
+      <span class="vchip v-${cls[sc[k].status]||"REVIEW"}">${word[sc[k].status]||sc[k].status}</span>
+      <span class="vid">${labels[k]}</span>
+      <span class="vtxt">gap: ${sc[k].gap}</span>
+    </div>`).join("");
+  $("method").textContent="Method: "+S.data.method+" No numeric self-scores: coverage states what an artifact supports, and each row names its gap.";
 }
 function drawClaims(){
   const r=S.data.receipt;
@@ -253,16 +231,22 @@ function drawClaims(){
     const ov=(r.overridden||[]).includes(v.id)&&v.verdict==="REVIEW";
     return `<div class="vrow">
       <span class="vchip v-${v.verdict}">${v.verdict}</span>
-      ${ov?'<span class="vchip v-OVERRIDDEN">OVERRIDDEN</span>':''}
-      <span class="vid">${v.id}</span>
-      <span class="vtxt">${v.measured===null?"no evidence":"measured "+v.measured} against ${v.rule} · ${v.txt}</span>
+      ${ov?'<span class="vchip v-OVERRIDDEN">OVERRIDDEN</span>':''}      <span class="vid">${v.id}</span>
+      <span class="vid" style="opacity:.72">origin: ${v.origin||"n/a"}</span>
+      <span class="vtxt">${v.measured===null?"no evidence":"value "+v.measured} against ${v.rule} · ${v.txt}</span>
     </div>`}).join("");
   $("receiptMeta").textContent=`${r.file} · Ed25519 signed, evidence digests bound, chain ${r.all_valid?"verified":"BROKEN"}. Claim patterns from MANOLO D5.1 Table 7 (pp. 47-49).`;
 }
 function drawChain(){
-  const v=S.data.verify,recs=S.data.chain,el=$("chain");
+  const v=S.data.verify,all=S.data.chain,el=$("chain");
+  if(!v.valid)S.showAll=true;
+  const recs=(S.showAll||all.length<=6)?all:all.slice(-5);
+  const hidden=all.length-recs.length;
   el.classList.toggle("broken",!v.valid);
-  el.innerHTML=recs.map((r,i)=>{
+  el.innerHTML=(hidden>0?`<div class="block" style="cursor:pointer" role="button" tabindex="0" onclick="S.showAll=true;drawChain()" onkeydown="if(event.key==='Enter'){S.showAll=true;drawChain()}">
+        <div class="t">history</div>
+        <div class="h">${hidden} earlier records</div>
+        <div class="ts">activate to expand</div></div><div class="link"></div>`:"")+recs.map((r,i)=>{
     const bad=!v.valid&&r.index===v.break_index;
     const dim=!v.valid&&r.index>v.break_index;
     const snap=!v.valid&&r.index===v.break_index;
@@ -286,7 +270,7 @@ function setMode(live){S.live=live;
   $("src").innerHTML=live
     ?`Data: live from <code>${base()}</code>. Ledger file: results/ledger.jsonl.`
     :`Data: embedded sample from a verified run (2026-08-27, Node v22.22.2, seed 42). Start <code>node src/server.js</code> and reload for live mode.`;}
-function render(){drawEff();drawRadar();drawClaims();drawChain()}
+function render(){drawEff();drawCoverage();drawClaims();drawChain()}
 
 async function pullLive(){
   const ver=await j("/verify");
@@ -298,9 +282,9 @@ async function pullLive(){
       for(const f of rec.files){/* overrides listed via ledger types below */}
       S.data.receipt={file:"Latest "+rec.files[rec.files.length-1],
         summary:rec.latest.summary,all_valid:rec.verification.all_valid,
-        overridden:S.data.receipt?S.data.receipt.overridden:[],
-        verdicts:rec.latest.verdicts.map(v=>({id:v.id,verdict:v.verdict,
-          measured:v.measured,rule:v.comparator+" "+v.threshold+(v.unit?" "+v.unit:""),
+        overridden:S.data.receipt?S.data.receipt.overridden:[],        verdicts:rec.latest.verdicts.map(v=>({id:v.id,verdict:v.verdict,
+          measured:v.measured,origin:v.origin,
+          rule:v.comparator+" "+v.threshold+(v.unit?" "+v.unit:""),
           txt:(v.modeled_on||"").slice(0,80)}))};
     }else if(rec.latest&&rec.latest.type==="override"){
       if(S.data.receipt)S.data.receipt.overridden=rec.latest.override.overridden_claims;
@@ -308,10 +292,11 @@ async function pullLive(){
     }
   }catch(_){/* receipts endpoint optional */}
   S.data.chain=prov.records.map(r=>({index:r.index,type:r.type,ts:r.ts,hash:r.hash}));
-  S.data.verify=ver;
-  const lastA=[...prov.records].reverse().find(r=>r.type==="assessment");
+  S.data.verify=ver;  const lastA=[...prov.records].reverse().find(r=>r.type==="assessment");
   if(lastA){for(const[k,v]of Object.entries(lastA.payload.scores||{}))
-    if(S.data.scorecard[k])S.data.scorecard[k].score=v;}
+    if(S.data.scorecard[k])S.data.scorecard[k].score=v;
+    for(const[k,v]of Object.entries(lastA.payload.statuses||{}))
+      if(S.data.scorecard[k])S.data.scorecard[k].status=v;}
   const lastB=[...prov.records].reverse().find(r=>r.type==="benchmark");
   if(lastB&&lastB.payload){const p=lastB.payload;
     S.data.results.series[0].p50=p.fp32_p50_ms??S.data.results.series[0].p50;

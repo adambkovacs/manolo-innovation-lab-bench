@@ -13,9 +13,11 @@ declared origins, replayable verdicts, tamper-evident history.
 [![dependencies](https://img.shields.io/badge/core%20dependencies-0-1E7F5C)](package.json)
 
 [Plain-language site](https://adambkovacs.github.io/manolo-innovation-lab-bench/) ·
-[Live demo](https://adambkovacs.github.io/manolo-innovation-lab-bench/demo.html) ·
+[Interactive demo](https://adambkovacs.github.io/manolo-innovation-lab-bench/demo.html) ·
 [Three-minute explainer](EXPLAINER.md) ·
 [Quickstart](#quickstart-zero-dependencies-node-18)
+
+Judge's path, five stops: 1) the problem, D5.1's own evidence-status table; 2) the failure, a naive checker passing an upstream quote; 3) the intervention, a gate that checks the evidence basis and binds the decision into a signed receipt; 4) the result, deterministic verdicts, semantic replay, tamper detection, measured overhead; 5) the limits, declared origins, a pinned single-signer trust list, no proof of model safety.
 
 </div>
 
@@ -122,7 +124,9 @@ node src/claims.js evaluate fixtures/claims-place-se.json
 node src/claims.js evaluate fixtures/claims-cost.json
 ```
 
-## The two-minute demo
+## The demo: a 90-second core, the rest for questions
+
+Steps 2, 4, 7, and 8 are the core: fail-open, verdicts, tamper, and the real-table close. Steps 3, 5, and 6 answer questions when they come; do not run them unprompted.
 
 1. `node src/server.js`, open the dashboard.
 2. Fail open: `node src/baseline.js fixtures/claims-upstream.json` passes an upstream 82 ms quote. The gate on the same input: REVIEW, PAUSE, origin named.

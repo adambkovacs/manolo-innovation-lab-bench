@@ -46,8 +46,8 @@ s.addNotes('Open with pre-work transparency using the tool itself: the ledger ti
 
 // Slide 2, the anchor
 s = p.addSlide(); s.background = { color: BG };
-title(s, 'Fourteen of fifteen claims lack direct evidence');
-s.addText('14 / 15', { x: 0.6, y: 1.55, w: 4.0, h: 1.45, fontFace: SANS, fontSize: 84,
+title(s, '8 cite no direct evidence, 6 require validation, 1 cites evidence');
+s.addText('8 · 6 · 1', { x: 0.6, y: 1.55, w: 4.0, h: 1.45, fontFace: SANS, fontSize: 84,
   bold: true, color: PURPLE, isTextBox: true, margin: 0 });
 s.addText('claims in the framework\'s published assessment table carry no direct evidence, in the assessment itself.',
   { x: 0.6, y: 3.15, w: 3.9, h: 1.4, fontFace: SANS, fontSize: 14, color: INK, isTextBox: true, margin: 0 });
@@ -112,7 +112,7 @@ s.addNotes('Show only three live outcomes in the demo: CONTINUE, PAUSE, STOP. Ke
 
 // Slide 4, measured evidence
 s = p.addSlide(); s.background = { color: BG };
-title(s, '3.94x smaller, 3.4x faster, every number replays');
+title(s, 'We tried to break the gate before asking you to trust it');
 s.addChart(p.ChartType.bar, [{
   name: 'p50 latency (ms)',
   labels: ['fp32 exact', 'int8 quantized', 'RuVector HNSW'],
@@ -138,7 +138,7 @@ s.addText('recall@10, int8 and HNSW, against exact ground truth', { x: 7.5, y: 3
 s.addText('HNSW latency crosses runtimes (native SIMD Rust vs a JS loop): read it as packaged-system latency for a deployment decision.',
   { x: 7.5, y: 4.35, w: 5.2, h: 0.9, fontFace: SANS, fontSize: 10.5, italic: true,
     color: MUT, isTextBox: true, margin: 0 });
-s.addText('gate tested: 6/6 verdicts · 3/3 tamper caught · 3/3 canonicalization · verify p95 under 0.25 ms · 0 network calls',
+s.addText('7/7 verdicts incl. hard-inside-margin · unauthorised signer rejected · wrong verdict caught by replay · 3/3 tamper caught · verify p95 under 0.25 ms · 0 outbound attempts',
   { x: 0.6, y: 6.35, w: 12.1, h: 0.4, fontFace: MONO, fontSize: 11.5, color: PURPLE,
     isTextBox: true, margin: 0 });
 s.addNotes('SESSION SLOT: after the hour-1 rerun, update the three bar values and the recall numbers with the live run. State the runtime caveat unprompted.');
@@ -216,12 +216,12 @@ s.addNotes('Read these plainly. Scoring ourselves REVIEW where we are REVIEW is 
 
 // Slide 8, dark close
 s = p.addSlide(); s.background = { color: DARK };
-s.addText('Worth adopting? Thirty minutes with WP5 decides', { x: 0.9, y: 1.9, w: 11.5,
+s.addText('Pilot it on one WP5 claim table', { x: 0.9, y: 1.9, w: 11.5,
   h: 0.9, fontFace: SANS, fontSize: 34, bold: true, color: WHITE, isTextBox: true, margin: 0 });
 s.addText('Thirty minutes with WP5: point the contract at the Table 7 claims, the use-case owners declare the thresholds, the receipts recompute.',
   { x: 0.9, y: 3.0, w: 11.0, h: 0.8, fontFace: SANS, fontSize: 16, color: LAV,
     isTextBox: true, margin: 0 });
-s.addText('Ready to hand over. Dublin, October 20.', { x: 0.9, y: 3.95, w: 11.0, h: 0.5,
+s.addText('Trust in the loop needs evidence in the loop.', { x: 0.9, y: 3.95, w: 11.0, h: 0.5,
   fontFace: SANS, fontSize: 16, bold: true, color: WHITE, isTextBox: true, margin: 0 });
 s.addText('github.com/adambkovacs/manolo-innovation-lab-bench · Apache-2.0 · every verdict replays from the repo',
   { x: 0.9, y: 4.75, w: 11.0, h: 0.45, fontFace: MONO, fontSize: 13, color: LAV,

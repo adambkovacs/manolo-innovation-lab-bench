@@ -37,9 +37,9 @@ itself to the same bar it applies to everyone else.
 
 **What does the energy part mean for a normal company?**
 Where you run AI changes its carbon footprint and its electricity bill. The
-same workload can be nine times cleaner and almost half the price in one
-country versus another, using public data anyone can check (Sweden 34.91 vs
-Greece 321.65 gCO2e/kWh, Ember 2024; 0.0970 vs 0.1738 EUR/kWh, Eurostat
+published grid-intensity input is about 9.2 times lower in Sweden than in
+Greece, and the published price about half, using public data anyone can
+check (34.91 vs 321.65 gCO2e/kWh, Ember 2024; 0.0970 vs 0.1738 EUR/kWh, Eurostat
 2025-S2). Receipts turn that choice into an accountable record.
 
 **Is this an official MANOLO tool?**
@@ -49,8 +49,10 @@ designed to plug in, and it never claims compatibility with systems that have
 no public interface yet.
 
 **Does it send my data anywhere?**
-No. Zero network calls, verified by the test suite. Everything runs and
-verifies locally, and the whole history replays from the repository.
+No. The core CLI and test suite make zero outbound calls, enforced by
+tripwired networking APIs in the tests. The demo page talks to a local
+server only when you explicitly connect it; everything runs and verifies
+locally, and the whole history replays from the repository.
 
 **What does it deliberately not do?**
 It does not meter energy in joules, does not store data lineage, does not

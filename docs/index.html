@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>MANOLO-Bench + TRACE receipts: signed, checkable receipts for AI promises</title>
-<meta name="description" content="Every AI promise gets a checkable, Ed25519-signed receipt: the claim, the bar, the measured number, the verdict. Built for the MANOLO assessment loop (Horizon Europe). Plain-language explainer, live demo, FAQ.">
+<meta name="description" content="Quantified AI claims get checkable, Ed25519-signed receipts: the claim, the bar, the measured number, the verdict. Built for the MANOLO assessment loop (Horizon Europe). Plain-language explainer, interactive demo, FAQ.">
 <link rel="canonical" href="https://adambkovacs.github.io/manolo-innovation-lab-bench/">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <meta name="theme-color" content="#241E38">
@@ -113,16 +113,16 @@
 <nav aria-label="site"><div class="row">
   <span class="brand">MANOLO-Bench + TRACE</span>
   <a href="#story">The idea</a><a href="#why">Why</a><a href="#how">How</a>
-  <a href="#reallife">Real life</a><a href="#faq">FAQ</a><a href="demo.html">Live demo</a>
+  <a href="#reallife">Real life</a><a href="#faq">FAQ</a><a href="demo.html">Demo</a>
   <a href="slides.html">Slides</a>
 </div></nav>
 
 <header class="hero"><div class="in">
   <h1>A claim is not evidence</h1>
-  <p class="sub">until it carries a receipt.</p>
-  <p>AI teams make promises: fast, cheap, accurate, battery-friendly, clean. This project turns
+  <p class="sub">until it carries a receipt.</p>  <p>AI teams make promises: fast, cheap, accurate, battery-friendly, clean. This project turns
   each promise into a checkable receipt that anyone can verify, and that breaks visibly if anyone
-  edits the story afterwards.</p>
+  edits the story afterwards. A receipt does not make a claim true; it makes the claim's basis
+  and the decision taken on it inspectable.</p>
   <div class="chips">
     <span class="k kp">PASS</span><span class="k kr">REVIEW</span>
     <span class="k kf">BLOCK</span><span class="k ks">SIGNED</span>
@@ -149,15 +149,15 @@ Nobody can wave a red light through, and the amber one can only be overridden by
 signs their name, their reason, and its scope. That override becomes a receipt too.</p>
 
 <h2 id="why">Why this exists</h2>
-<div class="card">
-  <div class="big">14 / 15</div>
+<div class="card">  <div class="big">8 · 6 · 1</div>
   <p style="margin:4px 0 8px">MANOLO builds trustworthy, efficient AI across healthcare and industrial robotics, mobile
   computer vision, and wearable EEG. It already stores run metrics, tracks where data came from, and raises alerts
   while systems run. Its assessment method writes down every promise a system makes and marks
-  which ones have cited evidence; in the one promise table published in full, the column titled
-  "Evidence from Case Log" reads "no direct evidence cited" or "requires validation study" for
-  fourteen of fifteen promises.
-  The run logs exist. What is missing is the binding: nothing connects a specific promise to the
+  which ones have cited evidence; in the one promise table published in full, 8 promises cite
+  no direct evidence, 6 still require a validation study, and 1 cites evidence. That is the
+  assessment doing the honest thing: it separates what is supported from what still needs work.
+  MANOLO publicly documents run metrics, provenance, and benchmarking. In the nine public
+  deliverables we reviewed, we found no artifact that connects a specific promise to the
   specific run that would evidence it and keeps the verdict. We built that binding, and it is
   use-case-agnostic: the same co-design process ran for every use case,
   and the receipts in this repository already cover energy, cost, and benchmark claims that
@@ -210,7 +210,7 @@ table that had published evidence gets its receipt: number 0007. Formalizing the
 <div class="grid">
   <div class="card"><h3 style="margin-top:0">A hospital buying a sleep wearable</h3>
   <p class="muted" style="margin:0">The brochure says "real-time". Instead of trusting the adjective, procurement asks for the receipt on the number behind it. A vendor quote alone shows as paused, never as passed: a receipt does not make a vendor honest, it makes the vendor's declared basis explicit, signed, and permanent. The evidence trail stays checkable
-  after the meeting.</p></div>
+  after the meeting. An illustrative procurement scenario; a receipt does not establish clinical validity.</p></div>
   <div class="card"><h3 style="margin-top:0">A funder or project officer</h3>
   <p class="muted" style="margin:0">Research projects publish claim tables. Receipts make those
   tables checkable years later: who claimed what, against which evidence, and what the verdict
@@ -220,8 +220,7 @@ table that had published evidence gets its receipt: number 0007. Formalizing the
   cleaner and cheaper option gets the green light, and the decision itself becomes a signed
   record instead of an undocumented opinion.</p></div>
 </div>
-<div class="card">
-  <h3 style="margin-top:0">The energy numbers are real</h3>
+<div class="card">  <h3 style="margin-top:0">Published grid and price inputs</h3>
   <table>
     <tr><th scope="col">Zone</th><th scope="col">Grid carbon (gCO2e/kWh, 2024)</th><th scope="col">Electricity price (EUR/kWh, 2025)</th><th scope="col">Verdict under a 100 g budget</th></tr>
     <tr><td><b>Sweden</b></td><td class="mono">34.91</td><td class="mono">0.0970</td><td><span class="k kp">CONTINUE</span></td></tr>
@@ -258,16 +257,18 @@ it and signed. Change any digit of the evidence or the receipt and verification 
 of pretending. A checking tool has to hold itself
 to the same bar it applies to everyone else.</p></details>
 <details><summary>What does the energy part mean for a normal company?</summary>
-<p>Where you run AI changes its carbon footprint and its electricity bill. The same workload can
-be nine times cleaner and almost half the price in one country versus another, using public data
-anyone can check. Receipts turn that choice into an accountable record.</p></details>
+<p>Where you run AI changes its carbon footprint and its electricity bill. The published
+grid-intensity input is about 9.2 times lower in one country than another, and the published
+price about half, using public data anyone can check; actual emissions also depend on workload
+energy, hardware, and time. Receipts turn the placement choice into an accountable record.</p></details>
 <details><summary>Is this an official MANOLO tool?</summary>
 <p>No. It is an independent, open-source build for the MANOLO Innovation Lab, based on the
 project's public documents. It uses their vocabulary and is designed to plug in, and it never
 claims compatibility with systems that have no public interface yet.</p></details>
 <details><summary>Does it send my data anywhere?</summary>
-<p>No. Zero network calls, verified by the test suite. Everything runs and verifies locally, and
-the whole history replays from the repository.</p></details>
+<p>No. The core CLI and test suite make zero outbound calls, enforced by tripwired networking
+APIs in the tests; the demo page talks to a local server only when you explicitly connect it.
+Everything runs and verifies locally, and the whole history replays from the repository.</p></details>
 <details><summary>What does it deliberately not do?</summary>
 <p>It does not meter energy in joules, does not store data lineage, does not replace live
 monitoring, and does not prove a model is safe or clinically effective. It proves one thing well:

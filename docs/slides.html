@@ -96,11 +96,10 @@
 </div></section>
 
 <section class="slide"><div>
-  <div class="rise eyebrow">The anchor: D5.1 · section 7.2.5 · Table 7 · pages 47 to 49 · column: "Evidence from Case Log"</div>
-  <div class="rise big">14 / 15</div>
-  <h1 class="rise" style="font-size:clamp(22px,3.4vw,36px)">claims in the published assessment table are marked without direct cited evidence, by the assessment itself</h1>
-  <p class="rise">CLAIM-4: sub-100 ms latency, no direct evidence cited. CLAIM-7: compression maintains accuracy, quantitative benchmarks needed. These are the deliverable's own words, and they name our build.</p>
-  <p class="rise note">The run logs exist: MLflow, Thanos, provenance in D2.1. What nothing does is bind a claim to its run and keep the verdict. The same co-design process ran for every use case; this is the only published table that pairs claims with evidence status. The instrument is use-case-agnostic.</p>
+  <div class="rise eyebrow">The anchor: D5.1 · section 7.2.5 · Table 7 · pages 47 to 49 · column: "Evidence from Case Log"</div>  <div class="rise big">8 · 6 · 1</div>
+  <h1 class="rise" style="font-size:clamp(22px,3.4vw,36px)">8 claims cite no direct evidence, 6 require validation studies, 1 cites evidence</h1>
+  <p class="rise">CLAIM-4: sub-100 ms latency, no direct evidence cited. CLAIM-7: compression maintains accuracy, quantitative benchmarks needed. The assessment marks the uncertainty honestly; we used this table as a design brief.</p>
+  <p class="rise note">MANOLO publicly documents run metrics (MLflow, Thanos), provenance (D2.1), and benchmarking. Across nine public deliverables we found no artifact that binds a claim to its run and keeps the verdict. The same co-design process ran for every use case; this is the only published table pairing claims with evidence status. The instrument is use-case-agnostic.</p>
 </div></section>
 
 <section class="slide"><div>
@@ -122,16 +121,14 @@
 </div></section>
 
 <section class="slide"><div>
-  <div class="rise eyebrow">Evidence, measured 2026-08-27 · seed 42 · one command to reproduce</div>
-  <h1 class="rise">3.94x smaller vector payload at recall 0.988, and we tried to break the gate</h1>
+  <div class="rise eyebrow">Evidence, measured 2026-08-27 · seed 42 · one command to reproduce</div>  <h1 class="rise">We tried to break the gate before asking you to trust it</h1>
+  <p class="rise">Predeclared acceptance gates: 7/7 verdict fixtures including a hard miss inside a review margin, an unauthorised signer rejected with its signature intact, a signed-but-wrong verdict caught by semantic replay, 3/3 tamper mutations, canonical variants to one digest, verify p95 under 0.25 ms, zero outbound network attempts. Public CI replays all of it on every push.</p>
   <table class="rise">
     <tr><th>series</th><th>p50</th><th>p95</th><th>bytes/vec</th><th>recall@10</th></tr>
     <tr><td>fp32 exact, ground truth</td><td class="mono">3.66 ms</td><td class="mono">10.04 ms</td><td class="mono">1024</td><td class="mono">1.000</td></tr>
     <tr><td>int8 quantized</td><td class="mono">3.38 ms</td><td class="mono">5.35 ms</td><td class="mono">260</td><td class="mono">0.988</td></tr>
     <tr><td>RuVector HNSW, native SIMD</td><td class="mono">1.076 ms</td><td class="mono">1.387 ms</td><td class="mono">n/m</td><td class="mono">0.944</td></tr>
-  </table>
-  <p class="rise">Gate tested with predeclared acceptance gates: 6/6 verdict fixtures, 3/3 tamper mutations caught, 3/3 canonicalization variants to one digest, verify p95 under 0.25 ms, zero network calls. Public CI replays all of it on every push.</p>
-  <p class="rise note">Caveat: HNSW latency crosses runtimes (native SIMD Rust vs a JS loop). It is packaged-system latency for a deployment decision, not an isolated algorithmic result.</p>
+  </table>  <p class="rise note">The bench is the evidence producer: 3.94x smaller encoded vector payload at recall 0.988. Caveat: HNSW latency crosses runtimes (native SIMD Rust vs a JS loop), packaged-system latency for a deployment decision, not an isolated algorithmic result. The full table stays here as appendix material.</p>
 </div></section>
 
 <section class="slide"><div>
@@ -172,10 +169,9 @@
 
 <section class="slide"><div>
   <div class="rise eyebrow">The ask</div>
-  <h1 class="rise">Worth adopting? Thirty minutes with WP5 decides</h1>
+  <h1 class="rise">Pilot it on one WP5 claim table</h1>
   <p class="rise sub">Thirty minutes with WP5.</p>
-  <p class="rise">Point the contract at the Table 7 claims, the use-case owners declare the thresholds, the receipts recompute. We hand over the specification and rename every field to your internal vocabulary. An afternoon turns the remaining fourteen rows into contracts; the six needing validation studies read REVIEW until the studies run.</p>
-  <p class="rise"><b>Ready to hand over. Dublin, October 20.</b></p>
+  <p class="rise">Point the contract at the Table 7 claims, the use-case owners declare the thresholds, the receipts recompute. We hand over the specification and rename every field to your internal vocabulary. An afternoon turns the remaining fourteen rows into contracts; the six needing validation studies read REVIEW until the studies run.</p>  <p class="rise"><b>Trust in the loop needs evidence in the loop.</b></p>
   <p class="rise note" style="font-family:var(--mono)">github.com/adambkovacs/manolo-innovation-lab-bench · Apache-2.0 · every verdict replays from the repo</p>
   <div class="rise chips"><span class="k kp">PASS</span><span class="k kp">CONTINUE</span><span class="k ks">SIGNED</span></div>
 </div></section>
