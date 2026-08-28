@@ -96,8 +96,11 @@
   .v-OVERRIDDEN{background:var(--chip);color:var(--accent)}
   .vrow .vid{font:600 12.5px var(--mono)}
   .vrow .vtxt{color:var(--ink-soft);font-size:12.5px;flex:1;min-width:180px}
-  .hdr{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
-  .howto{background:var(--panel2,#EFEAFB);border:1px solid #DCD4F2;border-radius:12px;padding:4px 16px;margin:14px 0 18px}
+  .hdr{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}  .howto{background:var(--panel2,#EFEAFB);border:1px solid #DCD4F2;border-radius:12px;padding:4px 16px;margin:14px 0 18px}
+  .flash{outline:2.5px solid #6C3FC5;outline-offset:3px;border-radius:10px}
+  .storycap{margin:10px 0 0;padding:9px 12px;border-radius:9px;background:#EFEAFB;
+    border:1px solid #DCD4F2;color:var(--ink);font-size:14px}
+  @media(prefers-reduced-motion:reduce){.flash{outline-style:dotted}}
   .howto summary{cursor:pointer;font-weight:600;padding:8px 0;color:var(--ink)}
   .howto p{font-size:13px;line-height:1.55;color:var(--ink-soft);margin:8px 0}
   .k{font-family:ui-monospace,Menlo,monospace;font-weight:700;font-size:11.5px;padding:1px 8px;border-radius:9px}
@@ -129,17 +132,19 @@
     <p>Every AI promise here is checked against evidence and turned into a signed receipt, like the inspection sticker in an elevator. Green means the promise held. Amber means a named human must look. Red means stop.</p>
     <p><span class="k kp">PASS</span> promise kept, evidence accepted &nbsp; <span class="k kr">REVIEW</span> paused for a human decision &nbsp; <span class="k kf">FAIL</span> promise missed &nbsp; <span class="k kb">BLOCK</span> hard stop, do not proceed</p>
     <p>Where a number comes from matters: measured here, published by a named source, quoted by a vendor, or assumed. A vendor quote can pause a check even when the number looks good, because a quote is not a measurement.</p>    <p>Buttons: Preview verification re-checks the snapshot state. Simulate tamper shows what one edited digit does. Connect local verifier switches to your own running server, where the checks are cryptographic. Nothing leaves your machine unless you connect.</p>
-  </details>  <div class="chip">The same number, two checkers</div>
-  <div class="panel"><div class="cols">
+  </details>  <div class="chip">A good number is not yet good evidence</div>
+  <div class="panel">
+  <p style="margin:4px 0 10px">A vendor quotes 82 ms against a 100 ms requirement. The number clears the bar; that is exactly the trap. Nobody measured it.</p>
+  <div class="cols">
     <div>
       <p style="margin:4px 0 6px"><b>Naive checker</b> <span class="legend">src/baseline.js</span></p>
-      <p style="margin:0 0 6px">82 ms against &lt; 100 ms → <span class="k kp">PASS</span></p>
-      <p class="legend" style="margin:0">Origin ignored: a vendor quote sails through and the pipeline acts on it.</p>
+      <p style="margin:0 0 6px">82 &lt; 100 → <span class="k kp">PASS</span>, pipeline proceeds</p>
+      <p class="legend" style="margin:0">It checked the arithmetic and nothing else. The quote is now treated as a fact.</p>
     </div>
     <div>
       <p style="margin:4px 0 6px"><b>TRACE gate</b> <span class="legend">same input</span></p>
-      <p style="margin:0 0 6px">82 ms against &lt; 100 ms, origin upstream → <span class="k kr">REVIEW</span> · PAUSE</p>
-      <p class="legend" style="margin:0">Not accepted measured evidence: paused for a named human, on the record as receipt-0005.</p>
+      <p style="margin:0 0 6px">82 &lt; 100, but origin is a quote → <span class="k kr">REVIEW</span> · PAUSE</p>
+      <p class="legend" style="margin:0">The claim accepts only measured evidence. A named human decides; receipt-0005 records it.</p>
     </div>
   </div>
   <p class="legend" style="margin-bottom:4px">Run both yourself: <code>node src/baseline.js fixtures/claims-upstream.json</code>, then <code>node src/claims.js evaluate fixtures/claims-upstream.json</code>.</p></div>
@@ -152,10 +157,10 @@
 
   <div class="chip">Provenance chain</div>
   <div class="panel">
-    <div class="chain" id="chain" tabindex="0" role="region" aria-label="provenance chain, scrolls sideways"></div>
-    <div id="banner" class="banner ok" role="status" aria-live="polite">Chain intact</div>
-    <div class="btns">
+    <div class="chain" id="chain" tabindex="0" role="region" aria-label="provenance chain, scrolls sideways"></div>    <div id="banner" class="banner ok" role="status" aria-live="polite">Chain intact</div>
+    <p id="storycap" class="storycap" hidden aria-live="polite"></p>    <div class="btns">
       <button id="bVerify">Preview verification</button>
+      <button id="bStory" class="ghost">Play the story</button>
       <button id="bConnect" class="ghost">Connect local verifier</button>
       <button id="bBench" class="ghost">Run benchmark</button>
       <button id="bAssess" class="ghost">Run assessment</button>
@@ -199,7 +204,7 @@ const SAMPLE = {
   receipt:{
     file:"Sample verdicts drawn from receipts 0005 to 0011",summary:{PASS:3,REVIEW:2},all_valid:true,
     overridden:["MB-ROB-01","MB-ENE-01"],
-    verdicts:[      {id:"MB-LAT-01",verdict:"PASS",measured:1.076,origin:"measured",rule:"< 5 ms",txt:"modeled on D5.1 CLAIM-4 · CONTINUE"},      {id:"MB-CMP-01",verdict:"PASS",measured:3.94,origin:"measured",rule:">= 3.5x",txt:"modeled on D5.1 CLAIM-7 · CONTINUE"},      {id:"MB-CMP-02",verdict:"PASS",measured:0.988,origin:"measured",rule:">= 0.98 recall",txt:"CLAIM-7 accuracy side · CONTINUE"},      {id:"MB-ROB-01",verdict:"REVIEW",measured:0.944,origin:"measured",rule:">= 0.95 recall",txt:"within declared 0.02 margin · PAUSE, overridden by adam.kovacs, scoped to demo corpus"},      {id:"MB-ENE-01",verdict:"REVIEW",measured:null,origin:"missing",rule:"< 0.01 J",txt:"no direct evidence: energy unmetered, on purpose · PAUSE"},      {id:"MB-LAT-UP",verdict:"REVIEW",measured:82,origin:"upstream",rule:"< 100 ms",txt:"upstream quote, not a run: the naive baseline PASSes this, the gate PAUSEs it (receipt-0005)"},      {id:"BB-CLAIM2-WEAR",verdict:"PASS",measured:86.64,origin:"published",rule:">= 86 %",txt:"D5.1 Table 7 CLAIM-2 itself, receipt-0007, published evidence (BOAS, Esparza-Iaizzo 2024)"},      {id:"EN-CI-01",verdict:"BLOCK",measured:321.65,origin:"published",rule:"< 100 g/kWh hard",txt:"placement pair: GR 321.65 STOP vs SE 34.91 CONTINUE under the declared budget (Ember 2024; receipts 0009/0010)"},      {id:"EN-CST-01",verdict:"REVIEW",measured:0.000779,origin:"assumed",rule:"< 0.01 EUR/1M q",txt:"threshold met, origin assumed (15 W wattage x Eurostat price): the gate refuses to launder it into PASS (receipt-0011)"}
+    verdicts:[      {id:"MB-LAT-01",verdict:"PASS",measured:1.076,origin:"measured",rule:"< 5 ms",txt:"D5.1 CLAIM-4 pattern · CONTINUE"},      {id:"MB-CMP-01",verdict:"PASS",measured:3.94,origin:"measured",rule:">= 3.5x",txt:"D5.1 CLAIM-7 pattern · CONTINUE"},      {id:"MB-CMP-02",verdict:"PASS",measured:0.988,origin:"measured",rule:">= 0.98 recall",txt:"D5.1 CLAIM-7 accuracy side · CONTINUE"},      {id:"MB-ROB-01",verdict:"REVIEW",measured:0.944,origin:"measured",rule:">= 0.95 recall",txt:"inside 0.02 margin · PAUSE · override by adam.kovacs, scoped to the demo corpus"},      {id:"MB-ENE-01",verdict:"REVIEW",measured:null,origin:"missing",rule:"< 0.01 J",txt:"energy unmetered · PAUSE"},      {id:"MB-LAT-UP",verdict:"REVIEW",measured:82,origin:"upstream",rule:"< 100 ms",txt:"vendor quote, not a run · PAUSE (receipt-0005)"},      {id:"BB-CLAIM2-WEAR",verdict:"PASS",measured:86.64,origin:"published",rule:">= 86 %",txt:"D5.1 CLAIM-2 · BOAS, Esparza-Iaizzo 2024 (receipt-0007)"},      {id:"EN-CI-01",verdict:"BLOCK",measured:321.65,origin:"published",rule:"< 100 g/kWh hard",txt:"hard carbon budget: Greece STOP, Sweden 34.91 CONTINUE (receipts 0009/0010)"},      {id:"EN-CST-01",verdict:"REVIEW",measured:0.000779,origin:"assumed",rule:"< 0.01 EUR/1M q",txt:"threshold met, origin assumed · PAUSE (receipt-0011)"}
     ]
   },
   chain:[
@@ -265,7 +270,7 @@ function drawClaims(){
       <span class="vid" style="opacity:.72">origin: ${v.origin||"n/a"}</span>
       <span class="vtxt">${v.measured===null?"no evidence":"value "+v.measured} against ${v.rule} · ${v.txt}</span>
     </div>`}).join("");
-  $("receiptMeta").textContent=`${r.file} · Ed25519 signed by a pinned signer, evidence digests bound, verdicts semantically replayed, chain ${r.all_valid?"verified":"BROKEN"}. Claim patterns from MANOLO D5.1 Table 7 (pp. 47-49).`;
+  $("receiptMeta").textContent=`${r.file} · signed by a pinned key, digests bound, verdicts replayed, chain ${r.all_valid?"verified":"BROKEN"} · claim patterns from D5.1 Table 7`;
 }
 function drawChain(){
   const v=S.data.verify,all=S.data.chain,el=$("chain");
@@ -294,10 +299,9 @@ function drawChain(){
 }
 function setMode(live){S.live=live;
   $("mode").className="pill "+(live?"live":"sample");
-  $("modeTxt").textContent=live?"live server":"snapshot";
-  $("bVerify").textContent=live?"Verify chain":"Preview verification";
+  $("modeTxt").textContent=live?"live server":"snapshot";  $("bVerify").textContent=live?"Verify chain":"Preview verification";
   $("bBench").disabled=!live;$("bAssess").disabled=!live;
-  $("bTamper").disabled=live;
+  $("bTamper").disabled=live;$("bStory").disabled=live;
   $("src").innerHTML=live
     ?`Data: live from <code>${base()}</code>. Ledger file: results/ledger.jsonl.`
     :`Data: embedded sample from a verified run (2026-08-27, Node v22.22.2, seed 42). Start <code>node src/server.js</code> and reload for live mode.`;}
@@ -333,6 +337,52 @@ async function pullLive(){
     S.data.results.series[0].p50=p.fp32_p50_ms??S.data.results.series[0].p50;
     S.data.results.series[1].p50=p.int8_p50_ms??S.data.results.series[1].p50;}
 }
+// Play the story: a guided replay of the COMMITTED history. Every step
+// points at a real ledger record or receipt already in the repository;
+// nothing is computed or invented, which is why it is honest to show.
+const REDUCED=matchMedia("(prefers-reduced-motion: reduce)").matches;
+let storyTimer=null,storyStep=0;
+function flashEls(els){els.forEach(e=>{if(!e)return;e.classList.add("flash");
+  if(e.scrollIntoView)e.scrollIntoView({behavior:REDUCED?"auto":"smooth",block:"nearest",inline:"center"});});}
+function chainBlock(type){return [...$("chain").querySelectorAll(".block")]
+  .find(b=>b.textContent.includes(type));}
+function claimRow(id){return [...$("claims").querySelectorAll(".vrow")]
+  .find(r=>r.textContent.includes(id));}
+const STORY=[
+  {cap:"The bench runs: latency, payload bytes, and recall are measured and land in the ledger as a benchmark record.",
+   run:()=>flashEls([$("effPanel"),chainBlock("benchmark")])},
+  {cap:"Claims are evaluated against that evidence. Every verdict becomes an Ed25519-signed receipt, chained to the one before it.",
+   run:()=>flashEls([claimRow("MB-LAT-01"),chainBlock("receipt")])},
+  {cap:"A borderline result pauses as REVIEW. The override needs a named person, a reason, and a scope, and it is itself a signed receipt in the chain.",
+   run:()=>flashEls([claimRow("MB-ROB-01")])},
+  {cap:"A vendor quote clears the bar numerically and still pauses: the claim accepts only measured evidence (receipt-0005).",
+   run:()=>flashEls([claimRow("MB-LAT-UP")])},
+  {cap:"The assessment reads the artifacts and records evidence coverage, itself a chained record.",
+   run:()=>flashEls([$("coverage"),chainBlock("assessment")])},
+  {cap:"The attack: one edited digit in the evidence. The chain names the exact record where integrity breaks; everything after it is untrusted.",
+   run:()=>{S.tampered=true;$("bVerify").click();flashEls([$("banner")]);}},
+  {cap:"Restored: intact again. In the local demo this is a real file edit and a real cryptographic re-verification; this page previews that state on the committed snapshot.",
+   run:()=>{S.tampered=false;$("bVerify").click();flashEls([$("banner")]);}},
+  {cap:"Everything you just watched is committed history: three bench runs, eleven receipts including one override, three assessments, one hash chain.",
+   run:()=>flashEls([$("banner")])},
+];
+function clearFlash(){document.querySelectorAll(".flash").forEach(e=>e.classList.remove("flash"));}
+function storyStop(){clearTimeout(storyTimer);storyTimer=null;clearFlash();
+  $("storycap").hidden=true;$("bStory").textContent="Play the story";
+  if(S.tampered){S.tampered=false;$("bTamper").textContent="Simulate tamper";$("bVerify").click();}}
+function storyNext(){clearFlash();
+  if(storyStep>=STORY.length){storyStop();return;}
+  const st=STORY[storyStep++];
+  const cap=$("storycap");cap.hidden=false;
+  cap.textContent=storyStep+" of "+STORY.length+" · "+st.cap;
+  st.run();
+  storyTimer=setTimeout(storyNext,3400);}
+$("bStory").onclick=()=>{
+  if(storyTimer){storyStop();return;}
+  S.showAll=true;S.tampered=false;render();
+  $("bStory").textContent="Stop the story";
+  storyStep=0;storyNext();};
+
 async function boot(){
   // No automatic probe: the page starts in snapshot mode and touches the
   // network only when the visitor explicitly connects a local verifier.
