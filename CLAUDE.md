@@ -145,10 +145,18 @@ silently; strike them so the history of what shipped when survives.
   "MANOLO-shaped, adapter-ready" everywhere, never "MANOLO-compatible."
   Keep that distinction if writing new copy.
 - **The private Ed25519 signing key is deliberately excluded from git**
-  (see .gitignore). Every receipt embeds its own public key, so
-  verification is self-contained for any clone; a keyless clone can
-  generate a fresh keypair and keep signing validly. Don't add the private
-  key back to version control for convenience.
+  (see .gitignore). Every receipt embeds its own public key, and since
+  the external audit fixes (28 Aug) verification also requires that
+  key's fingerprint to be pinned in results/keys/trusted-signers.json:
+  a clean clone verifies everything but cannot mint an authorised
+  receipt. Key creation is the explicit `node src/claims.js keygen`,
+  which registers the new fingerprint in trusted-signers.json so the
+  git diff is the authorisation record; the RUNBOOK session flow starts
+  with it. verifyAll additionally replays every live verdict
+  semantically (a trusted key signing a wrong verdict is INVALID) and
+  hard claims BLOCK before any review margin applies. Don't add the
+  private key back to version control for convenience, and don't
+  reintroduce silent key generation.
 
 ## Technical gotchas hit during the build
 

@@ -4,12 +4,12 @@ info:
   version: 0.1.0
   description: >
     A proposed open API contract for the two pillars the MANOLO project
-    (Horizon Europe GA 101135782) documents but does not yet expose as a
-    public interface: (1) a benchmark system to monitor, evaluate and
+    (Horizon Europe GA 101135782) documents but does not yet expose as a    public interface: (1) a benchmark system to monitor, evaluate and
     compare AI algorithms and deployments, and (2) provenance tracking of
     assets with Z-Inspection®-aligned trustworthiness assessment.
-    Any backend (vector store, model server, edge runtime) that implements
-    this contract becomes comparable and auditable through one interface.
+    It is a community-proposed demonstration contract: it serves the
+    included efficiency benchmark and TRACE receipts today, and adapters
+    can bind other backends to the same interface later.
     This is an independent community proposal, not an official MANOLO
     consortium artifact. License: Apache-2.0.
   license:
@@ -36,24 +36,32 @@ paths:
           description: Benchmark results
           content:
             application/json:
-              schema: { $ref: '#/components/schemas/BenchmarkResult' }
-  /assess:
+              schema: { $ref: '#/components/schemas/BenchmarkResult' }  /assess:
     get:
-      summary: Trustworthiness status assessment (recorded)
+      summary: Trustworthiness evidence coverage (computed, no side effect)
       description: >
         Returns a per-principle scorecard derived from verifiable
         artifacts (benchmark results, ledger integrity, published
         contract, documented limitations). Each entry carries evidence
         and an explicit gap. Method is disclosed in the response.
-        Computes the assessment and records it to the provenance
-        ledger. Intentionally non-idempotent record keeping, stated
-        out loud because a GET with a side effect deserves disclosure.
+        Reading the assessment never mutates the ledger; recording one
+        is the separate POST /assessments.
       responses:
         '200':
           description: Scorecard
           content:
             application/json:
               schema: { $ref: '#/components/schemas/Assessment' }
+  /assessments:
+    post:
+      summary: Compute the assessment and record it to the provenance ledger
+      description: >
+        Same scorecard as GET /assess, plus an appended assessment
+        record in the ledger. Recording is an explicit act, never a
+        side effect of reading.
+      responses:
+        '200':
+          description: Scorecard, with an assessment record appended.
   /provenance:
     get:
       summary: Full provenance chain
@@ -91,12 +99,13 @@ paths:
         '200':
           description: The signed receipt as written.
   /receipts:
-    get:
-      summary: List receipts with full-chain verification
+    get:      summary: List receipts with full-chain verification
       description: >
         Returns all receipt files, the latest receipt, and a
-        verification result covering signatures, evidence digests,
-        prev-hash linkage, and supersession status for the whole chain.
+        verification result covering trusted-signer membership,
+        signatures, evidence digests, prev-hash linkage, semantic
+        replay of every live verdict, and supersession status for the
+        whole chain.
       responses:
         '200':
           description: Receipt inventory and verification.

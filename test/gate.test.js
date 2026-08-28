@@ -6,6 +6,10 @@
 //   tamper mutations ....... 3/3 signature failures on mutated receipts
 //   duplicate claim ids .... rejected deterministically
 //   override integrity ..... tampered evidence refused, never overridable
+//   trusted signer ......... unknown key fingerprints rejected outright
+//   semantic replay ........ a trusted key signing a wrong verdict fails
+//   hard beats margin ...... hard violation is BLOCK even inside a margin
+//   path containment ....... evidence paths escaping the repo are refused
 //   sign p95 / verify p95 .. under 10 ms over 500 local iterations
 //   outbound network ....... zero attempts, measured: net, http, https,
 //                            tls, and fetch are tripwired for the whole
@@ -52,8 +56,8 @@ test('verdict fixtures: 6/6', () => {
   const cases = [
     [claim({}), { m: 3 }, 'measured', 'PASS'],
     [claim({ hard: true }), { m: 9 }, 'measured', 'BLOCK'],
-    [claim({}), { m: 9 }, 'measured', 'FAIL'],
-    [claim({ comparator: '>=', review_margin: 0.02 }), { m: 4.99 }, 'measured', 'REVIEW'],
+    [claim({}), { m: 9 }, 'measured', 'FAIL'],    [claim({ comparator: '>=', review_margin: 0.02 }), { m: 4.99 }, 'measured', 'REVIEW'],
+    [claim({ hard: true, review_margin: 0.02 }), { m: 5.01 }, 'measured', 'BLOCK'],
     [claim({ metric: 'absent' }), { m: 3 }, 'measured', 'REVIEW'],
     [claim({}), { origin: 'upstream', m: 3 }, 'measured', 'REVIEW'],
   ];
@@ -130,6 +134,80 @@ test('sign and verify micro-benchmark: p95 under 10 ms', () => {
   };  fs.writeFileSync(path.join(ROOT, 'results', 'gate-metrics.json'),
     JSON.stringify(metrics, null, 2));
   assert.ok(metrics.sign_p95_ms < 10 && metrics.verify_p95_ms < 10, JSON.stringify(metrics));
+});
+
+test('unauthorised signer: a fresh key cannot mint an accepted receipt', () => {
+  const { canon: c2, receiptHash } = _internals;
+  const os = require('os');
+  const src = JSON.parse(fs.readFileSync(
+    path.join(ROOT, 'results', 'receipts', 'receipt-0006.json'), 'utf8'));
+  const { privateKey, publicKey } = crypto.generateKeyPairSync('ed25519');
+  const { signature, ...body } = src;
+  body.public_key = publicKey.export({ type: 'spki', format: 'pem' });
+  const forged = { ...body,
+    signature: crypto.sign(null, Buffer.from(c2(body)), privateKey).toString('base64') };
+  const tmp = path.join(os.tmpdir(), 'trace-forged-signer.json');
+  fs.writeFileSync(tmp, JSON.stringify(forged));
+  const check = verifyReceipt(tmp);
+  assert.strictEqual(check.signature_valid, true, 'the forged signature itself verifies');
+  assert.strictEqual(check.signer_trusted, false, 'but the signer is not authorised');
+  assert.strictEqual(check.valid, false, 'so the receipt is not accepted');
+  fs.unlinkSync(tmp);
+  // and the committed receipts are signed by an authorised key
+  assert.strictEqual(verifyReceipt('receipt-0006.json').signer_trusted, true);
+  void receiptHash;
+});
+
+test('semantic replay: a signed but wrong verdict is rejected', () => {
+  const { replayVerdicts } = _internals;
+  const r = JSON.parse(fs.readFileSync(
+    path.join(ROOT, 'results', 'receipts', 'receipt-0006.json'), 'utf8'));
+  assert.strictEqual(replayVerdicts(r).semantic_valid, true,
+    'the committed receipt replays to the same verdicts');
+  const forged = JSON.parse(JSON.stringify(r));
+  const target = forged.verdicts.find((v) => v.verdict === 'REVIEW');
+  target.verdict = 'PASS';
+  target.disposition = 'CONTINUE';
+  const out = replayVerdicts(forged);
+  assert.strictEqual(out.semantic_valid, false, 'the flipped verdict must not replay');
+  assert.ok(out.mismatches.some((m) => m.includes(target.id)), 'the mismatch names the claim');
+});
+
+test('path containment: evidence paths escaping the repo are refused unread', () => {
+  const os = require('os');
+  const src = JSON.parse(fs.readFileSync(
+    path.join(ROOT, 'results', 'receipts', 'receipt-0006.json'), 'utf8'));
+  const mutated = JSON.parse(JSON.stringify(src));
+  mutated.evidence_digests['../../etc/hostname'] = 'deadbeef';
+  const tmp = path.join(os.tmpdir(), 'trace-escape.json');
+  fs.writeFileSync(tmp, JSON.stringify(mutated));
+  const check = verifyReceipt(tmp);
+  assert.strictEqual(check.evidence_intact, false);
+  assert.ok(check.mismatches.some((m) => m.includes('escapes repository')));
+  fs.unlinkSync(tmp);
+});
+
+test('clean clone cannot mint a receipt: keygen is explicit',
+  { skip: fs.existsSync(path.join(ROOT, 'results', 'keys', 'ed25519.priv.pem')) },
+  () => {
+    const tmp = path.join(ROOT, 'fixtures', 'tmp-keyless.json');
+    fs.writeFileSync(tmp, JSON.stringify({
+      workload_id: 'w', evidence: 'results/results.json', evidence_origin: 'measured',
+      claims: [claim({ id: 'K1', metric: 'fp32_baseline.p50_ms', comparator: '<', threshold: 1e9 })],
+    }));
+    try {
+      assert.throws(() => evaluate(tmp), /keygen/,
+        'without a private key, evaluation must direct to explicit keygen');
+    } finally { fs.unlinkSync(tmp); }
+  });
+
+test('reading the assessment never mutates the ledger', () => {
+  const assess = require('../src/assess.js');
+  const ledgerPath = path.join(ROOT, 'results', 'ledger.jsonl');
+  const before = fs.readFileSync(ledgerPath, 'utf8');
+  assess.compute();
+  assert.strictEqual(fs.readFileSync(ledgerPath, 'utf8'), before,
+    'compute() must not append; run() is the explicit recording step');
 });
 
 test('override refuses tampered evidence: integrity is never overridable', () => {

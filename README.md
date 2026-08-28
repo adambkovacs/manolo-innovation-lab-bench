@@ -35,7 +35,7 @@ This repo builds the missing connection, demonstrates it on its own system, and 
 
 1. A reproducible benchmark produces measured evidence: latency, memory, recall.
 2. Claims are small JSON contracts modeled on D5.1's claim patterns. Each claim names a threshold and the evidence origins it accepts: measured, published, upstream, or assumed. A number that meets its threshold but comes from the wrong origin gets REVIEW, not PASS. A quote is not a measurement.
-3. Every evaluation becomes a signed receipt. It binds the claim, the threshold, the measured value, the verdict, and a SHA-256 digest of the evidence file, and it chains to the previous receipt. Edit anything afterwards and verification fails.
+3. Every evaluation becomes a signed receipt. It binds the claim, the threshold, the measured value, the verdict, and a SHA-256 digest of the evidence file, and it chains to the previous receipt. Edit anything afterwards and verification fails. Verification demands four things at once: the signer's key fingerprint is pinned in results/keys/trusted-signers.json, the signature verifies, the evidence digests match disk, and semantic replay recomputes every verdict from the bound claim and evidence files and gets the same answer. A trusted key signing a wrong verdict fails the fourth check. A clean clone can verify all of this and cannot mint an authorised receipt: creating a signing key is an explicit `keygen` whose fingerprint registration shows up in git diff.
 4. Verdicts are PASS, REVIEW (borderline or missing evidence), FAIL, and BLOCK (hard policy miss). Each maps to an action: CONTINUE, PAUSE, or STOP. Only REVIEW can be overridden, only by a named person with a reason and a scope, and the override is itself a signed receipt. Integrity failures can never be overridden.
 
 ```mermaid
@@ -66,7 +66,9 @@ The missing piece between D5.1's claim table and D2.1's lineage graph is a porta
 ```
 node src/bench.js                 # measured evidence: fp32 vs int8 vs RuVector
 node src/claims.js evaluate       # evaluate claims, emit signed receipt
-node src/claims.js verify         # verify every receipt: signature, evidence digests, chain
+node src/claims.js verify         # every receipt: trusted signer, signature, evidence digests, chain, semantic replay
+node src/claims.js replay receipt-0006.json   # recompute one receipt's verdicts from its bound inputs
+node src/claims.js keygen         # first evaluation on a fresh clone needs this explicit step
 node src/server.js                # API on :8787
 open demo/dashboard.html          # visual console (works offline)
 ```
@@ -85,7 +87,7 @@ Measured 2026-08-27, Node v22.22.2, seed 42, N=5000, D=256, Q=50. Reproduce with
 | int8 scalar quantization | 3.38 ms | 5.35 ms | 260 | 0.988 |
 | RuVector 0.3.0 HNSW (native, SIMD) | 1.076 ms | 1.387 ms | not measured | 0.944 |
 
-Quantization buys 3.94x less memory for a 1.2 point recall cost. RuVector's approximate index buys 3.4x lower median latency for a 5.6 point recall cost. One caveat: the RuVector number comes from native SIMD Rust and the others from a JavaScript loop, so the comparison tells you what the packaged systems do, not which algorithm is faster.
+Quantization buys a 3.94x smaller encoded vector payload for a 1.2 point recall cost (payload bytes, not process memory). RuVector's approximate index buys 3.4x lower median latency for a 5.6 point recall cost. One caveat: the RuVector number comes from native SIMD Rust and the others from a JavaScript loop, so the comparison tells you what the packaged systems do, not which algorithm is faster.
 
 The receipt lifecycle is verified end to end in the committed repo. The primary claim set evaluates to 3 PASS and 2 REVIEW. One REVIEW is recall 0.944 sitting inside a declared 0.02 margin; the other is energy, unmetered and declared so, the same "No direct evidence cited" state the D5.1 table records. A hard tail-latency claim produces BLOCK (p95 10.04 ms against a 5 ms budget). Receipt-0003 is a governed override of the REVIEWs. Edit one digit of the evidence file and verification fails, naming the file; restore it and verification passes.
 
@@ -100,9 +102,9 @@ node src/baseline.js fixtures/claims-upstream.json
 node src/claims.js evaluate fixtures/claims-upstream.json
 ```
 
-When claim or evidence files legitimately evolve, older receipts for that set become SUPERSEDED: their signatures and chain links still verify, and only the latest receipt per claims set must match current disk. Tampering stays INVALID; history stays history.
+When claim or evidence files legitimately evolve, older receipts for that set become SUPERSEDED: their signatures and chain links still verify, and only the latest receipt per claims set must match current disk and replay semantically. Superseded receipts preserve signed decision history; replaying their original decision also requires the git version of the inputs they signed. Tampering stays INVALID; history stays history.
 
-We tried to break it (test/gate.test.js, with acceptance gates declared before running): 6/6 verdict fixtures correct, 3/3 canonicalization variants to one digest, 3/3 tamper mutations caught, duplicate claim ids rejected before any write, an override refused on tampered evidence, and zero outbound network attempts with net, http, tls, and fetch tripwired for the whole suite. Signing p95 under 0.1 ms and verification p95 under 0.25 ms over 500 iterations, against a 10 ms gate; a receipt is 2930 bytes. Exact figures for your machine land in results/gate-metrics.json every time you run `npm test`. A supply-chain inventory ships as results/sbom.spdx.json (`npm run sbom` regenerates it from the lockfile).
+We tried to break it (test/gate.test.js, with acceptance gates declared before running): 7/7 verdict fixtures correct including a hard violation inside a review margin (BLOCK, never overridable), 3/3 canonicalization variants to one digest, 3/3 tamper mutations caught, duplicate claim ids rejected before any write, an unauthorised signer's receipt rejected with its signature intact, a signed-but-wrong verdict caught by semantic replay, an evidence path escaping the repository refused unread, an override refused on tampered evidence, a keyless clone refused a receipt, a read-only assessment leaving the ledger untouched, and zero outbound network attempts with net, http, tls, and fetch tripwired for the whole suite. Signing p95 under 0.1 ms and verification p95 under 0.25 ms over 500 iterations, against a 10 ms gate; a receipt is 2930 bytes. Exact figures for your machine land in results/gate-metrics.json every time you run `npm test`. A supply-chain inventory ships as results/sbom.spdx.json (`npm run sbom` regenerates it from the lockfile).
 
 ## Energy, carbon, and cost as claims
 
@@ -150,8 +152,8 @@ Fairness and privacy are out of scope, stated rather than skipped: no personal d
 ## Limitations
 
 - The 15 W device power in the cost model is assumed and labeled assumed. The carbon and price figures are dated transcriptions (2026-08-27) of Ember 2024 and Eurostat 2025-S2 data, which age.
-- The private signing key never enters the repository. Each receipt embeds its public key, so any clone can verify the whole chain.
-- Single local Ed25519 keypair, no PKI, no external time anchor. Tamper-evident is not tamper-proof: the mitigation is announcing the receipt head hash somewhere public at session start.
+- The private signing key never enters the repository. Each receipt embeds its public key, and verification accepts it only if its fingerprint is pinned in results/keys/trusted-signers.json, so any clone can verify the whole chain and none can silently extend it.
+- A pinned trusted-signer list stands in for a PKI; there is no certificate chain and no external time anchor. Whoever can edit trusted-signers.json can authorise a signer, which is why that file's git history is part of the audit trail. Tamper-evident is not tamper-proof: the mitigation is announcing the receipt head hash somewhere public at session start.
 - Evidence origin labels are declared, not proven. The gate enforces the declared origin policy; it cannot detect a mislabeled origin. Signed origin provenance is the natural next step with the consortium.
 - Claims here are self-declared, about our own system. The value for MANOLO is applying the contract to the D5.1 table with the use-case owners declaring thresholds.
 - Receipts prove claim-to-evidence binding and integrity, not model safety or clinical efficacy.

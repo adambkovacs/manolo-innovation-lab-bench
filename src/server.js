@@ -29,8 +29,7 @@ const server = http.createServer((req, res) => {
   if (req.method === 'GET' && url.pathname === '/') {
     return json(res, 200, {
       name: 'MANOLO-Bench',
-      spec: 'openapi.yaml',
-      endpoints: ['POST /benchmark', 'GET /assess', 'GET /provenance', 'GET /verify', 'POST /claims/evaluate', 'GET /receipts'],
+      spec: 'openapi.yaml',      endpoints: ['POST /benchmark', 'GET /assess', 'POST /assessments', 'GET /provenance', 'GET /verify', 'POST /claims/evaluate', 'GET /receipts'],
       note: 'Community-proposed API for the MANOLO benchmark and trustworthiness pillars. Not affiliated with the MANOLO consortium.',
     });
   }
@@ -50,9 +49,13 @@ const server = http.createServer((req, res) => {
       fs.readFileSync(path.join(ROOT, 'results', 'results.json'), 'utf8')
     );
     return json(res, 200, results);
+  }  if (req.method === 'GET' && url.pathname === '/assess') {
+    // Pure computation: reading the assessment never mutates the ledger.
+    return json(res, 200, assess.compute());
   }
 
-  if (req.method === 'GET' && url.pathname === '/assess') {
+  if (req.method === 'POST' && url.pathname === '/assessments') {
+    // Explicit record: computes and appends an assessment ledger record.
     return json(res, 200, assess.run());
   }
 

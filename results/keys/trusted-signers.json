@@ -1,0 +1,10 @@
+{
+  "note": "Authorised signing keys for this receipt chain. verifyAll refuses receipts whose embedded public key fingerprint (sha256 of the SPKI DER) is not listed here. A clean clone can verify every existing receipt; creating an authorised receipt requires an explicit keygen whose fingerprint lands in this file, visible in git diff.",
+  "signers": [
+    {
+      "key_id_sha256": "cb030e466a4afdf7a9252d29521f4f2b26b5f75f253b57cbf3ffe8fa16e36a29",
+      "label": "original build signing key",
+      "added": "2026-08-27"
+    }
+  ]
+}
