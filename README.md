@@ -110,6 +110,17 @@ When claim or evidence files legitimately evolve, older receipts for that set be
 
 We tried to break it (test/gate.test.js, with acceptance gates declared before running): 7/7 verdict fixtures correct including a hard violation inside a review margin (BLOCK, never overridable), 3/3 canonicalization variants to one digest, 3/3 tamper mutations caught, duplicate claim ids rejected before any write, an unauthorised signer's receipt rejected with its signature intact, a signed-but-wrong verdict caught by semantic replay, an evidence path escaping the repository refused unread, an override refused on tampered evidence, a keyless clone refused a receipt, a read-only assessment leaving the ledger untouched, and zero outbound network attempts with net, http, tls, and fetch tripwired for the whole suite. Signing p95 under 0.1 ms and verification p95 under 0.25 ms over 500 iterations, against a 10 ms gate; a committed receipt is 2930 bytes. Exact figures for your machine land in results/gate-metrics.json every time you run `npm test`. A supply-chain inventory ships as results/sbom.spdx.json (`npm run sbom` regenerates it from the lockfile).
 
+## Two-way checking: the requester is also a claim
+
+In the cloud-edge loop, endpoints are nodes: a robot requesting an inference workload is a network participant, and D1.3 pairs every workload with an AIWorkloadID and a NodeID. The workload can be verified and the requester still be the weak point. Admission turns the request itself into a gated, receipted event:
+
+```
+node src/claims.js node-request --node tiago-01 --register   # node signs a request; registration is a visible git diff
+node src/claims.js admit results/node-request.json           # identity, freshness, and health gated; admission receipt chained
+```
+
+Admission verifies the request signature, requires the node key's fingerprint in the same trusted-signers registry as receipt signers, treats a stale timestamp as a replay risk (REVIEW), and evaluates the node's declared health against fixtures/claims-node.json. The node's self-report is upstream origin by definition, so "the robot says it is fine" earns REVIEW, never PASS; a controller-measured or hardware-attested source is what upgrades it. Deregistering a node key flips its past admissions to INVALID on the next verify, which is revocation behaving as designed. Honest scope: admission proves possession of a registered key and the declared basis of a fresh request. It does not prove the device is uncompromised, because a stolen key still signs; TPM or TEE attestation slots in as the measured origin for node health, and that is consortium territory.
+
 ## Energy, carbon, and cost as claims
 
 A laptop cannot measure joules credibly, so energy enters the contract as claims over declared-origin evidence, never as estimates presented as measurements. Two evidence files transcribe published figures, source-linked, dated, and digest-bound. Grid carbon intensity comes from Ember 2024 (lifecycle, CC BY 4.0): Greece 321.65 gCO2e/kWh, Sweden 34.91. Electricity prices come from Eurostat (nrg_pc_205, 2025-S2, band IC excluding VAT): Greece 0.1738 EUR/kWh, Sweden 0.0970.
@@ -163,6 +174,7 @@ Fairness and privacy are out of scope, stated rather than skipped: no personal d
 - Evidence origin labels are declared, not proven. The gate enforces the declared origin policy; it cannot detect a mislabeled origin. Signed origin provenance is the natural next step with the consortium.
 - Claims here are self-declared, about our own system. The value for MANOLO is applying the contract to the D5.1 table with the use-case owners declaring thresholds.
 - Receipts prove claim-to-evidence binding and integrity, not model safety or clinical efficacy.
+- Node admission proves key possession, request freshness, and a declared health basis, not device integrity: a compromised endpoint holding its registered key still signs valid requests. Hardware attestation is the upgrade path, not a claim made here.
 - Energy is not metered in joules; MB-ENE-01 exists to show the contract failing honestly on us.
 - The RuVector HNSW build is multithreaded, so its recall drifts slightly between runs (0.944 committed, 0.956 seen on a rerun); the fp32 and int8 series are seed-deterministic. A rerun can lift HNSW recall past the 0.95 floor and turn MB-ROB-01's REVIEW into a PASS. The committed receipts are the exhibit, and the drift itself is an argument for receipts over reruns.
 - Synthetic seeded corpus; recall on real embedding distributions will differ. Latency crosses runtimes, as stated above.

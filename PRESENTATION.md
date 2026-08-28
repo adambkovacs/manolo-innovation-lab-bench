@@ -19,4 +19,4 @@ Delivery notes. Open with pre-work transparency using the tool itself: the ledge
 
 ## Appendix pointers, for questions, never in the eight slides
 
-Receipt anatomy (README, What this builds), trust boundary and threat model (README, Limitations), TRACE next to MLflow, model cards, and in-toto (QA 2, 10, 12), adversarial test method (test/gate.test.js header), the full benchmark table (README, Verified results), the carbon and cost pair (README, energy section), the MANOLO adapter sketch (ADOPTION.md), licensing (README, Licensing).
+Receipt anatomy (README, What this builds), trust boundary and threat model (README, Limitations), two-way node admission (README, Two-way checking; QA 16), TRACE next to MLflow, model cards, and in-toto (QA 2, 10, 12), adversarial test method (test/gate.test.js header), the full benchmark table (README, Verified results), the carbon and cost pair (README, energy section), the MANOLO adapter sketch (ADOPTION.md), licensing (README, Licensing).

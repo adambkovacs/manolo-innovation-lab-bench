@@ -1,0 +1,23 @@
+{
+  "workload_id": "wf-manolo-bench-001",
+  "source_frame": "Node admission set: claims about the REQUESTING endpoint, not the workload. D1.3 pairs every workload with an AIWorkloadID and a NodeID; these claims gate the NodeID side. Health values arrive as the node's own self-report, which is upstream origin by definition, so a healthy-sounding self-report earns REVIEW, not PASS, until a controller-measured or hardware-attested source exists.",
+  "claims": [
+    {
+      "id": "ND-INT-01",
+      "statement": "Node integrity self-test passed on the requesting endpoint",
+      "metric": "health.integrity_selftest",
+      "comparator": "==",
+      "threshold": 1,
+      "accepted_origins": ["measured"]
+    },
+    {
+      "id": "ND-PATCH-01",
+      "statement": "Requesting endpoint patch age stays under 30 days",
+      "metric": "health.patch_age_days",
+      "comparator": "<",
+      "threshold": 30,
+      "unit": "days",
+      "accepted_origins": ["measured", "upstream"]
+    }
+  ]
+}

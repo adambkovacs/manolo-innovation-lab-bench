@@ -23,6 +23,9 @@ const RECEIPTS = path.join(ROOT, 'results', 'receipts');
 
 // Canonical serialization: recursive key sort, arrays in order, finite numbers only.
 function canon(o) {
+  if (o === undefined) {
+    throw new Error('undefined rejected in canonical form');
+  }
   if (o === null || typeof o === 'number' || typeof o === 'boolean') {
     if (typeof o === 'number' && !Number.isFinite(o)) {
       throw new Error('non-finite number rejected in canonical form');
@@ -30,8 +33,10 @@ function canon(o) {
     return JSON.stringify(o);
   }
   if (typeof o === 'string') return JSON.stringify(o);
-  if (Array.isArray(o)) return '[' + o.map(canon).join(',') + ']';
-  return '{' + Object.keys(o).sort().map(
+  if (Array.isArray(o)) return '[' + o.map(canon).join(',') + ']';  // Undefined-valued keys are skipped, matching JSON.stringify semantics:
+  // an object parsed from JSON can never contain undefined, so this changes
+  // no digest of any signed artifact, only tolerates in-memory builders.
+  return '{' + Object.keys(o).filter((k) => o[k] !== undefined).sort().map(
     (k) => JSON.stringify(k) + ':' + canon(o[k])
   ).join(',') + '}';
 }
@@ -311,6 +316,125 @@ function replayOverride(r) {
   return { semantic_valid: mismatches.length === 0, mismatches };
 }
 
+// Two-way checking: the loop gates what runs, and admission gates who asks.
+// A requesting endpoint (a MANOLO Node in D1.3 terms: every workload pairs an
+// AIWorkloadID with a NodeID) signs its request; admission verifies the
+// signature, requires the node key's fingerprint in the same trusted-signers
+// registry, checks request freshness, and evaluates the node's declared
+// health against fixtures/claims-node.json. Self-reported health is upstream
+// origin, so it earns REVIEW, never PASS. Honest scope: this proves
+// possession of a registered key and the declared basis of the request, not
+// that the device is uncompromised; a stolen key still signs. Hardware
+// attestation (TPM or TEE quotes) is the measured-origin upgrade path.
+const REQUEST_MAX_AGE_MS = 300000;
+
+function checkAdmission(req, opts) {
+  opts = opts || {};
+  const out = { node_id: req.node_id, workload_id: req.workload_id,
+    structural_valid: true, signature_valid: false, signer_trusted: false,
+    fresh: false, reasons: [] };
+  for (const k of ['node_id', 'workload_id', 'requested', 'public_key', 'signature']) {
+    if (!req[k]) { out.structural_valid = false; out.reasons.push('request missing ' + k); }
+  }
+  if (!out.structural_valid) return out;
+  const { signature, ...body } = req;
+  out.signature_valid = crypto.verify(null, Buffer.from(canon(body)),
+    crypto.createPublicKey(req.public_key), Buffer.from(signature, 'base64'));
+  if (!out.signature_valid) out.reasons.push('request signature invalid');
+  const fp = keyFingerprint(req.public_key);
+  out.key_id = fp.slice(0, 16);
+  out.signer_trusted = (opts.trusted || trustedSigners()).has(fp);
+  if (!out.signer_trusted) out.reasons.push('requesting key ' + out.key_id + ' is not registered in trusted-signers.json');
+  const now = opts.now !== undefined ? opts.now : Date.now();
+  const age = now - Date.parse(req.requested);
+  out.fresh = !Number.isNaN(age) && age >= 0 && age <= (opts.maxAgeMs || REQUEST_MAX_AGE_MS);
+  if (!out.fresh) out.reasons.push('request timestamp is stale or unparseable; replayed requests are refused');
+  return out;
+}
+
+function nodeRequest(opts) {
+  opts = opts || {};
+  const { privateKey, publicKey } = crypto.generateKeyPairSync('ed25519');
+  const pubPem = publicKey.export({ type: 'spki', format: 'pem' }).toString();
+  const body = {
+    schema: 'trace-node-request/0.1',
+    node_id: opts.node || 'node-tiago-01',
+    workload_id: opts.workload || 'wf-manolo-bench-001',
+    requested: new Date().toISOString(),
+    node_evidence: { origin: 'upstream',
+      health: { integrity_selftest: 1, patch_age_days: 12 } },
+    public_key: pubPem,
+  };
+  const signature = crypto.sign(null, Buffer.from(canon(body)), privateKey).toString('base64');
+  const req = { ...body, signature };
+  const fp = keyFingerprint(pubPem);
+  if (opts.register) {
+    const doc = fs.existsSync(TRUSTED)
+      ? JSON.parse(fs.readFileSync(TRUSTED, 'utf8')) : { signers: [] };
+    doc.signers.push({ key_id_sha256: fp, label: 'node ' + body.node_id, added: new Date().toISOString() });
+    fs.writeFileSync(TRUSTED, JSON.stringify(doc, null, 2) + '\n');
+  }
+  const out = opts.out || path.join(ROOT, 'results', 'node-request.json');
+  fs.writeFileSync(out, JSON.stringify(req, null, 2));
+  return { file: path.relative(ROOT, out), node_id: body.node_id, key_id: fp.slice(0, 16),
+    registered: !!opts.register,
+    note: opts.register
+      ? 'node key registered in trusted-signers.json; the git diff is the authorisation record'
+      : 'node key NOT registered; admission will refuse this request' };
+}
+
+function admit(file) {
+  const p = path.isAbsolute(file) ? file : path.join(ROOT, file);
+  const req = JSON.parse(fs.readFileSync(p, 'utf8'));
+  const chk = checkAdmission(req);
+  if (!chk.structural_valid || !chk.signature_valid || !chk.signer_trusted) {
+    throw new Error('admission refused: ' + chk.reasons.join('; '));
+  }
+  const nodeClaims = JSON.parse(fs.readFileSync(path.join(ROOT, 'fixtures', 'claims-node.json'), 'utf8'));
+  const verdicts = nodeClaims.claims.map((c) => {
+    const v = evaluateClaim(c, req.node_evidence || {}, 'upstream');
+    return { id: c.id, statement: c.statement, metric: c.metric,
+      comparator: c.comparator, threshold: c.threshold, unit: c.unit,
+      ...v, disposition: DISPOSITION[v.verdict] };
+  });
+  if (!chk.fresh) {
+    verdicts.push({ id: 'ND-FRESH-01', statement: 'Request timestamp is fresh',
+      metric: 'requested', comparator: '<=', threshold: REQUEST_MAX_AGE_MS / 1000,
+      unit: 's', verdict: 'REVIEW', measured: null, origin: 'measured',
+      reason: 'request older than the admission window', disposition: 'PAUSE' });
+  }
+  const summary = verdicts.reduce((a, v) => ((a[v.verdict] = (a[v.verdict] || 0) + 1), a), {});
+  const dispositions = verdicts.reduce((a, v) => ((a[v.disposition] = (a[v.disposition] || 0) + 1), a), {});
+  return writeReceipt({
+    schema: 'trace-receipt/0.1', type: 'admission',
+    created: new Date().toISOString(),
+    workload_id: req.workload_id, node_id: req.node_id,
+    request: req, requester_key_id: chk.key_id,
+    verdicts, summary, dispositions,
+    evidence_digests: {},
+  });
+}
+
+// Admission receipts replay from their embedded request: signature and
+// health verdicts recompute exactly; signer membership is checked against
+// the CURRENT trusted list, so deregistering a node key invalidates its
+// admissions from then on. That is revocation, working as intended.
+function replayAdmission(r) {
+  const chk = checkAdmission(r.request || {}, { now: Date.parse(r.created) });
+  const mismatches = [];
+  if (!chk.structural_valid || !chk.signature_valid) mismatches.push('embedded request no longer verifies');
+  if (!chk.signer_trusted) mismatches.push('requesting key no longer in trusted-signers.json (revoked)');
+  const nodeClaims = JSON.parse(fs.readFileSync(path.join(ROOT, 'fixtures', 'claims-node.json'), 'utf8'));
+  for (const c of nodeClaims.claims) {
+    const v = evaluateClaim(c, (r.request && r.request.node_evidence) || {}, 'upstream');
+    const signed = (r.verdicts || []).find((x) => x.id === c.id);
+    if (!signed || signed.verdict !== v.verdict) {
+      mismatches.push(c.id + ': admission verdict does not replay');
+    }
+  }
+  return { semantic_valid: mismatches.length === 0, mismatches };
+}
+
 function replayReceipt(file) {
   const p = path.isAbsolute(file) ? file : path.join(RECEIPTS, file);
   const r = JSON.parse(fs.readFileSync(p, 'utf8'));
@@ -318,8 +442,8 @@ function replayReceipt(file) {
   if (!integrity.evidence_intact) {
     return { ...integrity, semantic_valid: null,
       note: 'evidence on disk differs from what this receipt signed; superseded history is not replayable from the working tree, only from the git version it signed' };
-  }
-  const sem = r.type === 'override' ? replayOverride(r) : replayVerdicts(r);
+  }  const sem = r.type === 'override' ? replayOverride(r)
+    : r.type === 'admission' ? replayAdmission(r) : replayVerdicts(r);
   return { ...integrity, ...sem, valid: integrity.valid && sem.semantic_valid };
 }
 
@@ -343,7 +467,8 @@ function verifyAll() {
     if (one.superseded || !one.evidence_intact) {
       one.semantic_valid = null; // history; replay needs the git version it signed
     } else {
-      const sem = r.type === 'override' ? replayOverride(r) : replayVerdicts(r);
+      const sem = r.type === 'override' ? replayOverride(r)
+        : r.type === 'admission' ? replayAdmission(r) : replayVerdicts(r);
       one.semantic_valid = sem.semantic_valid;
       if (!sem.semantic_valid) one.mismatches.push(...sem.mismatches);
     }
@@ -393,9 +518,10 @@ function override(file, opts) {
 }
 
 module.exports = { evaluate, verifyReceipt, verifyAll, override, listReceipts,
-  replayReceipt, keygen,
+  replayReceipt, keygen, admit, nodeRequest, checkAdmission,
   _internals: { canon, sha256, evaluateClaim, receiptHash, DISPOSITION,
-    replayVerdicts, replayOverride, keyFingerprint, trustedSigners, insideRoot } };
+    replayVerdicts, replayOverride, replayAdmission, keyFingerprint,
+    trustedSigners, insideRoot } };
 
 if (require.main === module) {
   const [cmd, arg] = process.argv.slice(2);
@@ -405,10 +531,11 @@ if (require.main === module) {
   });
   try {    if (cmd === 'evaluate') console.log(JSON.stringify(evaluate(arg && !arg.startsWith('--') ? arg : undefined), null, 2));
     else if (cmd === 'verify' && arg && arg !== 'all') console.log(JSON.stringify(verifyReceipt(arg), null, 2));
-    else if (cmd === 'verify') console.log(JSON.stringify(verifyAll(), null, 2));
-    else if (cmd === 'replay' && arg) console.log(JSON.stringify(replayReceipt(arg), null, 2));
+    else if (cmd === 'verify') console.log(JSON.stringify(verifyAll(), null, 2));    else if (cmd === 'replay' && arg) console.log(JSON.stringify(replayReceipt(arg), null, 2));
     else if (cmd === 'keygen') console.log(JSON.stringify(keygen(), null, 2));
+    else if (cmd === 'node-request') console.log(JSON.stringify(nodeRequest({ node: flags.node, workload: flags.workload, register: 'register' in flags || process.argv.includes('--register'), out: flags.out }), null, 2));
+    else if (cmd === 'admit' && arg) console.log(JSON.stringify(admit(arg), null, 2));
     else if (cmd === 'override') console.log(JSON.stringify(override(arg, flags), null, 2));
-    else console.log('usage: node src/claims.js evaluate [claims.json] | verify [receipt|all] | replay <receipt> | keygen | override <receipt> --actor A --decision D --scope S --reason R');
+    else console.log('usage: node src/claims.js evaluate [claims.json] | verify [receipt|all] | replay <receipt> | keygen | node-request [--node N --workload W --register] | admit <request.json> | override <receipt> --actor A --decision D --scope S --reason R');
   } catch (e) { console.error('ERROR: ' + e.message); process.exit(1); }
 }

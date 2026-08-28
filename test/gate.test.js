@@ -46,7 +46,7 @@ https.get = trip('https.get');
 tls.connect = trip('tls.connect');
 if (typeof globalThis.fetch === 'function') globalThis.fetch = trip('fetch');
 
-const { evaluate, verifyReceipt, override, _internals } = require('../src/claims.js');
+const { evaluate, verifyReceipt, override, checkAdmission, _internals } = require('../src/claims.js');
 const { canon, sha256, evaluateClaim, DISPOSITION } = _internals;
 
 const ROOT = path.join(__dirname, '..');
@@ -71,10 +71,12 @@ test('verdict fixtures: 6/6', () => {
 test('canonicalization invariance: 3/3', () => {
   const a = { b: 1, a: [2, { y: 3, x: 4 }], c: 'z' };
   const b = { c: 'z', a: [2, { x: 4, y: 3 }], b: 1 };
-  const c = JSON.parse(JSON.stringify(a));
-  const digests = new Set([sha256(canon(a)), sha256(canon(b)), sha256(canon(c))]);
+  const c = JSON.parse(JSON.stringify(a));  const digests = new Set([sha256(canon(a)), sha256(canon(b)), sha256(canon(c))]);
   assert.strictEqual(digests.size, 1, 'key order must not change the digest');
   assert.throws(() => canon({ x: NaN }), /non-finite/);
+  assert.strictEqual(canon({ a: 1, b: undefined }), canon({ a: 1 }),
+    'undefined-valued keys canonicalize like JSON.stringify drops them');
+  assert.throws(() => canon(undefined), /undefined/);
 });
 
 test('tamper mutations: 3/3 signature failures', () => {
@@ -226,6 +228,36 @@ test('override refuses tampered evidence: integrity is never overridable', () =>
   }
   assert.strictEqual(verifyReceipt('receipt-0006.json').valid, true,
     'evidence restored after the test');
+});
+
+test('node admission: identity, freshness, and health checked both ways', () => {
+  const { canon: c2, keyFingerprint } = _internals;
+  const { privateKey, publicKey } = crypto.generateKeyPairSync('ed25519');
+  const pubPem = publicKey.export({ type: 'spki', format: 'pem' }).toString();
+  const body = { schema: 'trace-node-request/0.1', node_id: 'node-test-01',
+    workload_id: 'wf-test', requested: new Date().toISOString(),
+    node_evidence: { origin: 'upstream', health: { integrity_selftest: 1, patch_age_days: 12 } },
+    public_key: pubPem };
+  const req = { ...body,
+    signature: crypto.sign(null, Buffer.from(c2(body)), privateKey).toString('base64') };
+  const fp = keyFingerprint(pubPem);
+  const ok = checkAdmission(req, { trusted: new Set([fp]) });
+  assert.strictEqual(ok.signature_valid, true);
+  assert.strictEqual(ok.signer_trusted, true);
+  assert.strictEqual(ok.fresh, true);
+  const unregistered = checkAdmission(req, { trusted: new Set() });
+  assert.strictEqual(unregistered.signer_trusted, false, 'unknown node key must be refused');
+  const tampered = JSON.parse(JSON.stringify(req));
+  tampered.workload_id = 'wf-other';
+  assert.strictEqual(checkAdmission(tampered, { trusted: new Set([fp]) }).signature_valid, false,
+    'a request altered after signing must fail');
+  const stale = checkAdmission(req, { trusted: new Set([fp]), now: Date.now() + 3600000 });
+  assert.strictEqual(stale.fresh, false, 'an hour-old request is a replay risk, not fresh');
+  // self-reported health lands as upstream origin: REVIEW for a measured-only claim
+  const nodeClaims = JSON.parse(fs.readFileSync(
+    path.join(ROOT, 'fixtures', 'claims-node.json'), 'utf8'));
+  const v = _internals.evaluateClaim(nodeClaims.claims[0], req.node_evidence, 'upstream');
+  assert.strictEqual(v.verdict, 'REVIEW', 'a node saying it is fine is not evidence it is fine');
 });
 
 test('outbound network: zero attempts, measured across the whole suite', () => {

@@ -1,4 +1,4 @@
-# Q&A hardening: the fifteen questions that decide the room
+# Q&A hardening: the sixteen questions that decide the room
 
 Answer in two sentences, then stop talking. Every answer ends on a fact, not a defense.
 
@@ -48,3 +48,6 @@ Then this becomes an adapter and a conformance check for that component, which b
 
 15. What exactly is novel here? Signatures and hash chains are old.
 Correct, and we claim none of the parts: Ed25519, digests, chained logs, and attestation envelopes are commodity, in-toto and Sigstore territory. The contribution is the combination, a claim contract binding threshold, accepted evidence origins, verdict, and disposition into one signed, semantically replayable artifact with a REVIEW-only override and a gate the tuner cannot bypass, and we found that combination nowhere, including in the nine deliverables.
+
+16. Endpoints are nodes; what about a hacked robot requesting workloads?
+Admission gates the requester the way the gate gates claims: the request must be signed by a key registered in the trusted-signers file, fresh, and its self-reported health evaluates as upstream origin, so it pauses as REVIEW rather than passing, and deregistering the key flips its past admissions INVALID. What this cannot prove is that the device is uncompromised, since a stolen key still signs; hardware attestation is the measured-origin upgrade, and we say so in the limitations.

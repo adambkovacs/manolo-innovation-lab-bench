@@ -156,10 +156,25 @@ silently; strike them so the history of what shipped when survives.
   semantically (a trusted key signing a wrong verdict is INVALID) and
   hard claims BLOCK before any review margin applies. Don't add the
   private key back to version control for convenience, and don't
-  reintroduce silent key generation.
+  reintroduce silent key generation. Node admission (28 Aug, the
+  two-way checking ask) rides the same registry: node-request/admit
+  gate the REQUESTING endpoint (signature, registered fingerprint,
+  freshness, self-reported health as upstream origin, so REVIEW).
+  Scope discipline: admission proves key possession and a declared
+  basis, never device integrity; a stolen key still signs, TPM/TEE
+  attestation is the consortium upgrade. Never let copy drift toward
+  "detects hacked robots".
 
 ## Technical gotchas hit during the build
 
+- **The whitespace-tolerant patcher eats newlines at leading whitespace.**
+  Converting spaces to \s+ lets a pattern that starts with indentation
+  consume the newline before it; the replacement reinserts plain spaces,
+  merging the line into the previous one. When the previous line ends in
+  a // comment this comments out code (it silently disabled verifyAll's
+  else branch once). Never start a patch pattern with indentation that
+  follows a line comment; anchor on the full previous line instead, and
+  after patching grep for '// .*} else' style merges.
 - **Apostrophes inside single-quoted strings break both Python heredocs
   and JS scripts silently mid-patch**, leaving partial edits applied. This
   happened twice in this project (once in a Python doc-patch script, once

@@ -9,3 +9,4 @@ results/keys/ed25519.priv.pem
 results/gate-metrics.json
 # local Claude skills, plugins, and settings never ship with the repo
 .claude/
+results/node-request.json
