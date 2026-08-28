@@ -100,9 +100,9 @@
   .howto{background:var(--panel2,#EFEAFB);border:1px solid #DCD4F2;border-radius:12px;padding:4px 16px;margin:14px 0 18px}
   .howto summary{cursor:pointer;font-weight:600;padding:8px 0;color:var(--ink)}
   .howto p{font-size:13px;line-height:1.55;color:var(--ink-soft);margin:8px 0}
-  .howto .k{font-family:ui-monospace,Menlo,monospace;font-weight:700;font-size:11.5px;padding:1px 8px;border-radius:9px}
-  .howto .kp{background:#DFF0E8;color:#14624A}.howto .kr{background:#F5EBD3;color:#6E540E}
-  .howto .kf{background:#F6E2E2;color:#B03030}.howto .kb{background:#F6E2E2;color:#B03030}
+  .k{font-family:ui-monospace,Menlo,monospace;font-weight:700;font-size:11.5px;padding:1px 8px;border-radius:9px}
+  .kp{background:#DFF0E8;color:#14624A}.kr{background:#F5EBD3;color:#6E540E}
+  .kf{background:#F6E2E2;color:#B03030}.kb{background:#F6E2E2;color:#B03030}
   .js .chip,.js .panel,.js .sub,.js h1{opacity:0;transform:translateY(12px);
     transition:opacity .5s ease,transform .5s cubic-bezier(.2,.6,.2,1)}
   .js .chip.in,.js .panel.in,.js .sub.in,.js h1.in{opacity:1;transform:none}
@@ -129,7 +129,22 @@
     <p>Every AI promise here is checked against evidence and turned into a signed receipt, like the inspection sticker in an elevator. Green means the promise held. Amber means a named human must look. Red means stop.</p>
     <p><span class="k kp">PASS</span> promise kept, evidence accepted &nbsp; <span class="k kr">REVIEW</span> paused for a human decision &nbsp; <span class="k kf">FAIL</span> promise missed &nbsp; <span class="k kb">BLOCK</span> hard stop, do not proceed</p>
     <p>Where a number comes from matters: measured here, published by a named source, quoted by a vendor, or assumed. A vendor quote can pause a check even when the number looks good, because a quote is not a measurement.</p>    <p>Buttons: Preview verification re-checks the snapshot state. Simulate tamper shows what one edited digit does. Connect local verifier switches to your own running server, where the checks are cryptographic. Nothing leaves your machine unless you connect.</p>
-  </details>  <div class="chip">Claim receipts</div>
+  </details>  <div class="chip">The same number, two checkers</div>
+  <div class="panel"><div class="cols">
+    <div>
+      <p style="margin:4px 0 6px"><b>Naive checker</b> <span class="legend">src/baseline.js</span></p>
+      <p style="margin:0 0 6px">82 ms against &lt; 100 ms → <span class="k kp">PASS</span></p>
+      <p class="legend" style="margin:0">Origin ignored: a vendor quote sails through and the pipeline acts on it.</p>
+    </div>
+    <div>
+      <p style="margin:4px 0 6px"><b>TRACE gate</b> <span class="legend">same input</span></p>
+      <p style="margin:0 0 6px">82 ms against &lt; 100 ms, origin upstream → <span class="k kr">REVIEW</span> · PAUSE</p>
+      <p class="legend" style="margin:0">Not accepted measured evidence: paused for a named human, on the record as receipt-0005.</p>
+    </div>
+  </div>
+  <p class="legend" style="margin-bottom:4px">Run both yourself: <code>node src/baseline.js fixtures/claims-upstream.json</code>, then <code>node src/claims.js evaluate fixtures/claims-upstream.json</code>.</p></div>
+
+  <div class="chip">Claim receipts</div>
   <div class="panel">
     <div id="claims"></div>
     <p class="legend" id="receiptMeta"></p>
@@ -173,9 +188,9 @@ const SAMPLE = {
     ]
   },
   scorecard:{
-    efficiency_sustainability:{score:100,status:"implemented",gap:"Energy not metered in joules; memory and latency are the proxies."},
+    efficiency_sustainability:{score:100,status:"implemented",gap:"Energy not metered in joules; payload size and latency are the declared proxies, not process memory."},
     transparency_explainability:{score:100,status:"implemented",gap:"No per-decision explanations; scope is system transparency."},
-    accountability_auditability:{score:100,status:"implemented",gap:"Single-node ledger, single keypair; no replication or PKI."},
+    accountability_auditability:{score:100,status:"implemented",gap:"Single-node ledger, pinned trusted-signer list without a PKI, no external time anchor."},
     reliability_robustness:{score:50,status:"partial",gap:"No out-of-distribution or drift testing; synthetic corpus."},
     security_misuse_resistance:{score:50,status:"partial",gap:"No injection screening; tamper-evident, not tamper-proof."},
     human_agency_oversight:{score:50,status:"partial",gap:"Governed signed override exists; no pre-action approval gate yet."}
@@ -250,7 +265,7 @@ function drawClaims(){
       <span class="vid" style="opacity:.72">origin: ${v.origin||"n/a"}</span>
       <span class="vtxt">${v.measured===null?"no evidence":"value "+v.measured} against ${v.rule} · ${v.txt}</span>
     </div>`}).join("");
-  $("receiptMeta").textContent=`${r.file} · Ed25519 signed, evidence digests bound, chain ${r.all_valid?"verified":"BROKEN"}. Claim patterns from MANOLO D5.1 Table 7 (pp. 47-49).`;
+  $("receiptMeta").textContent=`${r.file} · Ed25519 signed by a pinned signer, evidence digests bound, verdicts semantically replayed, chain ${r.all_valid?"verified":"BROKEN"}. Claim patterns from MANOLO D5.1 Table 7 (pp. 47-49).`;
 }
 function drawChain(){
   const v=S.data.verify,all=S.data.chain,el=$("chain");

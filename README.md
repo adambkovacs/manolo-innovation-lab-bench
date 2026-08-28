@@ -69,10 +69,10 @@ The missing piece between D5.1's claim table and D2.1's lineage graph is a porta
 
 ```
 node src/bench.js                 # measured evidence: fp32 vs int8 vs RuVector
+node src/claims.js keygen         # once per fresh clone: create a signing key, register its fingerprint
 node src/claims.js evaluate       # evaluate claims, emit signed receipt
 node src/claims.js verify         # every receipt: trusted signer, signature, evidence digests, chain, semantic replay
 node src/claims.js replay receipt-0006.json   # recompute one receipt's verdicts from its bound inputs
-node src/claims.js keygen         # first evaluation on a fresh clone needs this explicit step
 node src/server.js                # API on :8787
 open demo/dashboard.html          # visual console (works offline)
 ```
@@ -108,7 +108,7 @@ node src/claims.js evaluate fixtures/claims-upstream.json
 
 When claim or evidence files legitimately evolve, older receipts for that set become SUPERSEDED: their signatures and chain links still verify, and only the latest receipt per claims set must match current disk and replay semantically. Superseded receipts preserve signed decision history; replaying their original decision also requires the git version of the inputs they signed. Tampering stays INVALID; history stays history.
 
-We tried to break it (test/gate.test.js, with acceptance gates declared before running): 7/7 verdict fixtures correct including a hard violation inside a review margin (BLOCK, never overridable), 3/3 canonicalization variants to one digest, 3/3 tamper mutations caught, duplicate claim ids rejected before any write, an unauthorised signer's receipt rejected with its signature intact, a signed-but-wrong verdict caught by semantic replay, an evidence path escaping the repository refused unread, an override refused on tampered evidence, a keyless clone refused a receipt, a read-only assessment leaving the ledger untouched, and zero outbound network attempts with net, http, tls, and fetch tripwired for the whole suite. Signing p95 under 0.1 ms and verification p95 under 0.25 ms over 500 iterations, against a 10 ms gate; a receipt is 2930 bytes. Exact figures for your machine land in results/gate-metrics.json every time you run `npm test`. A supply-chain inventory ships as results/sbom.spdx.json (`npm run sbom` regenerates it from the lockfile).
+We tried to break it (test/gate.test.js, with acceptance gates declared before running): 7/7 verdict fixtures correct including a hard violation inside a review margin (BLOCK, never overridable), 3/3 canonicalization variants to one digest, 3/3 tamper mutations caught, duplicate claim ids rejected before any write, an unauthorised signer's receipt rejected with its signature intact, a signed-but-wrong verdict caught by semantic replay, an evidence path escaping the repository refused unread, an override refused on tampered evidence, a keyless clone refused a receipt, a read-only assessment leaving the ledger untouched, and zero outbound network attempts with net, http, tls, and fetch tripwired for the whole suite. Signing p95 under 0.1 ms and verification p95 under 0.25 ms over 500 iterations, against a 10 ms gate; a committed receipt is 2930 bytes. Exact figures for your machine land in results/gate-metrics.json every time you run `npm test`. A supply-chain inventory ships as results/sbom.spdx.json (`npm run sbom` regenerates it from the lockfile).
 
 ## Energy, carbon, and cost as claims
 

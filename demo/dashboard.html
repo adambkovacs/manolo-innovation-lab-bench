@@ -158,9 +158,9 @@ const SAMPLE = {
     ]
   },
   scorecard:{
-    efficiency_sustainability:{score:100,status:"implemented",gap:"Energy not metered in joules; memory and latency are the proxies."},
+    efficiency_sustainability:{score:100,status:"implemented",gap:"Energy not metered in joules; payload size and latency are the declared proxies, not process memory."},
     transparency_explainability:{score:100,status:"implemented",gap:"No per-decision explanations; scope is system transparency."},
-    accountability_auditability:{score:100,status:"implemented",gap:"Single-node ledger, single keypair; no replication or PKI."},
+    accountability_auditability:{score:100,status:"implemented",gap:"Single-node ledger, pinned trusted-signer list without a PKI, no external time anchor."},
     reliability_robustness:{score:50,status:"partial",gap:"No out-of-distribution or drift testing; synthetic corpus."},
     security_misuse_resistance:{score:50,status:"partial",gap:"No injection screening; tamper-evident, not tamper-proof."},
     human_agency_oversight:{score:50,status:"partial",gap:"Governed signed override exists; no pre-action approval gate yet."}
@@ -235,7 +235,7 @@ function drawClaims(){
       <span class="vid" style="opacity:.72">origin: ${v.origin||"n/a"}</span>
       <span class="vtxt">${v.measured===null?"no evidence":"value "+v.measured} against ${v.rule} · ${v.txt}</span>
     </div>`}).join("");
-  $("receiptMeta").textContent=`${r.file} · Ed25519 signed, evidence digests bound, chain ${r.all_valid?"verified":"BROKEN"}. Claim patterns from MANOLO D5.1 Table 7 (pp. 47-49).`;
+  $("receiptMeta").textContent=`${r.file} · Ed25519 signed by a pinned signer, evidence digests bound, verdicts semantically replayed, chain ${r.all_valid?"verified":"BROKEN"}. Claim patterns from MANOLO D5.1 Table 7 (pp. 47-49).`;
 }
 function drawChain(){
   const v=S.data.verify,all=S.data.chain,el=$("chain");
