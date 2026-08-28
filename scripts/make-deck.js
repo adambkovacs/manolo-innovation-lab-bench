@@ -188,7 +188,7 @@ card(s, 0.6, 4.0, 12.13, 1.35, LAV2);
 s.addText('The TRACE receipt binds claim + threshold + measured value + evidence digest, signed, chained, replayable by anyone from the repo.',
   { x: 0.95, y: 4.25, w: 11.4, h: 0.9, fontFace: SANS, fontSize: 16, bold: true,
     color: INK, isTextBox: true, margin: 0, valign: 'middle' });
-s.addText('MANOLO-shaped and adapter-ready, never claimed compatible · speaks IPD YAML and AIWorkloadID · no receipts, attestation, or signing anywhere in the nine public deliverables (checked)',
+s.addText('Every ingredient exists (Ed25519, hash chains, attestation: in-toto and Sigstore territory); the contribution is the claim contract binding threshold, accepted origins, verdict, and disposition into one replayable artifact · MANOLO-shaped, never claimed compatible · no claim-verdict artifacts in the nine reviewed deliverables',
   { x: 0.6, y: 5.75, w: 12.13, h: 0.7, fontFace: SANS, fontSize: 11.5, color: MUT,
     isTextBox: true, margin: 0 });
 s.addNotes('If asked "is this not just MLflow or model cards": lineage says where from, alerts say a rule fired, cards describe. None bind a verdict that survives after the fact.');

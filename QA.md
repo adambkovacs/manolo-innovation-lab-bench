@@ -1,4 +1,4 @@
-# Q&A hardening: the fourteen questions that decide the room
+# Q&A hardening: the fifteen questions that decide the room
 
 Answer in two sentences, then stop talking. Every answer ends on a fact, not a defense.
 
@@ -45,3 +45,6 @@ The claim owner declares it before evaluation, and the receipt binds the exact c
 
 14. What if MANOLO already has this internally?
 Then this becomes an adapter and a conformance check for that component, which beats duplication. We asked exactly this as a pre-work question, and the answer changes one slide, not the build.
+
+15. What exactly is novel here? Signatures and hash chains are old.
+Correct, and we claim none of the parts: Ed25519, digests, chained logs, and attestation envelopes are commodity, in-toto and Sigstore territory. The contribution is the combination, a claim contract binding threshold, accepted evidence origins, verdict, and disposition into one signed, semantically replayable artifact with a REVIEW-only override and a gate the tuner cannot bypass, and we found that combination nowhere, including in the nine deliverables.

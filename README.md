@@ -61,6 +61,8 @@ Checked against nine public deliverables (D1.2, D1.3, D2.1, D4.1, D5.1, D6.1, D7
 - D8.3's data provenance is documentation: README files following Dublin Core and W3C PROV-DM, with file integrity delegated to the storage layer (Zenodo's MD5 checksums). No claim binding, no verdict record.
 - No deliverable mentions signed receipts, attestation, or claim-verdict artifacts. Checked.
 
+The novelty boundary, drawn by us: Ed25519 signatures, SHA-256 digests, hash-chained logs, and attestation envelopes are commodity parts; in-toto and Sigstore own the attestation territory, and this repo claims none of it. The contribution is the combination: a claim contract binding threshold, accepted evidence origins, verdict, and operational disposition into one signed, semantically replayable artifact, a REVIEW-only override that is itself a signed receipt, and a tuner (the receipted sweep) that may recommend a configuration but can never bypass the gate that judges it. Each ingredient exists somewhere; we found the combination nowhere, and the claim stops there.
+
 The missing piece between D5.1's claim table and D2.1's lineage graph is a portable, signed, replayable verdict receipt. That is the contribution, under Apache-2.0, using MANOLO's own vocabulary (IPD YAML from D5.1 section 3.1.2, AIWorkloadID from D1.3 section 3.7). Everything here is MANOLO-shaped and adapter-ready. Nothing claims MANOLO compatibility, because no public schema exists to bind against.
 
 ## Quickstart (zero dependencies, Node 18+)
